@@ -2,7 +2,8 @@
 import sys
 import click
 
-from llaim import LLAIM_DEBUG
+from llaim import LLAIM_DEBUG, __version__
+
 
 BANNER = """
 ██╗     ██╗      █████╗ ██╗███╗   ███╗
@@ -22,6 +23,11 @@ def main():
         click.echo(
             """Running in DEBUG True. Disable it by setting the environment variable LLAIM_DEBUG to 0"""  # noqa: E501
         )
+
+
+@main.command()
+def version():
+    click.echo(f"\nLLAIM Version - {__version__}")
 
 
 @main.command()

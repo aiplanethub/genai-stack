@@ -11,7 +11,11 @@ An end to end LLM framework
     ```python
     pip install git+https://github.com/dphi-official/llaim.git
     ```
-2. Check List of commands
+2. Verify installation
+    ```python
+    llaim version
+    ```
+3. Check List of commands
     ```python
     llaim --help
     ```
