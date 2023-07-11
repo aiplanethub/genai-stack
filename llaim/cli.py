@@ -2,7 +2,7 @@
 import sys
 import click
 
-from llaim import LLAIM_DEBUG, __version__
+from llaim import __version__
 
 
 BANNER = """
@@ -19,10 +19,6 @@ BANNER = """
 def main():
     """Console script for llaim."""
     click.echo(BANNER)
-    if LLAIM_DEBUG:
-        click.echo(
-            """Running in DEBUG True. Disable it by setting the environment variable LLAIM_DEBUG to 0"""  # noqa: E501
-        )
 
 
 @main.command()
