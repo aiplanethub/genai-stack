@@ -1,0 +1,2 @@
+class LLAIMException(Exception):
+    pass
