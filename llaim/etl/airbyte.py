@@ -1,6 +1,7 @@
 import json
 import requests
 import logging
+from urllib.parse import urljoin
 from requests.auth import _basic_auth_str
 from pathlib import Path
 from uuid import uuid4
@@ -85,12 +86,21 @@ class AirbyteEtl(EtlBase):
         return self._auth_header
 
     def _create_source(self):
-        response: requests.Response = requests.request(
-            "POST",
-            self.host,
-            headers=self.head,
+        source: dict = self.config_dict.get("source")
+        response = requests.post(
+            url=urljoin(self.host, "/api/v1/sources/create"),
+            headers=self._headers,
+            json={
+                "name": source.get("name"),
+                "sourceDefinitionId": source.get("sourceDefinitionId"),
+                "workspaceId": self.workspace_id,
+                "connectionConfiguration": source.get("configs"),
+            },
         )
-        print(response.content)
+        if response.ok:
+            return response.json().get("sourceDefinitions")
+        else:
+            raise LLAIMEtlException(f"Exception: {response.text}")
 
     def _create_destination(self):
         ...
@@ -101,13 +111,11 @@ class AirbyteEtl(EtlBase):
     def _create_workspace_id(self):
         """If a workspace_id is not provided in the config.json, it will be created."""
         payload = {"name": uuid4().hex}
-        print(self.host)
         response = requests.post(
-            url=f"{self.host}/api/v1/workspaces/create",
+            url=urljoin(self.host, "/api/v1/workspaces/create"),
             headers=self._headers,
             json=payload,
         )
-        print(response.request.headers)
         if response.ok:
             self.workspace_id = response.json().get("workspaceId")
             logging.info(f"Created workspace - {self.workspace_id}")
@@ -117,7 +125,18 @@ class AirbyteEtl(EtlBase):
 
     def source_definitions_list(self):
         response = requests.post(
-            url=f"{self.host}/api/v1/source_definitions/list",
+            url=urljoin(self.host, "/api/v1/source_definitions/list"),
+            headers=self._headers,
+            json={},
+        )
+        if response.ok:
+            return response.json().get("sourceDefinitions")
+        else:
+            raise LLAIMEtlException(f"Exception: {response.text}")
+
+    def destination_definitions_list(self):
+        response = requests.post(
+            url=urljoin(self.host, "/api/v1/destination_definitions/list"),
             headers=self._headers,
             json={},
         )
