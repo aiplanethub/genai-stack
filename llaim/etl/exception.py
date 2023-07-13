@@ -1,5 +1,5 @@
 from llaim.exception import LLAIMException
 
 
-class LLAIMAggregatorException(LLAIMException):
+class LLAIMEtlException(LLAIMException):
     pass
