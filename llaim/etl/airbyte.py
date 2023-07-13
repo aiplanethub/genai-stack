@@ -1,0 +1,130 @@
+import json
+import requests
+import logging
+from requests.auth import _basic_auth_str
+from pathlib import Path
+from uuid import uuid4
+
+from .base import EtlBase
+from .exception import LLAIMEtlException
+
+
+class AirbyteConfig:
+    source: dict
+    destination: dict
+
+
+class AirbyteEtl(EtlBase):
+    """Airbyte ETL Class
+
+    Attributes:
+        name: A string to name the ETL class
+        config: A string that holds the json file path which contains the configs
+                required to setup airbyte connection.
+        host: A string which contains the host of the airbyte
+        workspace_id: An optional string which contains the workspace id of the airbyte
+    """
+
+    def __init__(self, name: str = "Airbyte", config: str = None) -> None:
+        """Initializes the instances based on the name and config
+
+        Args:
+            name: A string to name the ETL class
+            config: A string that holds the json file path which contains the configs
+                    required to setup airbyte connection.
+        """
+        self.name = name
+        self.config = config
+        self.load_config()
+
+    @staticmethod
+    def _read_json_file(file_path: str):
+        with open(file_path) as file:
+            data = json.load(file)
+        return data
+
+    def load_config(self):
+        """Loads the configs and can set as class attrs"""
+        logging.info("Loading Configs")
+        f = Path(self.config)
+
+        if not f.exists():
+            raise LLAIMEtlException(
+                f"Unable to find the file. Input given - {self.config}",
+            )
+
+        try:
+            f = self._read_json_file(f.absolute())
+            self.config_dict = f
+            self.host = self.config_dict.get("host") or "http://localhost:8000/"
+            self.workspace_id = self.config_dict.get("workspace_id") or self._create_workspace_id()  # noqa: E501
+        except json.JSONDecodeError as e:
+            raise LLAIMEtlException("Unable to read the config file.") from e
+
+    @property
+    def _auth_header(self):
+        header = {}
+        auth_dict = self.config_dict.get("auth", {})
+
+        if api_key := auth_dict.get("api-key"):
+            header["Authorization"] = f"Bearer {api_key}".strip()
+        elif auth_dict.get("username") and auth_dict.get("password"):
+            encoded_auth = _basic_auth_str(
+                username=auth_dict.get("username"),
+                password=auth_dict.get("password"),
+            )
+            header["Authorization"] = encoded_auth
+        else:
+            raise LLAIMEtlException(
+                "No Auth provided for Airbyte. Either api-key or username, password should be provided in the config.json"  # noqa: E501
+            )  # noqa: E501
+        return header
+
+    @property
+    def _headers(self):
+        return self._auth_header
+
+    def _create_source(self):
+        response: requests.Response = requests.request(
+            "POST",
+            self.host,
+            headers=self.head,
+        )
+        print(response.content)
+
+    def _create_destination(self):
+        ...
+
+    def _create_connection(self):
+        ...
+
+    def _create_workspace_id(self):
+        """If a workspace_id is not provided in the config.json, it will be created."""
+        payload = {"name": uuid4().hex}
+        print(self.host)
+        response = requests.post(
+            url=f"{self.host}/api/v1/workspaces/create",
+            headers=self._headers,
+            json=payload,
+        )
+        print(response.request.headers)
+        if response.ok:
+            self.workspace_id = response.json().get("workspaceId")
+            logging.info(f"Created workspace - {self.workspace_id}")
+            return response.json()
+        else:
+            raise LLAIMEtlException(f"Exception: Unable to create a workspace.\n{response.text}")  # noqa: E501
+
+    def source_definitions_list(self):
+        response = requests.post(
+            url=f"{self.host}/api/v1/source_definitions/list",
+            headers=self._headers,
+            json={},
+        )
+        if response.ok:
+            return response.json().get("sourceDefinitions")
+        else:
+            raise LLAIMEtlException(f"Exception: {response.text}")
+
+    def run(self):
+        ...
