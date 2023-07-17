@@ -16,9 +16,9 @@ OPENAI_APIKEY=<YOUR_OPENAI_APIKEY> # For use with OpenAI.
 AZURE_APIKEY=<YOUR_AZURE_APIKEY> # For use with Azure OpenAI.
 ```
 
-1. Run the docker compose 
+3. Run the docker compose 
 ```
-
+docker-compose up -d
 ```
 
 
