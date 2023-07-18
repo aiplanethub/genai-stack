@@ -14,10 +14,10 @@ class TestEtl(unittest.TestCase):
         assert isinstance(langchain_loaders, list)
         assert "CSVLoader" in langchain_loaders
 
-    def test_langhub_etl(self):
+    def test_langloader_etl(self):
         langhub_etl = LangLoaderEtl(config="assets/config.json")
         langhub_etl.run()
 
-    def test_langhub_etl_custom_embedding(self):
+    def test_langloader_etl_custom_embedding(self):
         langhub_etl = LangLoaderEtl(config="assets/config_custom_embedding.json")
         langhub_etl.run()
