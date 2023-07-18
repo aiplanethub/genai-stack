@@ -1,0 +1,15 @@
+{
+    "source": {
+        "name": "CSVLoader",
+        "fields": {
+            "file_path": "users.csv"
+        }
+    },
+    "destination": {
+        "name": "weaviate",
+        "class_name": null,
+        "fields": {
+            "url": "http://localhost:8002/"
+        }
+    }
+}
