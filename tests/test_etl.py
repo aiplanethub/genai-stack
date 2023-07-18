@@ -4,14 +4,11 @@
 
 
 import unittest
-from click.testing import CliRunner
 
 from llaim.etl.lang_loader import list_langchain_loaders, LangHubEtl
-from llaim import cli
 
 
 class TestEtl(unittest.TestCase):
-
     def test_list_langchain_loaders(self):
         langchain_loaders = list_langchain_loaders()
         assert isinstance(langchain_loaders, list)
