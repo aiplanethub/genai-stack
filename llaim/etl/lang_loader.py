@@ -22,7 +22,7 @@ def list_langchain_loaders():
     )
 
 
-class LangHubEtl(EtlBase):
+class LangLoaderEtl(EtlBase):
     def __init__(self, config: str, name: str = "LanghubEtl", embedding=None) -> None:
         self.embedding = embedding
         super().__init__(name=name, config=config)
