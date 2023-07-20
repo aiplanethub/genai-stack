@@ -17,4 +17,4 @@ def extract_class_init_attrs(clss: Type):
 
 
 def extract_method_params(clss: Type, method: Callable):
-    return extract_func_params(inspect.signature(getattr(clss, method)))
+    return extract_func_params(getattr(clss, method))
