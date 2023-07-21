@@ -1,0 +1,9 @@
+{
+    "vectordb": {
+        "name": "weaviate",
+        "class_name": null,
+        "fields": {
+            "url": "http://localhost:8002/"
+        }
+    }
+}
