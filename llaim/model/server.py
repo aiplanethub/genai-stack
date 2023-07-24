@@ -1,30 +1,39 @@
 import uvicorn
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response, JSONResponse, PlainTextResponse
 
 
 class HttpServer:
+    name: str = None
+
     def predict(self, data=None):
         print(data)
         raise NotImplementedError
 
-    async def predict_api(self, request: Request) -> JSONResponse:
+    async def predict_api(self, request: Request):
         # Accessing request data
         request_body = await request.body()
 
         response_data = self.predict(request_body)
-        return JSONResponse(content=response_data)
+        ResponseClass = self.response_class or Response
+        return ResponseClass(content=response_data)
 
-    def run_http_server(self):
+    def run_http_server(
+        self,
+        host: str = "127.0.0.1",
+        port: int = 8082,
+        response_class: Response = Response,
+    ):
+        self.response_class = response_class
         self.app = FastAPI(
             title="LLAIM Model Server",
-            description="LLAIM HTTP Model Server using FastAPI",
+            description=f"LLAIM {self.name} HTTP Model Server",
         )
         app: FastAPI = self.app
 
-        app.post("/predict")(self.predict_api)
+        app.post("/predict", response_class=response_class)(self.predict_api)
 
-        uvicorn.run(app, host="127.0.0.1", port=8082)
+        uvicorn.run(app, host=host, port=port)
 
 
 # import asyncio
