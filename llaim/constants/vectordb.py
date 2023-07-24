@@ -1,4 +1,3 @@
-from enum import Enum
 from vectordb import Weaviate
 
 

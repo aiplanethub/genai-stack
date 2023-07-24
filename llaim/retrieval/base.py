@@ -1,5 +1,5 @@
-from constants import VECTOR_DB_CLIENT_MAP, VectorDB
-from config import ConfigLoader
+from llaim.constants import VECTOR_DB_CLIENT_MAP, VectorDB
+from llaim.config import ConfigLoader
 
 
 class BaseRetriever(ConfigLoader):
