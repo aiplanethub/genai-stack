@@ -5,6 +5,7 @@ from llaim.model.server import HttpServer
 class BaseModel(HttpServer):
     def __init__(
         self,
+        name: str = None,
         model_path: Optional[str] = None,
         vector_store: Optional[Any] = None,
     ):
@@ -18,4 +19,4 @@ class BaseModel(HttpServer):
         self.model = model_path
 
     def predict(self, query: Any):
-        return self.model
+        raise NotImplementedError
