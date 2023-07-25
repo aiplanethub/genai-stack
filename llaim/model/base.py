@@ -1,6 +1,7 @@
 from typing import Any, Optional
 from llaim.model.server import HttpServer
 
+from retrieval import BaseRetriever
 
 class BaseModel(HttpServer):
     def __init__(
