@@ -1,4 +1,5 @@
 VECTORDB_MODULE = "llaim.vectordb"
+VECTORDB_CONFIG_KEY = "vectordb"
 
 
 class VectorDB:

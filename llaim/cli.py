@@ -42,7 +42,6 @@ def list_models():
 
 
 @main.command()
-@click.option("--model", help="Start a HTTP Server for the model", type=str)
 @click.option("-f", help="Config file", type=str)
 def start(model, f=None):
     """Start a HTTP server for a model

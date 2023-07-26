@@ -1,0 +1,1 @@
+GLOBAL_COMPULSORY_FIELDS = ["name"]

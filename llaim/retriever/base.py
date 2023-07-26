@@ -1,12 +1,14 @@
-from llaim.constants import VECTOR_DB_CLIENT_MAP, VectorDB
-from llaim.config import ConfigLoader
-from vectordb.base import BaseVectordb
 from typing import Any
+
+from llaim.constants.vectordb import VectorDB
+from llaim.config import ConfigLoader
+from constants.retriever import RETRIEVER_CONFIG_KEY
+from vectordb.base import BaseVectordb
 
 
 class BaseRetriever(ConfigLoader):
     module_name = "BaseRetriever"
-    config_key = "retriever"
+    config_key = RETRIEVER_CONFIG_KEY
 
     def __init__(self, config: str, vectordb: BaseVectordb = None):
         super().__init__(self.module_name, config)

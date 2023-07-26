@@ -1,5 +1,5 @@
 MODELS_MODULE = "llaim.model"
-
+MODEL_CONFIG_KEY = "model"
 
 class Models:
     OPENAI = "openai"
