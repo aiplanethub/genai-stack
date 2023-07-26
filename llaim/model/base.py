@@ -1,17 +1,23 @@
-from typing import Any, Optional
+from typing import Any, Optional, List
 from llaim.model.server import HttpServer
 
 from retrieval import BaseRetriever
+from config import ConfigLoader
 
-class BaseModel(HttpServer):
+
+class BaseModel(HttpServer, ConfigLoader):
+    config_key = "model"
+
     def __init__(
         self,
-        name: str = None,
+        config: str = None,
         model_path: Optional[str] = None,
-        vector_store: Optional[Any] = None,
+        retriever: BaseRetriever = None,
     ):
-        self.vector_store = vector_store
+        super(ConfigLoader, self).__init__(name="Model", config=config)
+        self.retriever = retriever
         self.load(model_path=model_path)
+        self.parse_config(self.config_key, self.compulsory_fields)
 
     def get_vector_query(self, query_type: str = "similarity"):
         pass

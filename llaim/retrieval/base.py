@@ -3,8 +3,13 @@ from llaim.config import ConfigLoader
 
 
 class BaseRetriever(ConfigLoader):
+    module_name = "BaseRetriever"
+    config_key = "retriever"
+    compulsory_fields = ["name"]
+
     def __init__(self, config: str):
-        super().__init__(self.__class__.name, config)
+        super().__init__(self.module_name, config)
+        self.parse_config(self.config_key, self.compulsory_fields)
         self.vector_store_client = self._get_vector_store_client()
 
     def _get_vector_store_client_class(self):

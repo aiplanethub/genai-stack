@@ -1,29 +1,21 @@
 from typing import Any
 import openai
 from llaim.model.base import BaseModel
+from langchain.llms import OpenAIChat
 
 
 class OpenAIGpt35Model(BaseModel):
-    name = "Gpt 3.5"
+    model_name = "Gpt 3.5"
+    compulsory_fields = ["openai_api_key"]
 
     def load(self, model_path: str):
         return super().load(model_path)
 
-    def predict(self, query: Any):
+    def predict(self, query: str):
+        real_data = self.retriever.retrieve(query)
         query = query.decode("utf-8")
 
         # set api key as environment variables.
         # os.environ["OPENAI_API_KEY"] = "sk-xxxx"
-        res = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": query},
-            ],
-            temperature=0.7,
-            max_tokens=2000,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0,
-        )
-        return res.choices[0].message.content
+        response = OpenAIChat(openai_api_key=self.model_config_fields.get("openai_api_key"), model="gpt-3.5-turbo")
+        return response.choices[0].message.content

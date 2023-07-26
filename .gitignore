@@ -104,6 +104,7 @@ ENV/
 # IDE settings
 .vscode/
 .idea/
+sandbox/private/
 
 # ruff
 .ruff_cache/
