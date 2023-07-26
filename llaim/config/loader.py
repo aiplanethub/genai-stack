@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 import typing
 
-from constants.config import GLOBAL_COMPULSORY_FIELDS
+from llaim.constants.config import GLOBAL_COMPULSORY_FIELDS
 
 
 class ConfigLoader:

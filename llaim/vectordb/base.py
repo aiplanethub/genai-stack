@@ -1,7 +1,5 @@
-import weaviate
-from config import ConfigLoader
-
-from constants.vectordb import VECTORDB_CONFIG_KEY
+from llaim.config import ConfigLoader
+from llaim.constants.vectordb import VECTORDB_CONFIG_KEY
 
 
 class BaseVectordb(ConfigLoader):

@@ -2,8 +2,8 @@ from typing import Any
 
 from llaim.constants.vectordb import VectorDB
 from llaim.config import ConfigLoader
-from constants.retriever import RETRIEVER_CONFIG_KEY
-from vectordb.base import BaseVectordb
+from llaim.constants.retriever import RETRIEVER_CONFIG_KEY
+from llaim.vectordb.base import BaseVectordb
 
 
 class BaseRetriever(ConfigLoader):
