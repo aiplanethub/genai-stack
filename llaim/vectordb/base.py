@@ -1,7 +1,5 @@
 import weaviate
 from config import ConfigLoader
-from constants.vectordb import RETRIEVAL_CONFIG_VECTORDB
-from langchain.vectorstores.weaviate import Weaviate as LangChainWeaviate
 
 
 class BaseVectordb(ConfigLoader):

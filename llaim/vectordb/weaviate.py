@@ -3,8 +3,6 @@ from typing import List
 import weaviate
 from langchain.docstore.document import Document
 from langchain.vectorstores.weaviate import Weaviate as LangChainWeaviate
-
-from config import ConfigLoader
 from .base import BaseVectordb
 
 

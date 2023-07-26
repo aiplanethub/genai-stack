@@ -5,6 +5,9 @@
             "openai_api_key": "sk-****"
         }
     },
+    "retriever": {
+        "name": "Langchain"
+    },
     "vectordb": {
         "name": "weaviate",
         "class_name": "LegalDocs",
