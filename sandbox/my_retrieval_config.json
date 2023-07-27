@@ -6,7 +6,7 @@
         }
     },
     "retriever": {
-        "name": "Langchain"
+        "name": "langchain"
     },
     "vectordb": {
         "name": "weaviate",

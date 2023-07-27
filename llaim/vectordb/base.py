@@ -1,3 +1,6 @@
+from typing import List
+
+from langchain.docstore.document import Document
 from llaim.config import ConfigLoader
 from llaim.constants.vectordb import VECTORDB_CONFIG_KEY
 
@@ -13,9 +16,11 @@ class BaseVectordb(ConfigLoader):
         Args:
             config: Pass the parsed config file into this class
         """
-        super().__init__(name=self.module_name.title(), config=config)
-        self.config = config
+        super().__init__(name=self.module_name, config=config)
         self.parse_config(self.config_key, self.compulsory_fields)
+
+    def search(self, query: str) -> List[Document]:
+        raise NotImplementedError()
 
     def create_client(self):
         raise NotImplementedError()
