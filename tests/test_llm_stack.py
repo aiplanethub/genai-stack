@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 
-"""Tests for `llaim` package."""
+"""Tests for `llm_stack` package."""
 
 
 import unittest
 from click.testing import CliRunner
 
-from llaim import llaim
-from llaim import cli
+from llm_stack import cli
 
 
-class TestLlaim(unittest.TestCase):
-    """Tests for `llaim` package."""
+class Testllm_stack(unittest.TestCase):
+    """Tests for `llm_stack` package."""
 
     def setUp(self):
         """Set up test fixtures, if any."""

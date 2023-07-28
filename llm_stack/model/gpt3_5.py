@@ -1,9 +1,9 @@
-import orjson
-from langchain.schema import Generation
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
+from langchain.schema import Generation
 
-from llaim.model.base import BaseModel
+from llm_stack.model.base import BaseModel
+
 from .prompts import BASIC_QA
 
 
@@ -17,8 +17,8 @@ class OpenAIGpt35Model(BaseModel):
     def predict(self, query: str):
         query = query.decode("utf-8")
         print(query)
-        retriever_results = self.retriever.retrieve(query)
-        
+        self.retriever.retrieve(query)
+
         # Manual chaining
         # prompt = BASIC_QA.format(context=retriever_results, user_prompt=query)
         # openai_chat = OpenAIChat(openai_api_key=self.model_config_fields.get("openai_api_key"), model="gpt-3.5-turbo")
@@ -53,7 +53,7 @@ class OpenAIGpt35Model(BaseModel):
                 for document in qa_result["source_documents"]
             ],
         }
-        return orjson.dumps(parsed_result)
+        return parsed_result
 
     def parse_generations(self, generation_lst: list):
         """

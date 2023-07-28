@@ -1,4 +1,4 @@
-"""Top-level package for LLAIM."""
+"""Top-level package for llm_stack."""
 
 __author__ = """AIM by DPhi"""
 __email__ = "support@aiplanet.com"
@@ -6,4 +6,4 @@ __version__ = "0.1.0"
 
 import os
 
-LLAIM_DEBUG = bool(os.environ.get("LLAIM_DEBUG"))
+llm_stack_DEBUG = bool(os.environ.get("llm_stack_DEBUG"))

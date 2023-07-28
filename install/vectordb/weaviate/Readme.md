@@ -7,7 +7,7 @@
 git clone <repository>
 ```
 
-2. Update your env variable file in llaim/vector_store/weaviate/.env 
+2. Update your env variable file in llm_stack/vector_store/weaviate/.env
    Copy the values from .env.example to your own .env file
    **Note**: Populating either of the AZURE_APIKEY or OPENAI_APIKEY is enough.
 ```
@@ -16,7 +16,7 @@ OPENAI_APIKEY=<YOUR_OPENAI_APIKEY> # For use with OpenAI.
 AZURE_APIKEY=<YOUR_AZURE_APIKEY> # For use with Azure OpenAI.
 ```
 
-3. Run the docker compose 
+3. Run the docker compose
 ```
 docker-compose up -d
 ```

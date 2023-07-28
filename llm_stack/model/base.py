@@ -1,9 +1,9 @@
 from typing import Any, Optional, List
 
-from llaim.model.server import HttpServer
-from llaim.retriever import BaseRetriever
-from llaim.constants.model import MODEL_CONFIG_KEY
-from llaim.config import ConfigLoader
+from llm_stack.model.server import HttpServer
+from llm_stack.retriever import BaseRetriever
+from llm_stack.constants.model import MODEL_CONFIG_KEY
+from llm_stack.config import ConfigLoader
 
 
 class BaseModel(HttpServer, ConfigLoader):

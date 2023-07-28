@@ -1,4 +1,4 @@
-VECTORDB_MODULE = "llaim.vectordb"
+VECTORDB_MODULE = "llm_stack.vectordb"
 VECTORDB_CONFIG_KEY = "vectordb"
 
 

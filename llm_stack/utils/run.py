@@ -1,8 +1,8 @@
 import subprocess
-from llaim import LLAIM_DEBUG
+from llm_stack import llm_stack_DEBUG
 
 
-def run_terminal_commands(command: str, stream_output: bool = LLAIM_DEBUG):
+def run_terminal_commands(command: str, stream_output: bool = llm_stack_DEBUG):
     process = subprocess.Popen(
         command,
         shell=True,

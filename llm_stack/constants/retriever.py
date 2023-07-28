@@ -1,4 +1,4 @@
-RETRIEVER_MODULE = "llaim.retriever"
+RETRIEVER_MODULE = "llm_stack.retriever"
 RETRIEVER_CONFIG_KEY = "retriever"
 
 

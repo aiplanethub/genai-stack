@@ -5,8 +5,8 @@ from langchain.docstore.document import Document as LangDocument
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Weaviate
 
-from llaim.etl.base import EtlBase
-from llaim.utils.importing import import_class
+from llm_stack.etl.base import EtlBase
+from llm_stack.utils.importing import import_class
 
 documentloaders_type_to_cls_dict: Dict[str, Any] = {
     documentloader_name: import_class(
@@ -55,7 +55,7 @@ class LangLoaderEtl(EtlBase):
     def load_into_destination(self, source_docs: List[LangDocument]):
         destination = self.config_dict.get("destination")
 
-        class_name = destination.get("class_name") or "llaim"
+        class_name = destination.get("class_name") or "llm_stack"
         class_name = class_name.capitalize()
 
         Weaviate.from_documents(

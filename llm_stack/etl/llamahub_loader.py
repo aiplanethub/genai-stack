@@ -5,12 +5,12 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Weaviate
 from llama_index import download_loader
 
-from llaim.etl.base import EtlBase
-from llaim.utils.extraction import (
+from llm_stack.etl.base import EtlBase
+from llm_stack.utils.extraction import (
     extract_class_init_attrs,
     extract_method_params,
 )
-from llaim.utils.importing import import_class
+from llm_stack.utils.importing import import_class
 
 
 class LLamaHubEtl(EtlBase):
@@ -66,7 +66,7 @@ class LLamaHubEtl(EtlBase):
     def load_into_destination(self, source_docs: List[LangDocument]):
         destination = self.config_dict.get("destination")
 
-        class_name = destination.get("class_name") or "llaim"
+        class_name = destination.get("class_name") or "llm_stack"
         class_name = class_name.capitalize()
 
         Weaviate.from_documents(

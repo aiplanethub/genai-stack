@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use LLAIM in a project::
+To use LLM Stack in a project::
 
-    import llaim
+    import llm_stack
