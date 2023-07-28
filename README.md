@@ -9,15 +9,15 @@ An end to end LLM framework
 
 1. Install with pip
     ```python
-    pip install git+https://github.com/dphi-official/llm_stack.git
+    pip install git+https://github.com/dphi-official/llm-stack.git
     ```
 2. Verify installation
     ```python
-    llm_stack version
+    llmstack version
     ```
 3. Check List of commands
     ```python
-    llm_stack --help
+    llmstack --help
     ```
 
 ## Features

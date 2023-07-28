@@ -30,11 +30,11 @@ def main():
 
 @main.command()
 def version():
-    """Outputs version of the installed package
+    """Version of the installed LLM Stack package
 
     `llmstack version`
     """
-    click.echo(f"\LLM Stack Version - {__version__}")
+    click.echo(f"Version - {__version__}")
 
 
 @main.command()
@@ -43,7 +43,7 @@ def list_models():
 
     `llmstack list-models`
     """
-    click.echo("Available List of models")
+    click.echo("Available List of models\n")
     for indx, model in enumerate(list_supported_models()):
         click.echo(f"{indx+1}. {model}")
 
