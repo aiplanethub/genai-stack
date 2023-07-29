@@ -45,7 +45,7 @@ class ConfigLoader:
         except json.JSONDecodeError as e:
             raise ValueError("Unable to read the config file.") from e
 
-    def parse_config(self, config_key: str, required_fields=typing.List[str]):
+    def parse_config(self, config_key: str, required_fields: typing.List[str] = None):
         config = self.config.get(config_key, None)
         if not config:
             raise ValueError(f"{config_key} config not found.")
