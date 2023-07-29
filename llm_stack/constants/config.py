@@ -1,1 +1,3 @@
 GLOBAL_REQUIRED_FIELDS = ["name"]
+
+CUSTOM_MODEL_KEY_NAME = "custom"
