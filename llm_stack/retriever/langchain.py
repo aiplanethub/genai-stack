@@ -5,7 +5,7 @@ from .base import BaseRetriever
 
 
 class LangChainRetriever(BaseRetriever):
-    compulsory_fields = []
+    required_fields = []
 
     def retrieve(self, query):
         vectordb = self.vectordb
