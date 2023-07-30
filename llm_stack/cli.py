@@ -108,7 +108,12 @@ def etl(config_file):
 
 
 @main.command()
-@click.option("-destination", help="Download and Install Airbyte", type=str)
+@click.option(
+    "-destination",
+    help="Download and Install Airbyte",
+    type=str,
+    required=True,
+)
 def dli_airbyte(destination):
     click.echo("Downloading and installing Airbyte")
     execute_command_in_directory(

@@ -3,10 +3,11 @@ import subprocess
 from typing import List
 
 
-def run_terminal_commands(commands: List[str], stream_output: bool = False):
+def run_terminal_commands(command: str, stream_output: bool = False):
     try:
         result = subprocess.run(
-            commands,
+            command,
+            shell=True,  # Use shell to handle complex commands
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,  # Specify the encoding explicitly (Python 3.7+)
@@ -22,7 +23,7 @@ def run_terminal_commands(commands: List[str], stream_output: bool = False):
         print(f"An error occurred: {e}")
 
 
-def execute_command_in_directory(target_directory, commands: List[List[str]]):
+def execute_command_in_directory(target_directory, commands: List[str]):
     try:
         os.makedirs(target_directory, exist_ok=True)
         os.chdir(target_directory)
@@ -31,7 +32,8 @@ def execute_command_in_directory(target_directory, commands: List[List[str]]):
         # Run the provided commands here
         for cmd in commands:
             run_terminal_commands(cmd)
-    except FileNotFoundError as e:
+
+    except FileNotFoundError:
         print(f"Directory not found: {target_directory}")
     except Exception as e:
         print(f"An error occurred: {e}")
