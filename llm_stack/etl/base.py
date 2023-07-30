@@ -2,10 +2,11 @@ import json
 import logging
 from pathlib import Path
 
-from .exception import llm_stackEtlException
+from llm_stack.config.loader import ConfigLoader
+from .exception import LLMStackEtlException
 
 
-class EtlBase:
+class EtlBase(ConfigLoader):
     name: str
     config: str
 
@@ -34,7 +35,7 @@ class EtlBase:
         f = Path(self.config)
 
         if not f.exists():
-            raise llm_stackEtlException(
+            raise LLMStackEtlException(
                 f"Unable to find the file. Input given - {self.config}",
             )
 
@@ -42,7 +43,7 @@ class EtlBase:
             f = self._read_json_file(f.absolute())
             self.config_dict = f
         except json.JSONDecodeError as e:
-            raise llm_stackEtlException("Unable to read the config file.") from e
+            raise LLMStackEtlException("Unable to read the config file.") from e
 
     def run(self):
         """This method should contain the actual logic for creating the EtL pipeline"""

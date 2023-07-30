@@ -1,4 +1,5 @@
 {
+    "etl": "langchain",
     "source": {
         "name": "CSVLoader",
         "fields": {

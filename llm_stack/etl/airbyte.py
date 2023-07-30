@@ -7,7 +7,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from .base import EtlBase
-from .exception import llm_stackEtlException
+from .exception import LLMStackEtlException
 
 
 class AirbyteConfig:
@@ -50,7 +50,7 @@ class AirbyteEtl(EtlBase):
         f = Path(self.config)
 
         if not f.exists():
-            raise llm_stackEtlException(
+            raise LLMStackEtlException(
                 f"Unable to find the file. Input given - {self.config}",
             )
 
@@ -60,7 +60,7 @@ class AirbyteEtl(EtlBase):
             self.host = self.config_dict.get("host") or "http://localhost:8000/"
             self.workspace_id = self.config_dict.get("workspace_id") or self._create_workspace_id()  # noqa: E501
         except json.JSONDecodeError as e:
-            raise llm_stackEtlException("Unable to read the config file.") from e
+            raise LLMStackEtlException("Unable to read the config file.") from e
 
     @property
     def _auth_header(self):
@@ -76,9 +76,9 @@ class AirbyteEtl(EtlBase):
             )
             header["Authorization"] = encoded_auth
         else:
-            raise llm_stackEtlException(
+            raise LLMStackEtlException(
                 "No Auth provided for Airbyte. Either api-key or username, password should be provided in the config.json"  # noqa: E501
-            )  # noqa: E501
+            )
         return header
 
     @property
@@ -86,7 +86,11 @@ class AirbyteEtl(EtlBase):
         return self._auth_header
 
     def _create_source(self):
-        json_resp = self._config_dict_extraction("source", "/api/v1/sources/create", "sourceDefinitionId")
+        json_resp = self._config_dict_extraction(
+            "source",
+            "/api/v1/sources/create",
+            "sourceDefinitionId",
+        )
         self.source_id = json_resp.get("sourceId")
         return json_resp
 
@@ -94,7 +98,6 @@ class AirbyteEtl(EtlBase):
         json_resp = self._config_dict_extraction(
             "destination", "/api/v1/destinations/create", "destinationDefinitionId"
         )
-        print(json_resp, "<<<<<")
         self.destination_id = json_resp.get("destinationId")
         return json_resp
 
@@ -111,7 +114,7 @@ class AirbyteEtl(EtlBase):
             },
         )
         if not response.ok:
-            raise llm_stackEtlException(f"Exception: {response.text}")
+            raise LLMStackEtlException(f"Exception: {response.text}")
         return response.json()
 
     def _create_connection(self):
@@ -128,7 +131,7 @@ class AirbyteEtl(EtlBase):
         )
 
         if not response.ok:
-            raise llm_stackEtlException(f"Exception: {response.text}")
+            raise LLMStackEtlException(f"Exception: {response.text}")
 
         json_response = response.json()
         self.connection_id = json_response["connectionId"]
@@ -144,7 +147,7 @@ class AirbyteEtl(EtlBase):
             json=payload,
         )
         if not response.ok:
-            raise llm_stackEtlException(f"Exception: Unable to create a workspace.\n{response.text}")  # noqa: E501
+            raise LLMStackEtlException(f"Exception: Unable to create a workspace.\n{response.text}")  # noqa: E501
         print(f'Created Workspace - {response.json().get("workspaceId")}')
         return response.json().get("workspaceId")
 
@@ -157,7 +160,7 @@ class AirbyteEtl(EtlBase):
         if response.ok:
             return response.json().get("sourceDefinitions")
         else:
-            raise llm_stackEtlException(f"Exception: {response.text}")
+            raise LLMStackEtlException(f"Exception: {response.text}")
 
     def destination_definitions_list(self):
         response = requests.post(
@@ -168,7 +171,7 @@ class AirbyteEtl(EtlBase):
         if response.ok:
             return response.json().get("sourceDefinitions")
         else:
-            raise llm_stackEtlException(f"Exception: {response.text}")
+            raise LLMStackEtlException(f"Exception: {response.text}")
 
     def run(self):
         self._create_source()

@@ -19,6 +19,7 @@ from llm_stack.constants import (
 )
 from llm_stack.exception import LLMStackException
 from llm_stack.constants.model import AVAILABLE_MODEL_MAPS
+from llm_stack.etl.run import run_etl_loader
 
 BANNER = """
 ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
@@ -95,6 +96,12 @@ def start(config_file):
         )
     model_class = get_model_class(model)(config=config_file, retriever=retriever)
     model_class.run_http_server()
+
+
+@main.command()
+@click.option("--config_file", help="Config file", type=str)
+def etl(config_file):
+    run_etl_loader(config_file=config_file)
 
 
 # @main.command()
