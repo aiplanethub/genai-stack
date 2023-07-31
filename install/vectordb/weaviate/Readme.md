@@ -4,7 +4,8 @@
 
 1. Clone the github repository
 ```
-git clone <repository>
+git clone https://github.com/dphi-official/llaim.git
+cd llaim/install/vectordb/weaviate/
 ```
 
 2. Update your env variable file in llm_stack/vector_store/weaviate/.env

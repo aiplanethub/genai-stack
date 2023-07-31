@@ -16,3 +16,9 @@ class BaseRetriever(ConfigLoader):
 
     def retrieve(self, query: Any):
         raise NotImplementedError()
+
+    def get_langchain_retriever(self):
+        return self.vectordb.get_langchain_client().as_retriever()
+
+    def get_langchain_memory_retriever(self):
+        return self.vectordb.get_langchain_memory_client().as_retriever()

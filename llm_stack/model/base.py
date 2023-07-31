@@ -1,4 +1,5 @@
 from typing import Any, Optional
+from langchain.memory import VectorStoreRetrieverMemory
 
 from llm_stack.model.server import HttpServer
 from llm_stack.retriever import BaseRetriever
@@ -24,6 +25,12 @@ class BaseModel(HttpServer, ConfigLoader):
 
     def get_vector_query(self, query_type: str = "similarity"):
         pass
+
+    def get_memory(self):
+        vector_store_memory = VectorStoreRetrieverMemory(
+            retriever=self.retriever.get_langchain_memory_retriever(), memory_key="chat_history"
+        )
+        return vector_store_memory
 
     def load(self, model_path: str):
         self.model = model_path

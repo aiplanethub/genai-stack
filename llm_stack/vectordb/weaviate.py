@@ -3,8 +3,14 @@ from typing import List
 import weaviate
 from langchain.docstore.document import Document
 from langchain.vectorstores.weaviate import Weaviate as LangChainWeaviate
+from weaviate.exceptions import UnexpectedStatusCodeException
+
 
 from .base import BaseVectordb
+
+
+MEMORY_INDEX_NAME = "MemoryIndex"  # Weaviate requires index names to be in PascalCase
+MEMORY_TEXT_KEY = "chat_history"
 
 
 class Weaviate(BaseVectordb):
@@ -26,3 +32,25 @@ class Weaviate(BaseVectordb):
             self.vectordb_config.get("class_name"),
             self.vectordb_config_fields.get("text_key"),
         )
+
+    def get_langchain_memory_client(self) -> LangChainWeaviate:
+        client = self.create_client()
+        self._setup_vectordb_memory(client=client)
+        return LangChainWeaviate(client, index_name=MEMORY_INDEX_NAME, text_key=MEMORY_TEXT_KEY)
+
+    def _setup_vectordb_memory(self, client: weaviate.Client):
+        """
+        Get or Create a vectordb index
+        """
+        try:
+            client.schema.get(class_name=MEMORY_INDEX_NAME)
+        except UnexpectedStatusCodeException:
+            print("Creating memory index class in vector db")
+            client.schema.create_class(
+                {
+                    "class": MEMORY_INDEX_NAME,
+                    "properties": [
+                        {"name": MEMORY_TEXT_KEY, "dataType": ["text"]},
+                    ],
+                }
+            )

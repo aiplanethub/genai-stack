@@ -3,7 +3,6 @@ MODEL_CONFIG_KEY = "model"
 
 
 class Models:
-    OPENAI = "openai"
     GPT_35 = "gpt3.5"
 
 
