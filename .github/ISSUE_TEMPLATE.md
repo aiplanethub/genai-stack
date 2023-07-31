@@ -1,4 +1,4 @@
-* llm_stack version:
+* LLM Stack version:
 * Python version:
 * Operating System:
 
