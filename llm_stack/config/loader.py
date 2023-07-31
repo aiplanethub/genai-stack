@@ -68,9 +68,9 @@ class ConfigLoader:
         # Check if all compulsory fields are present either in the fields section or in the
         if required_fields:
             if absent_required_fields := [
-                compulsory_field
-                for compulsory_field in required_fields
-                if compulsory_field not in (list(config_fields.keys()) + list(config.keys()))
+                required_field
+                for required_field in required_fields
+                if required_field not in (list(config_fields.keys()) + list(config.keys()))
             ]:
                 raise ValueError(
                     f"Compulsory fields {absent_required_fields} are missing from your '{config_key}' config."
