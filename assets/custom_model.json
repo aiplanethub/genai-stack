@@ -15,6 +15,7 @@
         "class_name": "LegalDocs",
         "fields": {
             "url": "http://localhost:9999/",
+            "api_key": "weaviate-api-key",
             "text_key": "clause_text"
         }
     }

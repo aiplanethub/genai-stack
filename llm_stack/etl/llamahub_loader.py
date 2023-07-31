@@ -27,7 +27,6 @@ class LLamaHubEtl(EtlBase):
         source = self.config_dict.get("source")
         print("source config done")
         LoaderCls = download_loader(source.get("name"))
-        print(LoaderCls, "<<<<<")
 
         sanitized_init_params = {}
         init_params = self.params_for_class_init(LoaderCls)
