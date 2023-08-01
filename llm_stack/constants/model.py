@@ -12,3 +12,12 @@ AVAILABLE_MODEL_MAPS = {
     Models.GPT_35: "gpt3_5/OpenAIGpt35Model",
     Models.GPT4ALL: "gpt4all/Gpt4AllModel",
 }
+
+DEFAULT_MODEL_JSON = {
+    "model": {
+        "name": "gpt4all",
+        "fields": {
+            "model": "ggml-gpt4all-j-v1.3-groovy",
+        },
+    },
+}

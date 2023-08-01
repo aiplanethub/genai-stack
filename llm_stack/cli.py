@@ -21,6 +21,7 @@ from llm_stack.model.run import (
     list_supported_models,
     run_custom_model,
 )
+from llm_stack.utils.model import create_default_model_json_file
 from llm_stack.utils.run import execute_command_in_directory
 
 BANNER = """
@@ -70,7 +71,9 @@ def start(config_file):
 
     `llmstack start --model gpt3.5`
     """
-
+    if not config_file:
+        print("WARNING: No Config file provided, creating a default one.")
+        config_file = create_default_model_json_file()
     config_loader = ConfigLoader(config=config_file)
 
     try:
