@@ -49,15 +49,6 @@ class BaseModel(HttpServer, ConfigLoader):
     def predict(self, query: Any):
         raise NotImplementedError
 
-    def run_http_server(
-        self,
-        host: str = "127.0.0.1",
-        port: int = 8082,
-        response_class: Response = ...,
-    ):
-        print(f"\n>>>>> Starting a server for Model - {self.model_name.capitalize()}\n")
-        return super().run_http_server(host, port, response_class)
-
     @classmethod
     def from_config(
         cls,
