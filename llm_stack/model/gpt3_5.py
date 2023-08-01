@@ -13,7 +13,6 @@ from llm_stack.model.base import BaseModel
 class OpenAIGpt35Model(BaseModel):
     model_name = "Gpt_3.5"
     required_fields = ["openai_api_key"]
-    response_class = JSONResponse
 
     def load(self, model_path: str):
         return super().load(model_path)
