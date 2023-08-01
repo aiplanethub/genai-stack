@@ -1,0 +1,17 @@
+{
+    "etl": "langchain",
+    "source": {
+        "name": "PyPDFLoader",
+        "fields": {
+            "file_path": "/home/sln/dphi_projects/llaim/TrainTicket-31-Mar-2023.pdf"
+        }
+    },
+    "destination": {
+        "name": "weaviate",
+        "class_name": "chatpdf",
+        "fields": {
+            "url": "http://localhost:8002/",
+            "text_key": "pdf_content"
+        }
+    }
+}
