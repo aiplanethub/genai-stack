@@ -38,7 +38,7 @@ Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl -OJL https://github.com/aiplanethub/llm-stack/tarball/master
+    $ curl -OJL https://github.com/aiplanethub/llmstack/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/aiplanethub/llm-stack
-.. _tarball: https://github.com/aiplanethub/llm-stack/tarball/master
+.. _Github repo: https://github.com/aiplanethub/llmstack
+.. _tarball: https://github.com/aiplanethub/llmstack/tarball/master
