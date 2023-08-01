@@ -23,5 +23,5 @@ pip install -r ui/requirements.txt
 
 4. Run the streamlit app
 ```
-streamlit run ui/app/app.py
+streamlit run ui/app/main.py
 ```
