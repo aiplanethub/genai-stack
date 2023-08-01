@@ -67,7 +67,7 @@ An end to end LLM framework
     print(response.text)
     ```
 
-    ```bash
+    ````bash
         # Response from the LLM
 
         Here is a Python program to add two numbers:
@@ -89,7 +89,7 @@ An end to end LLM framework
         Then, we add the two numbers using the `+` operator and store the result in the variable `sum`.
 
         Finally, we print the result using the `print()` function.
-    ```
+    ````
 
 ## Features
 
