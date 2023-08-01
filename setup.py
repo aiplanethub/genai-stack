@@ -13,7 +13,7 @@ with open("HISTORY.rst") as history_file:
 requirements = [
     "Click>=7.0",
     "requests>=2.31.0",
-    "langchain==0.0.232",
+    "langchain>=0.0.232",
     "llama-hub",
     "llama-index",
     "uvicorn==0.23.0",
