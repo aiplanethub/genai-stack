@@ -1,5 +1,4 @@
 """Console script for llm_stack."""
-import subprocess
 import sys
 
 import click
@@ -12,7 +11,6 @@ from llm_stack.constants import (
     RETRIEVER_CONFIG_KEY,
     VECTORDB_CONFIG_KEY,
 )
-from llm_stack.utils.run import execute_command_in_directory
 from llm_stack.constants.model import AVAILABLE_MODEL_MAPS
 from llm_stack.etl.run import run_etl_loader
 from llm_stack.exception import LLMStackException
@@ -23,6 +21,7 @@ from llm_stack.model.run import (
     list_supported_models,
     run_custom_model,
 )
+from llm_stack.utils.run import execute_command_in_directory
 
 BANNER = """
 ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
@@ -113,6 +112,7 @@ def start(config_file):
 @main.command()
 @click.option("--config_file", help="Config file", type=str)
 def etl(config_file):
+    """Running an ETL process"""
     run_etl_loader(config_file=config_file)
 
 
@@ -124,6 +124,7 @@ def etl(config_file):
     required=True,
 )
 def dli_airbyte(destination):
+    """Download and install airbyte"""
     click.echo("Downloading and installing Airbyte")
     execute_command_in_directory(
         target_directory=destination,
