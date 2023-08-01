@@ -30,3 +30,7 @@ class BaseVectordb(ConfigLoader):
 
     def get_langchain_memory_client(self):
         raise NotImplementedError()
+
+    @classmethod
+    def from_config(cls, config):
+        raise NotImplementedError

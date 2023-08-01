@@ -13,27 +13,46 @@ class BaseModel(HttpServer, ConfigLoader):
 
     def __init__(
         self,
-        config: str = None,
+        # config: str = None,
         model_path: Optional[str] = None,
         retriever: BaseRetriever = None,
+        config_fields: dict = None,
     ):
         self.load(model_path=model_path)
         self.retriever = retriever
-        if config:
-            ConfigLoader.__init__(self, self.module_name, config=config)
-            self.parse_config(self.config_key, getattr(self, "required_fields", None))
+        self.config_fields = config_fields
+        # if config:
+        # ConfigLoader(self, self.module_name, config=config)
+        # self.parse_config(self.config_key, getattr(self, "required_fields", None))
 
     def get_vector_query(self, query_type: str = "similarity"):
         pass
 
     def get_memory(self):
-        vector_store_memory = VectorStoreRetrieverMemory(
-            retriever=self.retriever.get_langchain_memory_retriever(), memory_key="chat_history"
+        return VectorStoreRetrieverMemory(
+            retriever=self.retriever.get_langchain_memory_retriever(),
+            memory_key="chat_history",
         )
-        return vector_store_memory
 
     def load(self, model_path: str):
         self.model = model_path
 
     def predict(self, query: Any):
+        raise NotImplementedError
+
+    @classmethod
+    def from_config(
+        cls,
+        config,
+        model_path: Optional[str] = None,
+        retriever: BaseRetriever = None,
+    ):
+        # TODO: Init a class without config file.
+        # cfg = ConfigLoader(cls.module_name, config=config)
+        # kls = cls(retriever, model_path)
+        # kls.config_fields = cfg.parse_config(
+        #     kls.config_key,
+        #     getattr(kls, "required_fields", None),
+        # )
+        # return kls
         raise NotImplementedError
