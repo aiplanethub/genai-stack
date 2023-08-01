@@ -2,7 +2,7 @@
     "model": {
         "name": "gpt3.5",
         "fields": {
-            "openai_api_key": "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"
+            "openai_api_key": "sk-xxxx"
         }
     },
     "retriever": {
