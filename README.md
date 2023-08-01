@@ -20,6 +20,72 @@ An end to end LLM framework
     llmstack --help
     ```
 
+## Running a Model
+
+### We will run a GPT3 model
+
+1. Create a **config.json** file with the following contents and Replace '`sk-xxxxx`' with your openai key.
+    ```json
+    {
+        "model": {
+            "name": "gpt3.5",
+            "fields": {
+                "openai_api_key": "sk-xxxxx"
+            }
+        }
+    }
+    ```
+2. Run the model
+
+    ```bash
+    llmstack start --config_file ./assets/config.json
+    ```
+
+3. Now you should an http server(uvicorn) running as below and make predict request to [http://127.0.0.1:8082/predict/](http://127.0.0.1:8082/predict/)
+
+    ```bash
+    ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
+    ██║     ██║     ████╗ ████║    ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
+    ██║     ██║     ██╔████╔██║    ███████╗   ██║   ███████║██║     █████╔╝
+    ██║     ██║     ██║╚██╔╝██║    ╚════██║   ██║   ██╔══██║██║     ██╔═██╗
+    ███████╗███████╗██║ ╚═╝ ██║    ███████║   ██║   ██║  ██║╚██████╗██║  ██╗
+    ╚══════╝╚══════╝╚═╝     ╚═╝    ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
+
+    Failed to get VectorDB
+    Failed to get Retriever
+    INFO:     Started server process [641734]
+    INFO:     Waiting for application startup.
+    INFO:     Application startup complete.
+    INFO:     Uvicorn running on http://127.0.0.1:8082 (Press CTRL+C to quit)
+    ```
+
+4. Make a request to the [/predict](http://127.0.0.1:8082/predict) endpoint to get response.
+
+    ````python
+    >>> import requests
+    >>> repsonse = requests.post("http://localhost:8082/predict/",data="Python program to add two numbers.")
+    >>> print(response.text)
+        Here is a Python program to add two numbers:
+
+        ```python
+        # take input from the user
+        num1 = float(input("Enter the first number: "))
+        num2 = float(input("Enter the second number: "))
+
+        # add the numbers
+        sum = num1 + num2
+
+        # print the result
+        print("The sum of", num1, "and", num2, "is", sum)
+        ```
+
+        In this program, we take two numbers as input from the user using the `input()` function. We convert the input to float using the `float()` function to handle decimal numbers.
+
+        Then, we add the two numbers using the `+` operator and store the result in the variable `sum`.
+
+        Finally, we print the result using the `print()` function.
+    ````
+
 ## Features
 
 -   TODO
