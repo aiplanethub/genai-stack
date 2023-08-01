@@ -2,7 +2,6 @@
 
 An end to end LLM framework
 
--   Free software: BSD license
 -   Documentation: https://llm_stack.readthedocs.io.
 
 ## Usage
