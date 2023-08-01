@@ -16,7 +16,7 @@ class OpenAIGpt35Model(BaseModel):
     def load(self, model_path: str):
         return super().load(model_path)
 
-    def get_chat_history(self, *args, **kwargs):
+    def parse_chat_history(self, *args, **kwargs):
         return "".join(" \n " + argument for argument in args)
 
     def predict(self, query: str):
@@ -50,14 +50,12 @@ class OpenAIGpt35Model(BaseModel):
             llm=llm,
             retriever=self.retriever.get_langchain_retriever(),
             memory=self.get_memory(),
-            get_chat_history=self.get_chat_history,
+            get_chat_history=self.parse_chat_history,
             return_source_documents=True,
         )
         results = conversation_chain({"question": query})
         return self.parse_chat_result(results)
 
-    def _jsonify(self, result: dict) -> str:
-        return json.dumps(result)
 
     def parse_chat_result(self, chat_result: dict):
         return self._jsonify(
@@ -79,14 +77,6 @@ class OpenAIGpt35Model(BaseModel):
             }
         )
 
-    def _parse_source_documents(self, source_documents: List[Document]):
-        return [
-            {
-                "content": document.page_content,
-                "metadata": document.metadata,
-            }
-            for document in source_documents
-        ]
 
     def parse_generations(self, generation_lst: list):
         """

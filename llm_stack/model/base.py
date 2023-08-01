@@ -1,4 +1,7 @@
-from typing import Any, Optional
+from typing import Any, Optional, List
+import json
+
+from langchain.schema import Document
 from langchain.memory import VectorStoreRetrieverMemory
 
 from llm_stack.model.server import HttpServer
@@ -29,10 +32,15 @@ class BaseModel(HttpServer, ConfigLoader):
         pass
 
     def get_memory(self):
-        return VectorStoreRetrieverMemory(
-            retriever=self.retriever.get_langchain_memory_retriever(),
-            memory_key="chat_history",
+        vector_store_memory = VectorStoreRetrieverMemory(
+            retriever=self.retriever.get_langchain_memory_retriever(), memory_key="chat_history", input_key="question"
         )
+
+    def chat_history(self):
+        chat_history = VectorStoreRetrieverMemory(
+            retriever=self.retriever.get_langchain_memory_retriever(), memory_key="chat_history", return_docs=True
+        ).load_memory_variables({"question": "question"})
+        return self._jsonify(self._parse_source_documents(chat_history["chat_history"], flatten=True))
 
     def load(self, model_path: str):
         self.model = model_path
@@ -56,3 +64,19 @@ class BaseModel(HttpServer, ConfigLoader):
         # )
         # return kls
         raise NotImplementedError
+    def _jsonify(self, result: dict) -> str:
+        return json.dumps(result)
+
+    def _parse_source_documents(self, source_documents: List[Document], flatten=False):
+        documents = [
+            {
+                "content": document.page_content,
+                "metadata": document.metadata,
+            }
+            for document in source_documents
+        ]
+
+        if flatten:
+            content_strings = [doc["content"] for doc in documents]
+            documents = {"result": "".join(content_strings)}
+        return documents

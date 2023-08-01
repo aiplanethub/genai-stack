@@ -108,3 +108,5 @@ sandbox/private/
 
 # ruff
 .ruff_cache/
+
+app.conf
