@@ -20,11 +20,7 @@ class BaseVectordb(ConfigLoader):
         self.parse_config(self.config_key, self.compulsory_fields)
 
     def create_client(self):
-        return weaviate.Client(url=self.vectordb_config_fields.get("url"))
+        raise NotImplementedError()
 
     def get_langchain_client(self):
-        return LangChainWeaviate(
-            self.create_weaviate_client(),
-            self.vectordb_config.get("class_name"),
-            self.vectordb_config_fields.get("text_key"),
-        )
+        raise NotImplementedError()

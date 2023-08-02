@@ -6,6 +6,7 @@ from config import ConfigLoader
 
 
 class BaseModel(HttpServer, ConfigLoader):
+    module_name = "Model"
     config_key = "model"
 
     def __init__(

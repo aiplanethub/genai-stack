@@ -1,11 +1,12 @@
 from llaim.constants import VECTOR_DB_CLIENT_MAP, VectorDB
 from llaim.config import ConfigLoader
+from vectordb.base import BaseVectordb
+from typing import Any
 
 
 class BaseRetriever(ConfigLoader):
     module_name = "BaseRetriever"
     config_key = "retriever"
-    compulsory_fields = ["name"]
 
     def __init__(self, config: str):
         super().__init__(self.module_name, config)
@@ -20,9 +21,9 @@ class BaseRetriever(ConfigLoader):
             )
         return vector_store_client_class
 
-    def _get_vector_store_client(self):
+    def _get_vector_store_client(self) -> BaseVectordb:
         vector_store_class = self._get_vector_store_client_class()
         return vector_store_class(self.config)
 
-    def retrieve(self, *args, **kwargs):
+    def retrieve(self, query: Any):
         raise NotImplementedError()

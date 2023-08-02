@@ -1,5 +1,4 @@
 from typing import Any
-import openai
 from llaim.model.base import BaseModel
 from langchain.llms import OpenAIChat
 
@@ -12,7 +11,7 @@ class OpenAIGpt35Model(BaseModel):
         return super().load(model_path)
 
     def predict(self, query: str):
-        real_data = self.retriever.retrieve(query)
+        retriever_results = self.retriever.retrieve(query)
         query = query.decode("utf-8")
 
         # set api key as environment variables.
