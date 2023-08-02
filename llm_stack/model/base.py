@@ -1,4 +1,4 @@
-from typing import Any, Optional, List
+from typing import Any, Optional
 
 from llm_stack.model.server import HttpServer
 from llm_stack.retriever import BaseRetriever
