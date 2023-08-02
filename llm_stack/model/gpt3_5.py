@@ -2,15 +2,11 @@ import json
 from typing import List
 import json
 
-from langchain.chains import RetrievalQA
-from langchain.chains import ConversationalRetrievalChain
-from langchain.chains import ConversationalRetrievalChain
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import Generation
-from langchain.schema import Document
-
-
 from fastapi.responses import JSONResponse
+from langchain.chains import ConversationalRetrievalChain, RetrievalQA
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import Document, Generation
+
 from llm_stack.model.base import BaseModel
 
 from .prompts import BASIC_QA
@@ -37,9 +33,8 @@ class OpenAIGpt35Model(BaseModel):
             openai_api_key=self.model_config_fields.get("openai_api_key"),
             temperature=0,
         )
-
         # If Chat do a Conversation QA instead of Retrieval QA
-        if self.model_config.get("chat", False):
+        if self.model_config.get("chat", False) or self.retriever:
             conversation_chain = ConversationalRetrievalChain.from_llm(
                 llm=llm,
                 retriever=self.retriever.get_langchain_retriever(),
@@ -54,7 +49,7 @@ class OpenAIGpt35Model(BaseModel):
                 llm=llm,
                 chain_type="stuff",
                 chain_type_kwargs={"prompt": BASIC_QA},
-                retriever=self.retriever.get_langchain_retriever(),
+                retriever=self.retriever,
                 return_source_documents=True,
             )
             result = qa(query)

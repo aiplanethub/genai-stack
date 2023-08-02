@@ -79,11 +79,14 @@ def start(config_file):
             VECTORDB_CONFIG_KEY,
         )
     )(config=config_file)
-    retriever = get_retriever_class(
-        config_loader.get_config_section_name(
-            RETRIEVER_CONFIG_KEY,
-        )
-    )(config=config_file, vectordb=vectordb_client)
+    try:
+        retriever = get_retriever_class(
+            config_loader.get_config_section_name(
+                RETRIEVER_CONFIG_KEY,
+            )
+        )(config=config_file, vectordb=vectordb_client)
+    except ValueError:
+        retriever = None
 
     model: str = config_loader.get_config_section_name(MODEL_CONFIG_KEY)
     model = model.strip()
