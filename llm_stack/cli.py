@@ -3,7 +3,13 @@ import sys
 import click
 
 from llm_stack import __version__
-from llm_stack.model.run import list_supported_models, get_model_class, get_retriever_class, get_vectordb_class
+from llm_stack.model.run import (
+    list_supported_models,
+    get_model_class,
+    get_retriever_class,
+    get_vectordb_class,
+    run_custom_model,
+)
 from llm_stack.config import ConfigLoader
 from llm_stack.constants import (
     MODEL_CONFIG_KEY,
@@ -77,11 +83,16 @@ def start(config_file):
 
     model: str = config_loader.get_config_section_name(MODEL_CONFIG_KEY)
     model = model.strip()
-    if model != CUSTOM_MODEL_KEY_NAME and model not in AVAILABLE_MODEL_MAPS.keys():
+    if model == CUSTOM_MODEL_KEY_NAME:
+        return run_custom_model(
+            config_loader=config_loader,
+            retriver=retriever,
+            config_file=config_file,
+        )
+    if model not in AVAILABLE_MODEL_MAPS.keys():
         raise LLMStackException(
             "Unkown Prebuilt Model Provided. Checkout how to run a custom model with LLM Stack."  # noqa: E501
         )
-
     model_class = get_model_class(model)(config=config_file, retriever=retriever)
     model_class.run_http_server()
 
