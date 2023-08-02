@@ -9,7 +9,7 @@ from .prompts import BASIC_QA
 
 class OpenAIGpt35Model(BaseModel):
     model_name = "Gpt_3.5"
-    compulsory_fields = ["openai_api_key"]
+    required_fields = ["openai_api_key"]
 
     def load(self, model_path: str):
         return super().load(model_path)

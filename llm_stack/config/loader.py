@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 import typing
 
-from llm_stack.constants.config import GLOBAL_COMPULSORY_FIELDS
+from llm_stack.constants.config import GLOBAL_REQUIRED_FIELDS
 
 
 class ConfigLoader:
@@ -45,35 +45,35 @@ class ConfigLoader:
         except json.JSONDecodeError as e:
             raise ValueError("Unable to read the config file.") from e
 
-    def parse_config(self, config_key: str, compulsory_fields=typing.List[str]):
+    def parse_config(self, config_key: str, required_fields=typing.List[str]):
         config = self.config.get(config_key, None)
         if not config:
             raise ValueError(f"{config_key} config not found.")
 
         # Check if all the compulsory fields are present at config section level
-        if not all(comp_key in config.keys() for comp_key in GLOBAL_COMPULSORY_FIELDS):
+        if not all(comp_key in config.keys() for comp_key in GLOBAL_REQUIRED_FIELDS):
             raise ValueError(
-                f"{config_key} config section does not have any or some of these compulsory fields {GLOBAL_COMPULSORY_FIELDS}."
+                f"{config_key} config section does not have any or some of these compulsory fields {GLOBAL_REQUIRED_FIELDS}."
             )
 
         config_fields = config.get("fields", None)
 
-        if not config_fields and compulsory_fields:
+        if not config_fields and required_fields:
             raise ValueError(
                 f"Config fields are missing for {config_key} config."
-                f"There are some compulsory fields that needs to be present for this config they are {compulsory_fields}"
+                f"There are some compulsory fields that needs to be present for this config they are {required_fields}"
             )
-        absent_compulsory_fields = []
+        absent_required_fields = []
 
         # Check if all compulsory fields are present either in the fields section or in the
-        if compulsory_fields:
-            if absent_compulsory_fields := [
+        if required_fields:
+            if absent_required_fields := [
                 compulsory_field
-                for compulsory_field in compulsory_fields
+                for compulsory_field in required_fields
                 if compulsory_field not in (list(config_fields.keys()) + list(config.keys()))
             ]:
                 raise ValueError(
-                    f"Compulsory fields {absent_compulsory_fields} are missing from your '{config_key}' config."
+                    f"Compulsory fields {absent_required_fields} are missing from your '{config_key}' config."
                 )
 
         setattr(self, f"{config_key}_config", config)
