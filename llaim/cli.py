@@ -20,12 +20,12 @@ def main():
     click.echo(BANNER)
     if LLAIM_DEBUG:
         click.echo(
-            "Running in DEBUG True. Disable it by environment variable LLAIM_DEBUG to 0"
+            """Running in DEBUG True. Disable it by setting the environment variable LLAIM_DEBUG to 0"""  # noqa: E501
         )
 
 
 @main.command()
-@click.option("-destination", help="Download and Install Airbyte")
+@click.option("-destination", help="Download and Install Airbyte", type=str)
 def dli_airbyte(destination):
     click.echo("Downloading and installing Airbyte")
 
