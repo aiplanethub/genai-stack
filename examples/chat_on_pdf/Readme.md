@@ -5,10 +5,10 @@
 1. Run etl
 
     ```bash
-    llmstack etl --config_file chat_on_pdf/etl.json
+    llmstack etl --config_file etl.json
     ```
 
 2. Run model
     ```bash
-    llmstack start --config_file chat_on_pdf/model.json
+    llmstack start --config_file model.json
     ```
