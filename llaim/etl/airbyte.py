@@ -88,7 +88,7 @@ class AirbyteEtl(EtlBase):
     def _create_source(self):
         source: dict = self.config_dict.get("source")
         response = requests.post(
-            url=urljoin(self.host, "/api/v1/sources/create"),
+            url=urljoin(f"{self.host}", "/api/v1/sources/create"),
             headers=self._headers,
             json={
                 "name": source.get("name"),
@@ -97,16 +97,56 @@ class AirbyteEtl(EtlBase):
                 "connectionConfiguration": source.get("configs"),
             },
         )
-        if response.ok:
-            return response.json().get("sourceDefinitions")
-        else:
+
+        if not response.ok:
             raise LLAIMEtlException(f"Exception: {response.text}")
 
+        json_resp = response.json()
+        self.source_id = json_resp.get("sourceId")
+        return json_resp
+
     def _create_destination(self):
-        ...
+        # TODO: Currently only weaviate can be used as a destination.
+        destination: dict = self.config_dict.get("destination")
+        response = requests.post(
+            url=urljoin(f"{self.host}", "/api/v1/destinations/create"),
+            headers=self._headers,
+            json={
+                "name": destination.get("name"),
+                "destinationDefinitionId": destination.get("destinationDefinitionId"),
+                "workspaceId": self.workspace_id,
+                "connectionConfiguration": destination.get("configs"),
+            },
+        )
+
+        if not response.ok:
+            raise LLAIMEtlException(f"Exception: {response.text}")
+
+        json_resp = response.json()
+        print(json_resp, "<<<<<")
+        self.destination_id = json_resp.get("destinationId")
+        return json_resp
 
     def _create_connection(self):
-        ...
+        payload = {
+            "prefix": "llaim",
+            "sourceId": self.source_id,
+            "destinationId": self.destination_id,
+            "status": "active",
+        }
+        response = requests.post(
+            url=urljoin(self.host, "/api/v1/connections/create"),
+            headers=self._headers,
+            json=payload,
+        )
+
+        if not response.ok:
+            raise LLAIMEtlException(f"Exception: {response.text}")
+
+        json_response = response.json()
+        self.connection_id = json_response["connectionId"]
+        print(f"Connection was created - {self.connection_id}")
+        return json_response
 
     def _create_workspace_id(self):
         """If a workspace_id is not provided in the config.json, it will be created."""
@@ -116,12 +156,10 @@ class AirbyteEtl(EtlBase):
             headers=self._headers,
             json=payload,
         )
-        if response.ok:
-            self.workspace_id = response.json().get("workspaceId")
-            logging.info(f"Created workspace - {self.workspace_id}")
-            return response.json()
-        else:
+        if not response.ok:
             raise LLAIMEtlException(f"Exception: Unable to create a workspace.\n{response.text}")  # noqa: E501
+        print(f'Created Workspace - {response.json().get("workspaceId")}')
+        return response.json().get("workspaceId")
 
     def source_definitions_list(self):
         response = requests.post(
@@ -146,4 +184,6 @@ class AirbyteEtl(EtlBase):
             raise LLAIMEtlException(f"Exception: {response.text}")
 
     def run(self):
-        ...
+        self._create_source()
+        self._create_destination()
+        self._create_connection()
