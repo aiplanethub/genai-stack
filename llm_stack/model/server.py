@@ -10,12 +10,20 @@ class HttpServer:
         print(data)
         raise NotImplementedError
 
+    def chat_history(self):
+        raise NotImplementedError
+
     async def predict_api(self, request: Request):
         # Accessing request data
         request_body = await request.body()
 
         response_data = self.predict(request_body)
-        ResponseClass = self.response_class or Response
+        ResponseClass = self.response_class or JSONResponse
+        return ResponseClass(content=response_data)
+
+    async def chat_history_api(self, request: Request):
+        response_data = self.chat_history()
+        ResponseClass = self.response_class or JSONResponse
         return ResponseClass(content=response_data)
 
     def run_http_server(
@@ -32,6 +40,7 @@ class HttpServer:
         app: FastAPI = self.app
 
         app.post("/predict", response_class=response_class)(self.predict_api)
+        app.get("/chat_history", response_class=response_class)(self.chat_history_api)
 
         uvicorn.run(app, host=host, port=port)
 
