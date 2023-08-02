@@ -1,5 +1,6 @@
 import json
 from typing import List
+import json
 
 from langchain.chains import RetrievalQA
 from langchain.chains import ConversationalRetrievalChain
@@ -47,7 +48,6 @@ class OpenAIGpt35Model(BaseModel):
                 return_source_documents=True,
             )
             results = conversation_chain({"question": query})
-            print(results.keys())
             return self.parse_chat_result(results)
         else:
             qa = RetrievalQA.from_chain_type(
@@ -62,18 +62,22 @@ class OpenAIGpt35Model(BaseModel):
 
     def _jsonify(self, result: dict) -> str:
         return json.dumps(result)
+
     def parse_chat_result(self, chat_result: dict):
-        return {
-            "result": chat_result["answer"],
-            "source_documents": self._parse_source_documents(chat_result["source_documents"]),
-        }
+        return self._jsonify(
+            {
+                "result": chat_result["answer"],
+                "source_documents": self._parse_source_documents(chat_result["source_documents"]),
+            }
+        )
 
     def parse_qa_result(self, qa_result: dict):
-        parsed_result = {
-            "result": qa_result["result"],
-            "source_documents": self._parse_source_documents(qa_result["source_documents"]),
-        }
-        return parsed_result
+        return self._jsonify(
+            {
+                "result": qa_result["result"],
+                "source_documents": self._parse_source_documents(qa_result["source_documents"]),
+            }
+        )
 
     def _parse_source_documents(self, source_documents: List[Document]):
         return [{"content": document.page_content, "metadata": document.metadata} for document in source_documents]
