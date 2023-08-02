@@ -1,25 +1,28 @@
 """Console script for llm_stack."""
+import subprocess
 import sys
+
 import click
 
 from llm_stack import __version__
-from llm_stack.model.run import (
-    list_supported_models,
-    get_model_class,
-    get_retriever_class,
-    get_vectordb_class,
-    run_custom_model,
-)
 from llm_stack.config import ConfigLoader
 from llm_stack.constants import (
+    CUSTOM_MODEL_KEY_NAME,
     MODEL_CONFIG_KEY,
     RETRIEVER_CONFIG_KEY,
     VECTORDB_CONFIG_KEY,
-    CUSTOM_MODEL_KEY_NAME,
 )
-from llm_stack.exception import LLMStackException
+from llm_stack.utils.run import execute_command_in_directory
 from llm_stack.constants.model import AVAILABLE_MODEL_MAPS
 from llm_stack.etl.run import run_etl_loader
+from llm_stack.exception import LLMStackException
+from llm_stack.model.run import (
+    get_model_class,
+    get_retriever_class,
+    get_vectordb_class,
+    list_supported_models,
+    run_custom_model,
+)
 
 BANNER = """
 ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
@@ -104,10 +107,18 @@ def etl(config_file):
     run_etl_loader(config_file=config_file)
 
 
-# @main.command()
-# @click.option("-destination", help="Download and Install Airbyte", type=str)
-# def dli_airbyte(destination):
-#     click.echo("Downloading and installing Airbyte")
+@main.command()
+@click.option("-destination", help="Download and Install Airbyte", type=str)
+def dli_airbyte(destination):
+    click.echo("Downloading and installing Airbyte")
+    execute_command_in_directory(
+        target_directory=destination,
+        commands=[
+            "git clone https://github.com/airbytehq/airbyte.git",
+            "cd airbyte",
+            "./run-ab-platform.sh",
+        ],
+    )
 
 
 if __name__ == "__main__":
