@@ -26,9 +26,21 @@ class Weaviate(BaseVectordb):
         langchain_weaviate_client = self.get_langchain_client()
         return langchain_weaviate_client.similarity_search_by_text(query=query)
 
+    def _check_text_key(self, client) -> None:
+        text_key = self.vectordb_config_fields.get("text_key")
+        class_schema = client.schema.get(self.vectordb_config.get("class_name"))
+        available_text_keys = [prop["name"] for prop in class_schema["properties"]]
+
+        if text_key not in available_text_keys:
+            raise ValueError(
+                f"The text key {text_key} you specified in the vector db is not available. Please choose from one of these text_key {available_text_keys}"
+            )
+
     def get_langchain_client(self) -> LangChainWeaviate:
+        client = self.create_client()
+        self._check_text_key(client)
         return LangChainWeaviate(
-            self.create_client(),
+            client,
             self.vectordb_config.get("class_name"),
             self.vectordb_config_fields.get("text_key"),
         )
