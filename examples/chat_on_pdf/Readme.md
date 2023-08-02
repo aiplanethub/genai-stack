@@ -1,6 +1,6 @@
 ## Chat with a pdf
 
-**Note:** Edit the pdf path in the etl.json file
+**Note:** Edit the pdf path in the etl.json file and openai key in model.json
 
 1. Run etl
 
