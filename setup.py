@@ -59,7 +59,7 @@ setup(
     packages=find_packages(include=["llm_stack", "llm_stack.*"]),
     test_suite="tests",
     tests_require=test_requirements,
-    url="https://github.com/aiplanethub/llm-stack",
+    url="https://github.com/aiplanethub/llmstack",
     version="0.1.0",
     zip_safe=False,
 )

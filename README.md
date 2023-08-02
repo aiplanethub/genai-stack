@@ -9,7 +9,7 @@ An end to end LLM framework
 
 1. Install with pip
     ```bash
-    pip install git+https://github.com/aiplanethub/llm-stack.git
+    pip install git+https://github.com/aiplanethub/llmstack.git
     ```
 2. Verify installation
     ```bash
