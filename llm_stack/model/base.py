@@ -16,10 +16,10 @@ class BaseModel(HttpServer, ConfigLoader):
         model_path: Optional[str] = None,
         retriever: BaseRetriever = None,
     ):
-        ConfigLoader.__init__(self, self.module_name, config=config)
         self.load(model_path=model_path)
         self.retriever = retriever
         if config:
+            ConfigLoader.__init__(self, self.module_name, config=config)
             self.parse_config(self.config_key, getattr(self, "required_fields", None))
 
     def get_vector_query(self, query_type: str = "similarity"):
