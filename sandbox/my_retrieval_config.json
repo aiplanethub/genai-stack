@@ -1,0 +1,10 @@
+{
+    "vectordb": {
+        "name": "weaviate",
+        "class_name": "LegalDocs",
+        "fields": {
+            "url": "http://localhost:9999/",
+            "text_key": "clause_text" 
+        }
+    }
+}
