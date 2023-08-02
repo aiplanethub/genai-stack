@@ -1,6 +1,5 @@
 from typing import Any
 
-from llm_stack.constants.vectordb import VectorDB
 from llm_stack.config import ConfigLoader
 from llm_stack.constants.retriever import RETRIEVER_CONFIG_KEY
 from llm_stack.vectordb.base import BaseVectordb
