@@ -11,7 +11,10 @@ class Weaviate(BaseVectordb):
     required_fields = ["url", "class_name", "text_key"]
 
     def create_client(self):
-        return weaviate.Client(url=self.vectordb_config_fields.get("url"))
+        client_params = {"url": self.vectordb_config_fields.get("url")}
+        if api_key := self.vectordb_config_fields.get("api_keys"):
+            client_params["auth_config"] = weaviate.AuthApiKey(api_key=api_key)
+        return weaviate.Client(**client_params)
 
     def search(self, query: str) -> List[Document]:
         langchain_weaviate_client = self.get_langchain_client()
