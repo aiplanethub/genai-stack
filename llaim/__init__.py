@@ -6,4 +6,4 @@ __version__ = "0.1.0"
 
 import os
 
-LLAIM_DEBUG = os.environ.get("LLAIM_DEBUG")
+LLAIM_DEBUG = bool(os.environ.get("LLAIM_DEBUG"))
