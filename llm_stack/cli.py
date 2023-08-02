@@ -91,7 +91,7 @@ def start(config_file):
             )
         )(config=config_file, vectordb=vectordb_client)
     except ValueError:
-        print("retreiver not")
+        print("Failed to get Retriever")
         retriever = None
 
     model: str = config_loader.get_config_section_name(MODEL_CONFIG_KEY)
