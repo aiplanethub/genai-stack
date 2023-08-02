@@ -5,8 +5,14 @@ import click
 from llm_stack import __version__
 from llm_stack.model.run import list_supported_models, get_model_class, get_retriever_class, get_vectordb_class
 from llm_stack.config import ConfigLoader
-from llm_stack.constants import MODEL_CONFIG_KEY, RETRIEVER_CONFIG_KEY, VECTORDB_CONFIG_KEY
-
+from llm_stack.constants import (
+    MODEL_CONFIG_KEY,
+    RETRIEVER_CONFIG_KEY,
+    VECTORDB_CONFIG_KEY,
+    CUSTOM_MODEL_KEY_NAME,
+)
+from llm_stack.exception import LLMStackException
+from llm_stack.constants.model import AVAILABLE_MODEL_MAPS
 
 BANNER = """
 ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
@@ -69,9 +75,14 @@ def start(config_file):
         )
     )(config=config_file, vectordb=vectordb_client)
 
-    model_class = get_model_class(
-        config_loader.get_config_section_name(MODEL_CONFIG_KEY),
-    )(config=config_file, retriever=retriever)
+    model: str = config_loader.get_config_section_name(MODEL_CONFIG_KEY)
+    model = model.strip()
+    if model != CUSTOM_MODEL_KEY_NAME and model not in AVAILABLE_MODEL_MAPS.keys():
+        raise LLMStackException(
+            "Unkown Prebuilt Model Provided. Checkout how to run a custom model with LLM Stack."  # noqa: E501
+        )
+
+    model_class = get_model_class(model)(config=config_file, retriever=retriever)
     model_class.run_http_server()
 
 
