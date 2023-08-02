@@ -12,7 +12,7 @@ class Weaviate(BaseVectordb):
 
     def create_client(self):
         client_params = {"url": self.vectordb_config_fields.get("url")}
-        if api_key := self.vectordb_config_fields.get("api_keys"):
+        if api_key := self.vectordb_config_fields.get("api_key"):
             client_params["auth_config"] = weaviate.AuthApiKey(api_key=api_key)
         return weaviate.Client(**client_params)
 
