@@ -61,10 +61,15 @@ An end to end LLM framework
 
 4. Make a request to the [/predict](http://127.0.0.1:8082/predict) endpoint to get response from the LLM.
 
-    ````python
-    >>> import requests
-    >>> repsonse = requests.post("http://localhost:8082/predict/",data="Python program to add two numbers.")
-    >>> print(response.text)
+    ```python
+    import requests
+    repsonse = requests.post("http://localhost:8082/predict/",data="Python program to add two numbers.")
+    print(response.text)
+    ```
+
+    ```bash
+        # Response from the LLM
+
         Here is a Python program to add two numbers:
 
         ```python
@@ -84,7 +89,7 @@ An end to end LLM framework
         Then, we add the two numbers using the `+` operator and store the result in the variable `sum`.
 
         Finally, we print the result using the `print()` function.
-    ````
+    ```
 
 ## Features
 
