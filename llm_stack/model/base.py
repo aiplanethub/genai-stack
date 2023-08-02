@@ -16,7 +16,7 @@ class BaseModel(HttpServer, ConfigLoader):
 
     def __init__(
         self,
-        # config: str = None,
+        config: str = None,
         model_path: Optional[str] = None,
         retriever: BaseRetriever = None,
         config_fields: dict = None,
@@ -24,9 +24,9 @@ class BaseModel(HttpServer, ConfigLoader):
         self.load(model_path=model_path)
         self.retriever = retriever
         self.config_fields = config_fields
-        # if config:
-        # ConfigLoader(self, self.module_name, config=config)
-        # self.parse_config(self.config_key, getattr(self, "required_fields", None))
+        if config:
+            ConfigLoader(self, self.module_name, config=config)
+            self.parse_config(self.config_key, getattr(self, "required_fields", None))
 
     def get_vector_query(self, query_type: str = "similarity"):
         pass
