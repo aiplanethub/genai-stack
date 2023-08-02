@@ -12,7 +12,7 @@ class LangChainRetriever(BaseRetriever):
         return self.parse_search_results(vectordb.search(query))
 
     def parse_search_results(self, search_results: List[Document]):
-        result = """"""
+        result = ""
 
         for idx, search_result in enumerate(search_results):
             result += f"{idx + 1}. {search_result.page_content} \n"
