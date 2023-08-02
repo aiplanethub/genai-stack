@@ -6,12 +6,15 @@ An end to end LLM framework
 
 ## Usage
 
+### Prerequisites
+1. Python3.8 or above
+2. git
+
+### Installation
 1. Install with pip
     ```bash
     pip install git+https://github.com/aiplanethub/llmstack.git
     ```
-    **Note:** Requires Python3.8 or above.
-
 3. Verify installation
     ```bash
     llmstack version
