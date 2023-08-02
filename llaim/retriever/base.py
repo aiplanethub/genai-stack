@@ -13,7 +13,7 @@ class BaseRetriever(ConfigLoader):
     def __init__(self, config: str, vectordb: BaseVectordb = None):
         super().__init__(self.module_name, config)
         self.parse_config(self.config_key, self.compulsory_fields)
-        self.vectordb = self.vectordb
+        self.vectordb = vectordb
 
     def retrieve(self, query: Any):
         raise NotImplementedError()

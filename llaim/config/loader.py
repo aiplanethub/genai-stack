@@ -19,7 +19,7 @@ class ConfigLoader:
                     required to load a json config file.
         """
         self.name = name
-        self.config = config
+        self._config = config
         self.load_config()
 
     @staticmethod
@@ -32,16 +32,16 @@ class ConfigLoader:
         """Loads the configs and can set as class attrs"""
         logging.info("Loading Configs")
 
-        f = Path(self.config)
+        f = Path(self._config)
 
         if not f.exists():
             raise ValueError(
-                f"Unable to find the file. Input given - {self.config}",
+                f"Unable to find the file. Input given - {self._config}",
             )
 
         try:
             f = self._read_json_file(f.absolute())
-            self.config_dict = f
+            self.config = f
         except json.JSONDecodeError as e:
             raise ValueError("Unable to read the config file.") from e
 
@@ -67,12 +67,17 @@ class ConfigLoader:
 
         # Check if all compulsory fields are present either in the fields section or in the
         if compulsory_fields:
+            print("Available keys", list(config_fields.keys()) + list(config.keys()))
             absent_compulsory_fields = [
                 compulsory_field
                 for compulsory_field in compulsory_fields
-                if compulsory_field not in (config_fields.keys() + config.keys())
+                if compulsory_field not in (list(config_fields.keys()) + list(config.keys()))
             ]
-            raise ValueError(f"Compulsory fields {absent_compulsory_fields} are missing from your config.")
+            print(absent_compulsory_fields)
+            if len(absent_compulsory_fields) > 0:
+                raise ValueError(
+                    f"Compulsory fields {absent_compulsory_fields} are missing from your '{config_key}' config."
+                ) 
 
         setattr(self, f"{config_key}_config", config)
         setattr(self, f"{config_key}_config_fields", config_fields)

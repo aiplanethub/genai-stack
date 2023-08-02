@@ -11,7 +11,7 @@ class BaseModel(HttpServer, ConfigLoader):
     config_key = MODEL_CONFIG_KEY
 
     def __init__(self, config: str = None, model_path: Optional[str] = None, retriever: BaseRetriever = None):
-        super(ConfigLoader, self).__init__(name="Model", config=config)
+        ConfigLoader.__init__(self, self.module_name, config=config)
         self.load(model_path=model_path)
         self.retriever = retriever
         self.parse_config(self.config_key, self.compulsory_fields)
