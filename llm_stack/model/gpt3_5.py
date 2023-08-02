@@ -57,7 +57,6 @@ class OpenAIGpt35Model(BaseModel):
         results = conversation_chain({"question": query})
         return self.parse_chat_result(results)
 
-
     def parse_chat_result(self, chat_result: dict):
         return self._jsonify(
             {
@@ -77,7 +76,6 @@ class OpenAIGpt35Model(BaseModel):
                 ),
             }
         )
-
 
     def parse_generations(self, generation_lst: list):
         """
