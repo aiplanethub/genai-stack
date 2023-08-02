@@ -8,7 +8,7 @@ from .base import BaseVectordb
 
 
 class Weaviate(BaseVectordb):
-    required_fields = ["url", "class_name", "text_key"]
+    compulsory_fields = ["url", "class_name", "text_key"]
 
     def create_client(self):
         return weaviate.Client(url=self.vectordb_config_fields.get("url"))
