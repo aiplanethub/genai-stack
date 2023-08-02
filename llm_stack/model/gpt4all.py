@@ -3,29 +3,34 @@ from typing import List
 
 from langchain import LLMChain, PromptTemplate
 from langchain.chains import ConversationalRetrievalChain
-from langchain.chat_models import ChatOpenAI
+from langchain.llms import GPT4All
 from langchain.schema import Document, Generation
 
 from llm_stack.model.base import BaseModel
 
 
-class OpenAIGpt35Model(BaseModel):
-    model_name = "Gpt_3.5"
-    required_fields = ["openai_api_key"]
+class Gpt4AllModel(BaseModel):
+    model_name = "Gpt4All"
+    required_fields = []
 
-    def load(self, model_path: str):
-        return super().load(model_path)
+    def load(self, model_path: str = None):
+        model = "ggml-gpt4all-j-v1.3-groovy"
+        if getattr(self, "model_config_fields", None):
+            model = self.model_config_fields.get(
+                "model",
+                "ggml-gpt4all-j-v1.3-groovy",
+            )
+        self.model = GPT4All(
+            model=model,
+            max_tokens=2048,
+        )
 
     def get_chat_history(self, *args, **kwargs):
         return "".join(" \n " + argument for argument in args)
 
     def predict(self, query: str):
         query = query.decode("utf-8")
-        llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo-16k",
-            openai_api_key=self.model_config_fields.get("openai_api_key"),
-            temperature=0,
-        )
+        llm = self.model
 
         if self.model_config.get("chat", False):
             return self._vector_retreiver_qa(llm, query)
