@@ -1,4 +1,4 @@
-Welcome to LLAIM's documentation!
+Welcome to llm_stack's documentation!
 ======================================
 
 .. toctree::

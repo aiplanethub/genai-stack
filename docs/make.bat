@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=llaim
+set SPHINXPROJ=llm_stack
 
 if "%1" == "" goto help
 

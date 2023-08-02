@@ -1,4 +1,4 @@
-MODELS_MODULE = "llaim.model"
+MODELS_MODULE = "llm_stack.model"
 MODEL_CONFIG_KEY = "model"
 
 class Models:

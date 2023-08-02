@@ -1,4 +1,4 @@
-* LLAIM version:
+* llm_stack version:
 * Python version:
 * Operating System:
 

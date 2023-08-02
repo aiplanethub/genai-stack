@@ -1,1 +1,1 @@
-"""Unit test package for llaim."""
+"""Unit test package for llm_stack."""

@@ -1,7 +1,7 @@
-from llaim.utils.importing import import_class
-from llaim.constants.model import MODELS_MODULE, AVAILABLE_MODEL_MAPS
-from llaim.constants.retriever import RETRIEVER_MODULE, AVAILABLE_RETRIEVER_MAPS
-from llaim.constants.vectordb import VECTORDB_MODULE, AVAILABLE_VECTORDB_MAPS
+from llm_stack.utils.importing import import_class
+from llm_stack.constants.model import MODELS_MODULE, AVAILABLE_MODEL_MAPS
+from llm_stack.constants.retriever import RETRIEVER_MODULE, AVAILABLE_RETRIEVER_MAPS
+from llm_stack.constants.vectordb import VECTORDB_MODULE, AVAILABLE_VECTORDB_MAPS
 
 
 def list_supported_models():

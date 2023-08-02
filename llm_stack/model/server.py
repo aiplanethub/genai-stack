@@ -26,8 +26,8 @@ class HttpServer:
     ):
         self.response_class = response_class
         self.app = FastAPI(
-            title="LLAIM Model Server",
-            description=f"LLAIM {self.name} HTTP Model Server",
+            title="llm_stack Model Server",
+            description=f"llm_stack {self.name} HTTP Model Server",
         )
         app: FastAPI = self.app
 
@@ -48,8 +48,8 @@ class HttpServer:
 #         self.version = "0.0.1"
 
 #         self.app = FastAPI(
-#             title="LLAIM Model Server",
-#             description="LLAIM HTTP Model Server using FastAPI",
+#             title="llm_stack Model Server",
+#             description="llm_stack HTTP Model Server using FastAPI",
 #         )
 #         self.serving_task: Optional[asyncio.Task] = None
 

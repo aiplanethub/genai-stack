@@ -8,13 +8,13 @@ Installation
 Stable release
 --------------
 
-To install LLAIM, run this command in your terminal:
+To install llm_stack, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install llaim
+    $ pip install llm_stack
 
-This is the preferred method to install LLAIM, as it will always install the most recent stable release.
+This is the preferred method to install llm_stack, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -26,19 +26,19 @@ you through the process.
 From sources
 ------------
 
-The sources for LLAIM can be downloaded from the `Github repo`_.
+The sources for llm_stack can be downloaded from the `Github repo`_.
 
 You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/dphi-official/llaim
+    $ git clone git://github.com/dphi-official/llm_stack
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl -OJL https://github.com/dphi-official/llaim/tarball/master
+    $ curl -OJL https://github.com/dphi-official/llm_stack/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/dphi-official/llaim
-.. _tarball: https://github.com/dphi-official/llaim/tarball/master
+.. _Github repo: https://github.com/dphi-official/llm_stack
+.. _tarball: https://github.com/dphi-official/llm_stack/tarball/master

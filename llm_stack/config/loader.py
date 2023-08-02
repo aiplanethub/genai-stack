@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 import typing
 
-from llaim.constants.config import GLOBAL_COMPULSORY_FIELDS
+from llm_stack.constants.config import GLOBAL_COMPULSORY_FIELDS
 
 
 class ConfigLoader:
@@ -51,7 +51,7 @@ class ConfigLoader:
             raise ValueError(f"{config_key} config not found.")
 
         # Check if all the compulsory fields are present at config section level
-        if not all([comp_key in config.keys() for comp_key in GLOBAL_COMPULSORY_FIELDS]):
+        if not all(comp_key in config.keys() for comp_key in GLOBAL_COMPULSORY_FIELDS):
             raise ValueError(
                 f"{config_key} config section does not have any or some of these compulsory fields {GLOBAL_COMPULSORY_FIELDS}."
             )
@@ -67,15 +67,14 @@ class ConfigLoader:
 
         # Check if all compulsory fields are present either in the fields section or in the
         if compulsory_fields:
-            absent_compulsory_fields = [
+            if absent_compulsory_fields := [
                 compulsory_field
                 for compulsory_field in compulsory_fields
                 if compulsory_field not in (list(config_fields.keys()) + list(config.keys()))
-            ]
-            if len(absent_compulsory_fields) > 0:
+            ]:
                 raise ValueError(
                     f"Compulsory fields {absent_compulsory_fields} are missing from your '{config_key}' config."
-                ) 
+                )
 
         setattr(self, f"{config_key}_config", config)
         setattr(self, f"{config_key}_config_fields", config_fields)
@@ -85,11 +84,10 @@ class ConfigLoader:
         if not config_section:
             raise ValueError(f"Config Section {config_section} does not exist. Please check your config file")
 
-        name = config_section.get("name", None)
-        if not name:
+        if name := config_section.get("name", None):
+            return name
+        else:
             raise ValueError(f"Name not found for config section {config_section}")
-
-        return name
 
     def run(self):
         """This method should contain the actual logic for creating the EtL pipeline"""

@@ -1,8 +1,8 @@
 from typing import List
 
 from langchain.docstore.document import Document
-from llaim.config import ConfigLoader
-from llaim.constants.vectordb import VECTORDB_CONFIG_KEY
+from llm_stack.config import ConfigLoader
+from llm_stack.constants.vectordb import VECTORDB_CONFIG_KEY
 
 
 class BaseVectordb(ConfigLoader):
