@@ -16,7 +16,7 @@ class TestEtl(unittest.TestCase):
         assert "CSVLoader" in langchain_loaders
 
     def test_langloader_etl(self):
-        langhub_etl = LangLoaderEtl(config="assets/config.json")
+        langhub_etl = LangLoaderEtl(config="assets/etl.json")
         langhub_etl.run()
 
     def test_langloader_etl_custom_embedding(self):
@@ -24,5 +24,5 @@ class TestEtl(unittest.TestCase):
         langhub_etl.run()
 
     def test_llamahub_loader_etl(self):
-        langhub_etl = LLamaHubEtl(config="assets/config.json")
+        langhub_etl = LLamaHubEtl(config="assets/etl.json")
         langhub_etl.run()
