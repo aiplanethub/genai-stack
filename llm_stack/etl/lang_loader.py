@@ -55,7 +55,11 @@ class LangLoaderEtl(EtlBase):
     def load_into_destination(self, source_docs: List[LangDocument]):
         destination = self.config_dict.get("destination")
 
-        class_name = destination.get("class_name") or "llm_stack"
+        class_name = destination.get("class_name")
+        if not class_name:
+            class_name = "llm_stack"
+            print(f"Defaulted class name to {class_name}")
+
         class_name = class_name.capitalize()
 
         Weaviate.from_documents(
