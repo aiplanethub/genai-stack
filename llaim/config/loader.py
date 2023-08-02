@@ -67,13 +67,11 @@ class ConfigLoader:
 
         # Check if all compulsory fields are present either in the fields section or in the
         if compulsory_fields:
-            print("Available keys", list(config_fields.keys()) + list(config.keys()))
             absent_compulsory_fields = [
                 compulsory_field
                 for compulsory_field in compulsory_fields
                 if compulsory_field not in (list(config_fields.keys()) + list(config.keys()))
             ]
-            print(absent_compulsory_fields)
             if len(absent_compulsory_fields) > 0:
                 raise ValueError(
                     f"Compulsory fields {absent_compulsory_fields} are missing from your '{config_key}' config."
