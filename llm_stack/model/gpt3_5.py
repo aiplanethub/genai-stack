@@ -14,6 +14,11 @@ class OpenAIGpt35Model(BaseModel):
     required_fields = ["openai_api_key"]
 
     def load(self, model_path: str):
+        self.model = ChatOpenAI(
+            model_name=self.model_config_fields.get("model_name", "gpt-3.5-turbo-16k"),
+            openai_api_key=self.model_config_fields.get("openai_api_key"),
+            temperature=0,
+        )
         return super().load(model_path)
 
     def parse_chat_history(self, *args, **kwargs):
@@ -21,11 +26,7 @@ class OpenAIGpt35Model(BaseModel):
 
     def predict(self, query: str):
         query = query.decode("utf-8")
-        llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo-16k",
-            openai_api_key=self.model_config_fields.get("openai_api_key"),
-            temperature=0,
-        )
+        llm = self.model
 
         if self.model_config.get("chat", False):
             return self._vector_retreiver_qa(llm, query)
