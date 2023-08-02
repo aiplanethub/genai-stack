@@ -21,26 +21,15 @@ An end to end LLM framework
 
 ## Running a Model
 
-### We will run a GPT3 model
-
-1. Create a **config.json** file with the following contents and Replace '`sk-xxxxx`' with your openai key.
-    ```json
-    {
-        "model": {
-            "name": "gpt3.5",
-            "fields": {
-                "openai_api_key": "sk-xxxxx"
-            }
-        }
-    }
-    ```
-2. Run an LLM Model
+1.  Run an LLM Model
 
     ```bash
-    llmstack start --config_file config.json
+    llmstack start
     ```
 
-3. Now you should see an http server(uvicorn) running as below
+    By default, the `start` command uses **gpt4all** model. You can customize the config json to use other models like GPt3.
+
+2.  Now you should see an http server(uvicorn) running as below
 
     ```bash
     ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
@@ -58,7 +47,7 @@ An end to end LLM framework
     INFO:     Uvicorn running on http://127.0.0.1:8082 (Press CTRL+C to quit)
     ```
 
-4. Make a request to the [/predict](http://127.0.0.1:8082/predict) endpoint to get response from the LLM.
+3.  Make a request to the [/predict](http://127.0.0.1:8082/predict) endpoint to get response from the LLM.
 
     ```python
     import requests
