@@ -1,2 +1,2 @@
-class llm_stackException(Exception):
+class LLMStackException(Exception):
     pass
