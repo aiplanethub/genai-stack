@@ -34,13 +34,6 @@ Here is custom config.json for the Data loaders.
         "fields": {
             "url": "http://localhost:8002/"
         },
-        "embedding": {
-            "name": "HuggingFaceEmbeddings",
-            "fields": {
-                "model_name": "sentence-transformers/all-mpnet-base-v2",
-                "model_kwargs": { "device": "cpu" }
-            }
-        }
     }
 }
 ```
