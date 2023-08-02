@@ -17,7 +17,7 @@ class BaseVectordb(ConfigLoader):
             config: Pass the parsed config file into this class
         """
         super().__init__(name=self.module_name, config=config)
-        self.parse_config(self.config_key, self.required_fields)
+        self.parse_config(self.config_key, self.compulsory_fields)
 
     def search(self, query: str) -> List[Document]:
         raise NotImplementedError()
@@ -26,4 +26,7 @@ class BaseVectordb(ConfigLoader):
         raise NotImplementedError()
 
     def get_langchain_client(self):
+        raise NotImplementedError()
+
+    def get_langchain_memory_client(self):
         raise NotImplementedError()
