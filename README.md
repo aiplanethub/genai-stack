@@ -10,11 +10,13 @@ An end to end LLM framework
     ```bash
     pip install git+https://github.com/aiplanethub/llmstack.git
     ```
-2. Verify installation
+    **Note:** Requires Python3.8 or above.
+
+3. Verify installation
     ```bash
     llmstack version
     ```
-3. Check List of commands
+4. Check List of commands
     ```bash
     llmstack --help
     ```
