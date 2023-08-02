@@ -1,8 +1,8 @@
 from typing import Any
-from llaim.model.base import BaseModel
 from langchain.llms import OpenAIChat
 
-from model.prompts import BASIC_QA
+from llaim.model.base import BaseModel
+from .prompts import BASIC_QA
 
 
 class OpenAIGpt35Model(BaseModel):
