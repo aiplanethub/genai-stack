@@ -19,7 +19,6 @@ class OpenAIGpt35Model(BaseModel):
             openai_api_key=self.model_config_fields.get("openai_api_key"),
             temperature=0,
         )
-        return super().load(model_path)
 
     def parse_chat_history(self, *args, **kwargs):
         return "".join(" \n " + argument for argument in args)
