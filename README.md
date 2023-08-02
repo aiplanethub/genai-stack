@@ -35,13 +35,13 @@ An end to end LLM framework
         }
     }
     ```
-2. Run the model
+2. Run an LLM Model
 
     ```bash
     llmstack start --config_file ./assets/config.json
     ```
 
-3. Now you should an http server(uvicorn) running as below and make predict request to [http://127.0.0.1:8082/predict/](http://127.0.0.1:8082/predict/)
+3. Now you should see an http server(uvicorn) running as below and make predict request to [http://127.0.0.1:8082/predict/](http://127.0.0.1:8082/predict/)
 
     ```bash
     ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
@@ -59,7 +59,7 @@ An end to end LLM framework
     INFO:     Uvicorn running on http://127.0.0.1:8082 (Press CTRL+C to quit)
     ```
 
-4. Make a request to the [/predict](http://127.0.0.1:8082/predict) endpoint to get response.
+4. Make a request to the [/predict](http://127.0.0.1:8082/predict) endpoint to get response from the LLM.
 
     ````python
     >>> import requests
