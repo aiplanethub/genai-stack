@@ -1,0 +1,9 @@
+{
+    "model": {       
+        "name": "gpt3.5",
+        "fields": {
+            "openai_api_key": "sk-****"
+        }
+
+    }
+}

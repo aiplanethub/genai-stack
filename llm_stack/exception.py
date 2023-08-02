@@ -1,0 +1,2 @@
+class LLMStackException(Exception):
+    pass

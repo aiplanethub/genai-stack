@@ -1,0 +1,46 @@
+{
+    "module": "vectoriser",
+    "openai": {
+        "type": "object",
+        "module_name": "openai.j2",
+        "description": "Schema for validating",
+        "properties": {
+            "openai_api_key": { "type": "string" }
+        },
+        "required": ["openai_api_key"]
+    },
+    "huggingface": {
+        "type": "object",
+        "module_name": "huggingface.j2",
+        "properties": {
+            "model_name": {
+                "type": "string",
+                "oneOf": [
+                    "distilbert-base-uncased",
+                    "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+                    "sentence-transformers/multi-qa-MiniLM-L6-cos-v1",
+                    "sentence-transformers/multi-qa-mpnet-base-cos-v1",
+                    "sentence-transformers/all-mpnet-base-v2",
+                    "sentence-transformers/all-MiniLM-L12-v2",
+                    "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+                    "sentence-transformers/all-MiniLM-L6-v2",
+                    "sentence-transformers/multi-qa-distilbert-cos-v1",
+                    "sentence-transformers/gtr-t5-base",
+                    "sentence-transformers/gtr-t5-large",
+                    "google/flan-t5-base",
+                    "google/flan-t5-large",
+                    "facebook/dpr-ctx_encoder-single-nq-base",
+                    "facebook/dpr-question_encoder-single-nq-base",
+                    "vblagoje/dpr-ctx_encoder-single-lfqa-wiki",
+                    "vblagoje/dpr-question_encoder-single-lfqa-wiki",
+                    "biu-nlp/abstract-sim-sentence",
+                    "biu-nlp/abstract-sim-query"
+                ]
+            }
+        },
+        "required": ["model_name"]
+    },
+    "other": {
+        "port": 8080
+    }
+}
