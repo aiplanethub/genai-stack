@@ -52,7 +52,7 @@ setup(
         ],
     },
     install_requires=requirements,
-    license="BSD license",
+    license="Apache 2.0",
     long_description=readme + "\n\n" + history,
     include_package_data=True,
     keywords="llm_stack",
