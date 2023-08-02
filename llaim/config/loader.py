@@ -77,6 +77,17 @@ class ConfigLoader:
         setattr(self, f"{config_key}_config", config)
         setattr(self, f"{config_key}_config_fields", config_fields)
 
+    def get_config_section_name(self, config_section: str):
+        config_section = self.config.get(config_section, None)
+        if not config_section:
+            raise ValueError(f"Config Section {config_section} does not exist. Please check your config file")
+
+        name = config_section.get("name", None)
+        if not name:
+            raise ValueError(f"Name not found for config section {config_section}")
+
+        return name
+
     def run(self):
         """This method should contain the actual logic for creating the EtL pipeline"""
         raise NotImplementedError

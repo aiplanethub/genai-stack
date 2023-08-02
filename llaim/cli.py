@@ -3,7 +3,10 @@ import sys
 import click
 
 from llaim import __version__
-from llaim.model.run import list_supported_models, get_model_class
+from llaim.model.run import list_supported_models, get_model_class, get_retriever_class, get_vectordb_class
+from llaim.config import ConfigLoader
+from llaim.constants import MODEL_CONFIG_KEY, RETRIEVER_CONFIG_KEY, VECTORDB_CONFIG_KEY
+
 
 BANNER = """
 ██╗     ██╗      █████╗ ██╗███╗   ███╗
@@ -42,13 +45,25 @@ def list_models():
 
 
 @main.command()
-@click.option("-f", help="Config file", type=str)
-def start(model, f=None):
+@click.option("--config_file", help="Config file", type=str)
+def start(config_file):
     """Start a HTTP server for a model
 
     `llaim start --model gpt3.5`
     """
-    model_class = get_model_class(model_name=model)()
+
+    config_loader = ConfigLoader(config=config_file)
+
+    vectordb_client = get_vectordb_class(config_loader.get_config_section_name(VECTORDB_CONFIG_KEY))(
+        config=config_file
+    )
+    retriever = get_retriever_class(config_loader.get_config_section_name(RETRIEVER_CONFIG_KEY))(
+        config=config_file, vectordb=vectordb_client
+    )
+
+    model_class = get_model_class(config_loader.get_config_section_name(MODEL_CONFIG_KEY))(
+        config=config_file, retriever=retriever
+    )
     model_class.run_http_server()
 
 
