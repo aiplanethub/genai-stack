@@ -80,4 +80,7 @@ An end to end LLM framework
     ````
 
 ## Documentation
-Documentation and better usage of the tool can be found in the [./docs/components](https://github.com/aiplanethub/llmstack/tree/main/docs/components) folder of this repo
+Documentation and better usage of the tool can be found in the [./docs/components](https://github.com/aiplanethub/llmstack/tree/main/docs/components) folder of this repo.
+
+### Examples
+Some examples on how it can be used can be found in the [./examples](https://github.com/aiplanethub/llmstack/tree/main/examples) folder of this repo.
