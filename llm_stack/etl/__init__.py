@@ -1,4 +1,4 @@
-from .exception import llm_stackEtlException
+from .exception import LLMStackEtlException
 from .base import EtlBase
 from .airbyte import AirbyteEtl
 from .lang_loader import LangLoaderEtl, list_langchain_loaders
