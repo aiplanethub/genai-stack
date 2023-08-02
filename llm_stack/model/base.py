@@ -1,5 +1,6 @@
 from typing import Any, Optional, List
 import json
+from fastapi.responses import Response
 
 from langchain.schema import Document
 from langchain.memory import VectorStoreRetrieverMemory
@@ -25,7 +26,7 @@ class BaseModel(HttpServer, ConfigLoader):
         self.retriever = retriever
         self.config_fields = config_fields
         if config:
-            ConfigLoader(self, self.module_name, config=config)
+            ConfigLoader.__init__(self, self.module_name, config=config)
             self.parse_config(self.config_key, getattr(self, "required_fields", None))
 
     def get_vector_query(self, query_type: str = "similarity"):
@@ -48,6 +49,15 @@ class BaseModel(HttpServer, ConfigLoader):
     def predict(self, query: Any):
         raise NotImplementedError
 
+    def run_http_server(
+        self,
+        host: str = "127.0.0.1",
+        port: int = 8082,
+        response_class: Response = ...,
+    ):
+        print(f"\n>>>>> Starting a server for Model - {self.model_name.capitalize()}\n")
+        return super().run_http_server(host, port, response_class)
+
     @classmethod
     def from_config(
         cls,
@@ -64,6 +74,7 @@ class BaseModel(HttpServer, ConfigLoader):
         # )
         # return kls
         raise NotImplementedError
+
     def _jsonify(self, result: dict) -> str:
         return json.dumps(result)
 
