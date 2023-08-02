@@ -1,10 +1,12 @@
 import weaviate
 from config import ConfigLoader
 
+from constants.vectordb import VECTORDB_CONFIG_KEY
+
 
 class BaseVectordb(ConfigLoader):
     module_name = "VectorDB"
-    config_key = "vectordb"
+    config_key = VECTORDB_CONFIG_KEY
 
     def __init__(self, config: dict) -> None:
         """

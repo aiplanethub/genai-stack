@@ -1,4 +1,5 @@
 RETRIEVER_MODULE = "llaim.retriever"
+RETRIEVER_CONFIG_KEY = "retriever"
 
 
 class Retriever:

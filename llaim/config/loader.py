@@ -3,6 +3,8 @@ import logging
 from pathlib import Path
 import typing
 
+from constants.config import GLOBAL_COMPULSORY_FIELDS
+
 
 class ConfigLoader:
     name: str
@@ -48,6 +50,12 @@ class ConfigLoader:
         if not config:
             raise ValueError(f"{config_key} config not found.")
 
+        # Check if all the compulsory fields are present at config section level
+        if not all([comp_key in config.keys() for comp_key in GLOBAL_COMPULSORY_FIELDS]):
+            raise ValueError(
+                f"{config_key} config section does not have any or some of these compulsory fields {GLOBAL_COMPULSORY_FIELDS}."
+            )
+
         config_fields = config.get("fields", None)
 
         if not config_fields and compulsory_fields:
@@ -57,7 +65,7 @@ class ConfigLoader:
             )
         absent_compulsory_fields = []
 
-        # Check if all compulsory fields are present either in the fields section or in the 
+        # Check if all compulsory fields are present either in the fields section or in the
         if compulsory_fields:
             absent_compulsory_fields = [
                 compulsory_field
