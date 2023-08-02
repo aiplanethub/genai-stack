@@ -8,8 +8,8 @@ An end to end LLM framework
 ## Usage
 
 1. Install with pip
-    ```python
-    pip install git+https://github.com/dphi-official/llm-stack.git
+    ```bash
+    pip install git+https://github.com/aiplanethub/llm-stack.git
     ```
 2. Verify installation
     ```python
