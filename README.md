@@ -41,7 +41,7 @@ An end to end LLM framework
     llmstack start --config_file config.json
     ```
 
-3. Now you should see an http server(uvicorn) running as below and make predict request to [http://127.0.0.1:8082/predict/](http://127.0.0.1:8082/predict/)
+3. Now you should see an http server(uvicorn) running as below
 
     ```bash
     ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
