@@ -20,21 +20,21 @@ class BaseModel(HttpServer, ConfigLoader):
         config: str = None,
         model_path: Optional[str] = None,
         retriever: BaseRetriever = None,
-        config_fields: dict = None,
     ):
-        self.load(model_path=model_path)
-        self.retriever = retriever
-        self.config_fields = config_fields
         if config:
             ConfigLoader.__init__(self, self.module_name, config=config)
             self.parse_config(self.config_key, getattr(self, "required_fields", None))
+        self.load(model_path=model_path)
+        self.retriever = retriever
 
     def get_vector_query(self, query_type: str = "similarity"):
         pass
 
     def get_memory(self):
-        vector_store_memory = VectorStoreRetrieverMemory(
-            retriever=self.retriever.get_langchain_memory_retriever(), memory_key="chat_history", input_key="question"
+        return VectorStoreRetrieverMemory(
+            retriever=self.retriever.get_langchain_memory_retriever(),
+            memory_key="chat_history",
+            input_key="question",
         )
 
     def chat_history(self):
