@@ -2,7 +2,6 @@ from typing import Any, Dict, List
 
 from langchain import document_loaders
 from langchain.docstore.document import Document as LangDocument
-from langchain.document_loaders import CSVLoader
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Weaviate
 
@@ -38,7 +37,13 @@ class LangHubEtl(EtlBase):
         return self.documents
 
     def _get_embedding(self):
-        if not self.embedding:
+        destination = self.config_dict.get("destination", {})
+        if embedding := destination.get("embedding"):
+            embedding_cls = import_class(
+                f"langchain.embeddings.{embedding.get('name')}",
+            )
+            self.embedding = embedding_cls(**embedding.get("fields"))
+        elif not self.embedding:
             self.embedding = OpenAIEmbeddings()
         return self.embedding
 
