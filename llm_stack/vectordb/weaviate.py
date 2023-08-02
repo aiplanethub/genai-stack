@@ -36,11 +36,7 @@ class Weaviate(BaseVectordb):
     def get_langchain_memory_client(self) -> LangChainWeaviate:
         client = self.create_client()
         self._setup_vectordb_memory(client=client)
-        return LangChainWeaviate(
-            client,
-            index_name=MEMORY_INDEX_NAME,
-            text_key=MEMORY_TEXT_KEY,
-        )
+        return LangChainWeaviate(client, index_name=MEMORY_INDEX_NAME, text_key=MEMORY_TEXT_KEY)
 
     def _setup_vectordb_memory(self, client: weaviate.Client):
         """
