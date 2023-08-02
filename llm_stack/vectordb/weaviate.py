@@ -33,7 +33,7 @@ class Weaviate(BaseVectordb):
 
         if text_key not in available_text_keys:
             raise ValueError(
-                f"The text key {text_key} you specified in the vector db is not available. Please choose from one of these text_key {available_text_keys}"
+                f"The text_key '{text_key}' you specified in the vector db config is not available. Please choose from one of these text_key {available_text_keys}"
             )
 
     def get_langchain_client(self) -> LangChainWeaviate:
