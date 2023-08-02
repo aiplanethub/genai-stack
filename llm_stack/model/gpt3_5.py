@@ -33,17 +33,11 @@ class OpenAIGpt35Model(BaseModel):
             openai_api_key=self.model_config_fields.get("openai_api_key"),
             temperature=0,
         )
-        # If Chat do a Conversation QA instead of Retrieval QA
-        if self.model_config.get("chat", False) or self.retriever:
-            conversation_chain = ConversationalRetrievalChain.from_llm(
-                llm=llm,
-                retriever=self.retriever.get_langchain_retriever(),
-                memory=self.get_memory(),
-                get_chat_history=self.get_chat_history,
-                return_source_documents=True,
-            )
-            results = conversation_chain({"question": query})
-            return self.parse_chat_result(results)
+
+        if self.model_config.get("chat", False):
+            return self._vector_retreiver_qa(llm, query)
+        elif self.retriever:
+            return self._vector_retreiver_qa(llm, query)
         else:
             qa = RetrievalQA.from_chain_type(
                 llm=llm,
@@ -54,6 +48,17 @@ class OpenAIGpt35Model(BaseModel):
             )
             result = qa(query)
             return self.parse_qa_result(result)
+
+    def _vector_retreiver_qa(self, llm, query):
+        conversation_chain = ConversationalRetrievalChain.from_llm(
+            llm=llm,
+            retriever=self.retriever.get_langchain_retriever(),
+            memory=self.get_memory(),
+            get_chat_history=self.get_chat_history,
+            return_source_documents=True,
+        )
+        results = conversation_chain({"question": query})
+        return self.parse_chat_result(results)
 
     def _jsonify(self, result: dict) -> str:
         return json.dumps(result)
