@@ -86,46 +86,33 @@ class AirbyteEtl(EtlBase):
         return self._auth_header
 
     def _create_source(self):
-        source: dict = self.config_dict.get("source")
-        response = requests.post(
-            url=urljoin(f"{self.host}", "/api/v1/sources/create"),
-            headers=self._headers,
-            json={
-                "name": source.get("name"),
-                "sourceDefinitionId": source.get("sourceDefinitionId"),
-                "workspaceId": self.workspace_id,
-                "connectionConfiguration": source.get("configs"),
-            },
-        )
-
-        if not response.ok:
-            raise LLAIMEtlException(f"Exception: {response.text}")
-
-        json_resp = response.json()
+        json_resp = self._config_dict_extraction("source", "/api/v1/sources/create", "sourceDefinitionId")
         self.source_id = json_resp.get("sourceId")
         return json_resp
 
     def _create_destination(self):
-        # TODO: Currently only weaviate can be used as a destination.
-        destination: dict = self.config_dict.get("destination")
-        response = requests.post(
-            url=urljoin(f"{self.host}", "/api/v1/destinations/create"),
-            headers=self._headers,
-            json={
-                "name": destination.get("name"),
-                "destinationDefinitionId": destination.get("destinationDefinitionId"),
-                "workspaceId": self.workspace_id,
-                "connectionConfiguration": destination.get("configs"),
-            },
+        json_resp = self._config_dict_extraction(
+            "destination", "/api/v1/destinations/create", "destinationDefinitionId"
         )
-
-        if not response.ok:
-            raise LLAIMEtlException(f"Exception: {response.text}")
-
-        json_resp = response.json()
         print(json_resp, "<<<<<")
         self.destination_id = json_resp.get("destinationId")
         return json_resp
+
+    def _config_dict_extraction(self, arg0, arg1, arg2):
+        source: dict = self.config_dict.get(arg0)
+        response = requests.post(
+            url=urljoin(f"{self.host}", arg1),
+            headers=self._headers,
+            json={
+                "name": source.get("name"),
+                arg2: source.get(arg2),
+                "workspaceId": self.workspace_id,
+                "connectionConfiguration": source.get("configs"),
+            },
+        )
+        if not response.ok:
+            raise LLAIMEtlException(f"Exception: {response.text}")
+        return response.json()
 
     def _create_connection(self):
         payload = {
