@@ -1,7 +1,7 @@
 from typing import Any, Optional
 
 
-class BaseModelServer:
+class BaseModel:
     vector_store: Optional[Any] = None
 
     def get_vector_query(self, query_type: str = "similarity"):
