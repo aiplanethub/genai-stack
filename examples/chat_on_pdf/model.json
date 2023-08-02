@@ -1,0 +1,19 @@
+{
+    "model": {
+        "name": "gpt3.5",
+        "fields": {
+            "openai_api_key": "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"
+        }
+    },
+    "retriever": {
+        "name": "langchain"
+    },
+    "vectordb": {
+        "name": "weaviate",
+        "class_name": "chatpdf",
+        "fields": {
+            "url": "http://localhost:8002/",
+            "text_key": "text"
+        }
+    }
+}
