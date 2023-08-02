@@ -1,10 +1,8 @@
-from vectordb import Weaviate
+VECTORDB_MODULE = "llaim.vectordb"
 
 
 class VectorDB:
     WEAVIATE = "weaviate"
 
 
-VECTOR_DB_CLIENT_MAP = {VectorDB.WEAVIATE: Weaviate}
-
-RETRIEVAL_CONFIG_VECTORDB = "vectordb"
+AVAILABLE_VECTORDB_MAPS = {VectorDB.WEAVIATE: "weaviate/Weaviate"}

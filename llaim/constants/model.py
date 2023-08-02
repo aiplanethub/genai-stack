@@ -1,8 +1,13 @@
-from model.gpt3_5 import OpenAIGpt35Model
+MODELS_MODULE = "llaim.model"
 
 
 class Models:
     OPENAI = "openai"
+    GPT_35 = "gpt3.5"
 
 
-MODEL_NAME_MAP = {Models.OPENAI: OpenAIGpt35Model}
+AVAILABLE_MODEL_MAPS = {
+    # Model Name: "file_name/class_name"
+    Models.GPT_35: "gpt3_5/OpenAIGpt35Model",
+    Models.OPENAI: "gpt3_5/OpenAIGpt35Model",
+}
