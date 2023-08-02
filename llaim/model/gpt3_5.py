@@ -23,7 +23,7 @@ class OpenAIGpt35Model(BaseModel):
         openai_chat = OpenAIChat(openai_api_key=self.model_config_fields.get("openai_api_key"), model="gpt-3.5-turbo")
         response = openai_chat.generate(prompts=[prompt])
         response = {
-            "response": "".join(self.parse_generations(response.generations)),
+            "response": self.parse_generations(response.generations),
             "metadata": response.llm_output,
         }
         return json.dumps(response)
