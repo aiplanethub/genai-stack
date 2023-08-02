@@ -48,3 +48,7 @@ class EtlBase(ConfigLoader):
     def run(self):
         """This method should contain the actual logic for creating the EtL pipeline"""
         raise NotImplementedError
+
+    @classmethod
+    def from_config(cls, config: str):
+        raise NotImplementedError
