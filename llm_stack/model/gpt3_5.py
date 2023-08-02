@@ -1,15 +1,13 @@
 import json
 from typing import List
-import json
 
 from fastapi.responses import JSONResponse
-from langchain.chains import ConversationalRetrievalChain, RetrievalQA
+from langchain import LLMChain, PromptTemplate
+from langchain.chains import ConversationalRetrievalChain
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import Document, Generation
 
 from llm_stack.model.base import BaseModel
-
-from .prompts import BASIC_QA
 
 
 class OpenAIGpt35Model(BaseModel):
@@ -21,10 +19,7 @@ class OpenAIGpt35Model(BaseModel):
         return super().load(model_path)
 
     def get_chat_history(self, *args, **kwargs):
-        history = ""
-        for argument in args:
-            history += " \n " + argument
-        return history
+        return "".join(" \n " + argument for argument in args)
 
     def predict(self, query: str):
         query = query.decode("utf-8")
@@ -39,15 +34,18 @@ class OpenAIGpt35Model(BaseModel):
         elif self.retriever:
             return self._vector_retreiver_qa(llm, query)
         else:
-            qa = RetrievalQA.from_chain_type(
-                llm=llm,
-                chain_type="stuff",
-                chain_type_kwargs={"prompt": BASIC_QA},
-                retriever=self.retriever,
-                return_source_documents=True,
-            )
-            result = qa(query)
-            return self.parse_qa_result(result)
+            return self._without_retreiver_qa(llm, query)
+
+    def _without_retreiver_qa(self, llm, query):
+        template = """Question: {question}
+
+            Answer: """
+
+        prompt = PromptTemplate(template=template, input_variables=["question"])
+        llm_chain = LLMChain(prompt=prompt, llm=llm)
+        question = query
+
+        return llm_chain.run(question)
 
     def _vector_retreiver_qa(self, llm, query):
         conversation_chain = ConversationalRetrievalChain.from_llm(
@@ -67,7 +65,9 @@ class OpenAIGpt35Model(BaseModel):
         return self._jsonify(
             {
                 "result": chat_result["answer"],
-                "source_documents": self._parse_source_documents(chat_result["source_documents"]),
+                "source_documents": self._parse_source_documents(
+                    chat_result["source_documents"],
+                ),
             }
         )
 
@@ -75,12 +75,20 @@ class OpenAIGpt35Model(BaseModel):
         return self._jsonify(
             {
                 "result": qa_result["result"],
-                "source_documents": self._parse_source_documents(qa_result["source_documents"]),
+                "source_documents": self._parse_source_documents(
+                    qa_result["source_documents"],
+                ),
             }
         )
 
     def _parse_source_documents(self, source_documents: List[Document]):
-        return [{"content": document.page_content, "metadata": document.metadata} for document in source_documents]
+        return [
+            {
+                "content": document.page_content,
+                "metadata": document.metadata,
+            }
+            for document in source_documents
+        ]
 
     def parse_generations(self, generation_lst: list):
         """
