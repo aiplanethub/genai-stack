@@ -74,11 +74,16 @@ def start(config_file):
 
     config_loader = ConfigLoader(config=config_file)
 
-    vectordb_client = get_vectordb_class(
-        config_loader.get_config_section_name(
-            VECTORDB_CONFIG_KEY,
-        )
-    )(config=config_file)
+    try:
+        vectordb_client = get_vectordb_class(
+            config_loader.get_config_section_name(
+                VECTORDB_CONFIG_KEY,
+            )
+        )(config=config_file)
+    except ValueError:
+        print("Failed to get VectorDB")
+        vectordb_client = None
+
     try:
         retriever = get_retriever_class(
             config_loader.get_config_section_name(
@@ -86,6 +91,7 @@ def start(config_file):
             )
         )(config=config_file, vectordb=vectordb_client)
     except ValueError:
+        print("retreiver not")
         retriever = None
 
     model: str = config_loader.get_config_section_name(MODEL_CONFIG_KEY)
