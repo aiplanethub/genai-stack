@@ -12,6 +12,12 @@ with open("HISTORY.rst") as history_file:
 
 requirements = [
     "Click>=7.0",
+    "requests>=2.31.0",
+    "langchain==0.0.232",
+    "llama-hub==0.0.10",
+    "llama-index==0.7.8",
+    "uvicorn==0.23.0",
+    "fastapi==0.100.0",
 ]
 
 test_requirements = []
