@@ -18,6 +18,7 @@ requirements = [
     "llama-index==0.7.8",
     "uvicorn==0.23.0",
     "fastapi==0.100.0",
+    "weaviate-client>=3.22.1",
 ]
 
 test_requirements = []
