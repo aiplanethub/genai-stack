@@ -70,6 +70,7 @@ class LangLoaderEtl(EtlBase):
                 {},
             ).get("url"),
             index_name=class_name,
+            text_key=destination.get("fields", {}).get("text_key"),
         )
         print("Stored to vectordb")
 

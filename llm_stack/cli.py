@@ -82,8 +82,8 @@ def start(config_file):
                 VECTORDB_CONFIG_KEY,
             )
         )(config=config_file)
-    except ValueError:
-        print("Failed to get VectorDB")
+    except ValueError as e:
+        print(f"Failed to Initialize VectorDB. \n{e}")
         vectordb_client = None
 
     try:
