@@ -9,7 +9,7 @@ class EtlBase:
     name: str
     config: str
 
-    def __init__(self, name: str, config: str = None) -> None:
+    def __init__(self, name: str = "EtlBase", config: str = None) -> None:
         """Initializes the instances based on the name and config
 
         Args:
