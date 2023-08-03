@@ -151,7 +151,7 @@ We have a read-to-use docker compose file, which we will use for setup of Weavia
     PORT=8080
     OPENAI_APIKEY=sk-xxx
     ```
-2.  create a _docker-compose.yaml_ file with the below contents
+2.  create a _docker-compose.yaml_ file with the below contents and run the command `docker compose up -d`
 
     ```yaml
     version: "3.4"
