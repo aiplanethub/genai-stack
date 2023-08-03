@@ -16,6 +16,8 @@ pip install git+https://github.com/aiplanethub/llmstack.git
 
 We recommend creating a virtual environment before installing the LLM Stack, but it's not mandatory.
 
+### Getting Started
+
 #### How to run an LLM(without vector store)?
 
 After completing the installation, you are ready to use the LLM Stack. Below are the steps to run an LLM in a Colab/Jupyter Notebook/Python Shell:
