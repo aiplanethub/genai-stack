@@ -25,7 +25,7 @@ class Gpt4AllModel(BaseModel):
                 "orca-mini-3b.ggmlv3.q4_0",
             )
         model_path = Path(".")
-        GPT4All(model_name=model, model_path=model_path)
+        GPT4All(model_name=model, model_path=str(model_path))
         model_path = os.path.join(model_path, model)
         print(f"Model {model} at {model_path}")
         self.model = LangChainGpt4aAll(
