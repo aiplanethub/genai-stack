@@ -82,8 +82,9 @@ After completing the installation, you are ready to use the LLM Stack. Below are
 
 ## How to run LLM Stack with a Vector Store?
 
-In this release, we support for [Weaviate](https://weaviate.io/developers/weaviate) vector store only.
-Here, we will create a **ChatWithPdf** python application.
+In this release, we support [Weaviate](https://weaviate.io/developers/weaviate) vector store only. More vector store support will be added in upcoming releases.
+
+Here, we will create a **ChatWithPdf** python application as a example.
 
 ### Pre-Requisites
 
@@ -94,7 +95,7 @@ Apart from the llmstack package and git, following tools has to be installed:
 
 ### Installation
 
-We have a read-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
+We have a ready-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
 
 1.  Create a _.env_ file with the below contents
     ```bash
