@@ -19,6 +19,7 @@ requirements = [
     "uvicorn==0.23.0",
     "fastapi==0.100.0",
     "weaviate-client",
+    "transformers",
 ]
 
 test_requirements = []
