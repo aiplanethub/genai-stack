@@ -16,11 +16,11 @@ pip install git+https://github.com/aiplanethub/llmstack.git
 
 We recommend creating a virtual environment before installing the LLM Stack, but it's not mandatory.
 
-## How to run an LLM(without vector store)?
+#### How to run an LLM(without vector store)?
 
 After completing the installation, you are ready to use the LLM Stack. Below are the steps to run an LLM in a Colab/Jupyter Notebook/Python Shell:
 
-### Running in a Colab/Jupyter Notebook/Python Shell
+**Running in a Colab/Jupyter Notebook/Python Shell**
 
 1.  Create a json file with the following contents:
 
@@ -65,7 +65,7 @@ After completing the installation, you are ready to use the LLM Stack. Below are
     ```
     ````
 
-### Running the model in terminal with a http server
+Running the model in terminal with a http server
 
 1. Run the LLM model
 
@@ -80,20 +80,20 @@ After completing the installation, you are ready to use the LLM Stack. Below are
     print(response.text)
     ```
 
-## How to run LLM Stack with a Vector Store?
+**How to run LLM Stack with a Vector Store?**
 
 In this release, we support [Weaviate](https://weaviate.io/developers/weaviate) vector store only. More vector store support will be added in upcoming releases.
 
 Here, we will create a **ChatWithPdf** python application as a example.
 
-### Pre-Requisites
+Pre-Requisites
 
 Apart from the llmstack package and git, following tools has to be installed:
 
 1. [docker](https://www.docker.com/)
 2. [docker compose](https://docs.docker.com/compose/install/)
 
-### Installation
+**Installation**
 
 We have a ready-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
 
