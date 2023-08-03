@@ -24,10 +24,14 @@ Note: Creating a virtual environment is not necessary but we recommend it.
 
 Once the installation is completed, you are good to go.
 
-### Running in a Colab/Jupyter Notebook/Python Shell
+### 🚀 Running in a Colab/Jupyter Notebook/Python Shell
 
 1. Create a json file with the following contents:
-
+    
+    One can easily create a json file for the existing LLMs. Currently available models:
+    - [GPT4all](https://github.com/aiplanethub/llmstack/blob/main/assets/gpt4all.json)
+    - [GPT3](https://github.com/aiplanethub/llmstack/blob/main/assets/gpt3.json)
+    
     ```json
     {
         "model": {
@@ -41,11 +45,11 @@ Once the installation is completed, you are good to go.
 
     **Here,**
 
-    2.1. **model** is the key llmstack uses to extact the details of model to run.
+    - **model** is the key llmstack uses to extact the details of model to run.
 
-    2.2. **name** should have a value that you will want to run. To check list of available prebuilt model, run the command `llmstack list-models` from the terminal in the environment where it is installed.
+    - **name** should have a value that you will want to run. To check list of available prebuilt model, run the command `llmstack list-models` from the terminal in the environment where it is installed.
 
-    2.3. **fields** Holds a nested json required for passing to the model as arguements(if any).
+    - **fields** Holds a nested json required for passing to the model as arguements(if any).
     Since we want to use _ggml-gpt4all-j-v1.3-groovy_ gpt4all model, we added the value for the model field as _ggml-gpt4all-j-v1.3-groovy_. If we want to use _orca-mini-3b.ggmlv3.q4_0_, then we can set it as the value.
 
     **NOTE:** The nested json for fields depends on the model.
@@ -67,7 +71,7 @@ Once the installation is completed, you are good to go.
     ```
     ````
 
-### Running the model in terminal with a http server
+### 🚀 Running the model in terminal with a http server
 
 1. Run the LLM model
 
@@ -76,7 +80,7 @@ Once the installation is completed, you are good to go.
     ```
 
 2. Now you should see a response like below.
-    ```python
+    ```bash
     ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
     ██║     ██║     ████╗ ████║    ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
     ██║     ██║     ██╔████╔██║    ███████╗   ██║   ███████║██║     █████╔╝
@@ -91,6 +95,8 @@ Once the installation is completed, you are good to go.
     INFO:     Application startup complete.
     INFO:     Uvicorn running on http://127.0.0.1:8082 (Press CTRL+C to quit)
     ```
+    
+    Let the server run. Now open a new terminal or a code editor and enter the below python script. 
 
 3. Test the model using the below Python Script where we will make http request to the model predict endpoint.
     ```python
@@ -99,32 +105,32 @@ Once the installation is completed, you are good to go.
     print(response.text)
     ```
 
-#### Using UI
+### 🚀 Using UI
 
 This package is for the chat interface of the LLM stack.
-
-**Installation steps**
-
-1. Clone the repository
+>>
+> **Installation steps**
+>
+> 1. Clone the repository
 
     ```
     git clone https://github.com/aiplanethub/llmstack.git
     ```
 
-2. Create a new virtualenv and activate it(Optional).
+> 2. Create a new virtualenv and activate it(Optional).
 
     ```
     python -m venv ./llmstack-ui
     source ./llmstack-ui/bin/activate
     ```
 
-3. Install the requirements
+> 3. Install the requirements
 
     ```
     pip install -r ui/requirements.txt
     ```
 
-4. Run the streamlit app
+> 4. Run the streamlit app
 
     ```
     streamlit run ui/app/main.py
@@ -135,23 +141,24 @@ This package is for the chat interface of the LLM stack.
 In this release, we support for [Weaviate](https://weaviate.io/developers/weaviate) vector store only.
 Here, we will create a **ChatWithPdf** python application.
 
-### Pre-Requisites
+### 🚀 Pre-Requisites
 
 Apart from the llmstack package and git, following tools has to be installed:
 
 1. [docker](https://www.docker.com/)
 2. [docker compose](https://docs.docker.com/compose/install/)
 
-### Installation
+### 🚀 Installation
 
 We have a read-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
 
-1.  Create a _.env_ file with the below contents
+1.  Create a `_.env_` file with the below contents
+
     ```bash
     PORT=8080
     OPENAI_APIKEY=sk-xxx
     ```
-2.  create a _docker-compose.yaml_ file with the below contents and run the command `docker compose up -d`
+2.  Create a `_docker-compose.yaml_` file with the below contents and run the command `docker compose up -d`
 
     ```yaml
     version: "3.4"
@@ -177,7 +184,7 @@ We have a read-to-use docker compose file, which we will use for setup of Weavia
     weaviate_data:
     ```
 
-3.  Create a _etl.json_ and _model.json_ files with the following contents.
+3.  Create a `_etl.json_` and `_model.json_` files with the following contents.
 
     **etl.json:**
 
@@ -268,3 +275,21 @@ We have a read-to-use docker compose file, which we will use for setup of Weavia
     ```bash
     llmstack start --config_file ./model.json
     ```
+    
+## Components: 
+
+LLM Stack has two main components level abstraction: 
+
+### ETL
+
+![image](https://github.com/aiplanethub/llmstack/assets/132284203/6049767a-d904-45a6-bb0e-e32a33249261)
+
+### Retrival/Model
+
+![image](https://github.com/jaintarunAI/llmstack/assets/132284203/7406dfa0-5290-4c39-be8c-599d3627cab1)
+
+Check the components for detailed explaination on the components: 
+- [ETL](https://github.com/aiplanethub/llmstack/blob/main/docs/components/ETL.md)
+- [VectorDB](https://github.com/aiplanethub/llmstack/blob/main/docs/components/VectorDB.md)
+- [Retrieval](https://github.com/aiplanethub/llmstack/blob/main/docs/components/Retreiver.md)
+- [Model](https://github.com/aiplanethub/llmstack/blob/main/docs/components/Model.md)
