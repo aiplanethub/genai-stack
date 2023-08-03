@@ -2,7 +2,9 @@
 
 An end to end LLM framework
 
--   Documentation: https://llm_stack.readthedocs.io.
+## Documentation
+
+Documentation and better usage of the tool can be found in the [./docs/components](https://github.com/aiplanethub/llmstack/tree/main/docs/components) folder of this repo.
 
 ## Usage
 
@@ -26,9 +28,6 @@ An end to end LLM framework
     llmstack --help
     ```
 
-## Documentation
-
-Documentation and better usage of the tool can be found in the [./docs/components](https://github.com/aiplanethub/llmstack/tree/main/docs/components) folder of this repo.
 
 ## Running a Model
 
