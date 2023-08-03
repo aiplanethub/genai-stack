@@ -37,21 +37,22 @@ Once the installation is completed, you are good to go.
     }
     ```
 
-    Here,
+    **Here,**
 
-    2.1. **model'** is the key llmstack uses to extact the details of model to run.
+    2.1. **model** is the key llmstack uses to extact the details of model to run.
 
-    2.2. **name** key should have a value that you will want to run. To check list of available prebuilt model, run the command `llmstack list-models` from the terminal in the environment where it is installed.
+    2.2. **name** should have a value that you will want to run. To check list of available prebuilt model, run the command `llmstack list-models` from the terminal in the environment where it is installed.
 
-    2.3. **fields** Holds a nester json required for passing to the model as arguements(if any).
-    Since we want to _ggml-gpt4all-j-v1.3-groovy_ gpt4all model, we added the value for the model field as _ggml-gpt4all-j-v1.3-groovy_. If we want to use _orca-mini-3b.ggmlv3.q4_0_, then we can set it as the value.
-    The nested json for fields depends on the model.
+    2.3. **fields** Holds a nested json required for passing to the model as arguements(if any).
+    Since we want to use _ggml-gpt4all-j-v1.3-groovy_ gpt4all model, we added the value for the model field as _ggml-gpt4all-j-v1.3-groovy_. If we want to use _orca-mini-3b.ggmlv3.q4_0_, then we can set it as the value.
+
+    **NOTE:** The nested json for fields depends on the model.
 
 2. Import the required model(Here we will use gpt4all model) and initalize it and predict it.
 
     ```python
     from llm_stack.model import Gpt4AllModel
-    m = Gpt4AllModel(config="llm_stack_config.json")# config should have the path to the config.json file that was created above.
+    m = Gpt4AllModel(config="llm_stack_config.json") # config should have the path to the config.json file that was created above.
     print(m.predict(query="Python program to add two numbers"))
     ```
 
@@ -72,7 +73,7 @@ Once the installation is completed, you are good to go.
     pip install git+https://github.com/aiplanethub/llmstack.git
     ```
 
-2. Test the model using Python Script where we will make http request to the model predict endpoint.
+2. Test the model using the below Python Script where we will make http request to the model predict endpoint.
     ```python
     import requests
     response = requests.post("http://localhost:8082/predict/",data="Python program to add two numbers.")
@@ -91,7 +92,7 @@ This package is for the chat interface of the LLM stack.
     git clone https://github.com/aiplanethub/llmstack.git
     ```
 
-2. Create a new virtualenv and activate it.
+2. Create a new virtualenv and activate it(Optional).
 
     ```
     python -m venv ./llmstack-ui
@@ -110,33 +111,141 @@ This package is for the chat interface of the LLM stack.
     streamlit run ui/app/main.py
     ```
 
-## How to run LLM Stack in Google Colab or Jupyter Notebook?
+## How to run LLM Stack with a Vector Store?
 
-In this guide, we demonstrate how to run any LLM model using LLM Stack on Google Colab or Jupyter notebook.
+In this release, we support for [Weaviate](https://weaviate.io/developers/weaviate) vector store only.
+Here, we will create a **ChatWithPdf** python application.
 
-```py
-!pip install git+https://github.com/aiplanethub/llmstack.git
-!pip install gpt4all
-!pip install fastapi langchain openai
+### Pre-Requisites
 
+Apart from the llmstack package and git, following tools has to be installed:
 
-from llm_stack.model import BaseModel
-from gpt4all import GPT4All
-from typing import Any
+1. [docker](https://www.docker.com/)
+2. [docker compose](https://docs.docker.com/compose/install/)
 
+### Installation
 
-class GPT4ALLM(BaseModel):
-   def load(self, model_path: str = None):
-       self.model = GPT4All("ggml-gpt4all-j-v1.3-groovy")
+We have a read-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
 
+1.  Create a _.env_ file with the below contents
+    ```bash
+    PORT=8080
+    OPENAI_APIKEY=sk-xxx
+    ```
+2.  create a _docker-compose.yaml_ file with the below contents
 
-   def predict(self, query: Any):
-       #prompt = [{"role": "user", "content": query}]
-       output = self.model.generate(query)
-       return(output)
+    ```yaml
+    version: "3.4"
+    services:
+    weaviate:
+        image: semitechnologies/weaviate:1.20.1
+        ports:
+            - ${PORT}:8080
+        restart: always
+        environment:
+        QUERY_DEFAULTS_LIMIT: 25
+        AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
+        PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+        DEFAULT_VECTORIZER_MODULE: text2vec-openai
+        ENABLE_MODULES: text2vec-openai
+        OPENAI_APIKEY: ${OPENAI_APIKEY}
+        AZURE_APIKEY: ${AZURE_APIKEY}
+        CLUSTER_HOSTNAME: "node1"
+        volumes:
+            - weaviate_data:/var/lib/weaviate
 
+    volumes:
+    weaviate_data:
+    ```
 
-custom_model = GPT4ALLM()
-response = custom_model.predict("What is the capital of India?")
-print(response)
-```
+3.  Create a _etl.json_ and _model.json_ files with the following contents.
+
+    **etl.json:**
+
+    ```json
+    {
+        "etl": "langchain",
+        "source": {
+            "name": "PyPDFLoader",
+            "fields": {
+                "file_path": "<absolute path to the pdf file>"
+            }
+        },
+        "destination": {
+            "name": "weaviate",
+            "class_name": "chatpdf",
+            "fields": {
+                "url": "http://localhost:8002/",
+                "text_key": "pdf_content"
+            }
+        }
+    }
+    ```
+
+    3.1.1. _etl_ in the above json file is the key used to select a the type of etl loader to use.
+    Currently we support langchain and llamahub loaders.
+
+    3.1.2. _class_name_ a namespace for the data to store in.
+
+    3.1.3. Key _source_ holds a json to know about the source to load the data from.
+
+    _name_: should the Loaderclass from the required loader you have added above(key `etl`)
+
+    _fields_: should be a nested dictionary with the fields required for the loader.
+
+    _url_: in fields, this should have the value to the weavaite url.
+
+    _text_key_: A column name in the vector db to store the data in the namespace(class_name).
+
+    **model.json:**
+
+    ```json
+    {
+        "model": {
+            "name": "gpt3.5",
+            "fields": {
+                "openai_api_key": "sk-xxxx"
+            }
+        },
+        "retriever": {
+            "name": "langchain"
+        },
+        "vectordb": {
+            "name": "weaviate",
+            "class_name": "chatpdf",
+            "fields": {
+                "url": "http://localhost:8002/",
+                "text_key": "text"
+            }
+        }
+    }
+    ```
+
+    Here,
+
+    3.2.1. _model_ should hold the value for which model to use.
+
+    3.2.2. _retriever_ should hold the value to as to which retriver to use.
+
+    _name_: name of the retriever to use. Currently only langchain is supported.
+
+    3.2.3. _classname_: Should be similar to what was given in the etl.json
+
+    3.2.4. _vectordb_ holds the values to as to which vector db to use. Currently we suport weaviate only and more will be added in the later releases.
+
+    _url_: Should be same as the one provided in etl.json.
+
+    _text_key_: Should be same as the one provided in etl.json.
+
+    **NOTE:** Refer to [components docs](https://github.com/aiplanethub/llmstack/blob/main/docs/components) to know more about the components of llmstack.
+
+4.  Run the etl process with command below, which would run the etl process.
+
+    ```bash
+    llmstack etl --config_file etl.json
+    ```
+
+5.  Run the model with the command below,
+    ```bash
+    llmstack start --config_file ./model.json
+    ```

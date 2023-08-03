@@ -10,7 +10,7 @@
     },
     "vectordb": {
         "name": "weaviate",
-        "class_name": "chatpdf",
+        "class_name": "Chatpdf",
         "fields": {
             "url": "http://localhost:8002/",
             "text_key": "text"
