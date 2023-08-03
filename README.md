@@ -1,30 +1,28 @@
 # LLM Stack
 
-## Motivation
-
-The revolution of Large Language Models has sparked a monumental revolution in the field of AI, enabling us into a future of boundless possibilities. The global market for AI in enterprise and business is projected to skyrocket to an astonishing $2.8 trillion by the year 2030, ushering in an era of unprecedented growth. As more and more enterprises recognize the transformative potential of AI, they eagerly embrace its power, reshaping industries, and unlocking new frontiers of innovation. This revolution in return brings the risk of Data Privacy.
-
-Yet, with every disruptive innovation, the uncharted territory presents both thrilling opportunities and puzzling unmet needs. The adoption of AI also conceals unknown risks, daring us to venture forth boldly while ensuring we remain vigilant to identify and mitigate potential pitfalls. The challenge of integrating AI tools seamlessly into existing infrastructures poses a test of adaptability and ingenuity. And, as the digital landscape expands, safeguarding data security becomes more critical.
+This framework is designed to make AI accessible to everyone, including those with a beginner's background in programming. With the power of Large Language Models (LLMs), we aim to democratize AI, enabling companies of all sizes to innovate while maintaining data privacy and security. Let's get started with the basics:
 
 ## About
 
-At AI Planet, we are changing the narrative by Democratizing AI. We believe this will empower and allow companies of all sizes to innovate, and harness the power of AI without compromising on data privacy and security. We provide secure and private AI on your enterprise IT infrastructure, ensuring seamless integration with your existing systems and processes.
+AI Planet is committed to democratizing AI. We provide a secure and private AI framework that seamlessly integrates with your existing IT infrastructure, enabling companies of all sizes to leverage AI's power without compromising data privacy and security.
 
 ## Installation
+
+To get started, you need to install the LLM Stack using pip. Open your terminal or command prompt and run the following command:
 
 ```bash
 pip install git+https://github.com/aiplanethub/llmstack.git
 ```
 
-Note: Creating a virtual environment is not necessary but we recommend it.
+We recommend creating a virtual environment before installing the LLM Stack, but it's not mandatory.
 
 ## How to run an LLM(without vector store)?
 
-Once the installation is completed, you are good to go.
+After completing the installation, you are ready to use the LLM Stack. Below are the steps to run an LLM in a Colab/Jupyter Notebook/Python Shell:
 
 ### Running in a Colab/Jupyter Notebook/Python Shell
 
-1. Create a json file with the following contents:
+1.  Create a json file with the following contents:
 
     ```json
     {
@@ -41,14 +39,18 @@ Once the installation is completed, you are good to go.
 
     2.1. **model** is the key llmstack uses to extact the details of model to run.
 
-    2.2. **name** should have a value that you will want to run. To check list of available prebuilt model, run the command `llmstack list-models` from the terminal in the environment where it is installed.
+    2.2. **name** should have a value that you will want to run. To check list of available prebuilt model, run the below command from the terminal in the environment where it is installed.
+
+        ```bash
+         llmstack list-models
+        ```
 
     2.3. **fields** Holds a nested json required for passing to the model as arguements(if any).
     Since we want to use _ggml-gpt4all-j-v1.3-groovy_ gpt4all model, we added the value for the model field as _ggml-gpt4all-j-v1.3-groovy_. If we want to use _orca-mini-3b.ggmlv3.q4_0_, then we can set it as the value.
 
     **NOTE:** The nested json for fields depends on the model.
 
-2. Import the required model(Here we will use gpt4all model) and initalize it and predict it.
+2.  Import the required model(Here we will use gpt4all model) and initalize it and predict it.
 
     ```python
     from llm_stack.model import Gpt4AllModel
