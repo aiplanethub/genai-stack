@@ -7,22 +7,28 @@ An end to end LLM framework
 ## Usage
 
 ### Prerequisites
+
 1. Python3.8 or above
 2. git
 
 ### Installation
+
 1. Install with pip
     ```bash
     pip install git+https://github.com/aiplanethub/llmstack.git
     ```
-3. Verify installation
+2. Verify installation
     ```bash
     llmstack version
     ```
-4. Check List of commands
+3. Check List of commands
     ```bash
     llmstack --help
     ```
+
+## Documentation
+
+Documentation and better usage of the tool can be found in the [./docs/components](https://github.com/aiplanethub/llmstack/tree/main/docs/components) folder of this repo.
 
 ## Running a Model
 
@@ -84,8 +90,6 @@ An end to end LLM framework
         Finally, we print the result using the `print()` function.
     ````
 
-## Documentation
-Documentation and better usage of the tool can be found in the [./docs/components](https://github.com/aiplanethub/llmstack/tree/main/docs/components) folder of this repo.
-
 ### Examples
+
 Some examples on how it can be used can be found in the [./examples](https://github.com/aiplanethub/llmstack/tree/main/examples) folder of this repo.
