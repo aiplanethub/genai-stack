@@ -3,6 +3,7 @@
 """The setup script."""
 
 from setuptools import setup, find_packages
+from glob import glob
 
 with open("README.md", encoding="utf8") as readme_file:
     readme = readme_file.read()
@@ -70,6 +71,11 @@ setup(
         "Transformers",
         "chatgpt",
         "LLM Chat",
+    ],
+    package_data={"llm_stack": ["llm_stack/install/templates/**/*.json", "llm_stack/install/templates/**/*.j2"]},
+    data_files=[
+        ("json", glob("llm_stack/install/templates/**/*.json", recursive=True)),
+        ("j2", glob("llm_stack/install/templates/**/*.j2", recursive=True)),
     ],
     name="llm_stack",
     packages=find_packages(include=["llm_stack", "llm_stack.*"]),

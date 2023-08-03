@@ -2,6 +2,7 @@
 import sys
 
 import click
+import json
 
 from llm_stack import __version__
 from llm_stack.config import ConfigLoader
@@ -12,6 +13,7 @@ from llm_stack.constants import (
     VECTORDB_CONFIG_KEY,
 )
 from llm_stack.constants.model import AVAILABLE_MODEL_MAPS
+from llm_stack.constants.install import AVAILABLE_COMPONENTS, Components
 from llm_stack.etl.run import run_etl_loader
 from llm_stack.exception import LLMStackException
 from llm_stack.model.run import (
@@ -21,6 +23,7 @@ from llm_stack.model.run import (
     list_supported_models,
     run_custom_model,
 )
+from llm_stack.install.installer import Installer
 from llm_stack.utils.model import create_default_model_json_file
 from llm_stack.utils.run import execute_command_in_directory
 
@@ -137,6 +140,35 @@ def dli_airbyte(destination):
             "./run-ab-platform.sh",
         ],
     )
+
+
+@main.command()
+@click.option("--component", required=False, help="Specify the component.")
+@click.option("--subcomponent", required=False, help="Specify the subcomponent")
+@click.option("--list-components", is_flag=True, help="List all the components and subcomponents available")
+@click.option("--quickstart", is_flag=True, help="Use quickstart mode.")
+@click.option("--config-file", help="Config file for installing your component", type=str)
+def install(component, subcomponent, list_components, quickstart, config_file):
+    if list_components:
+        click.echo("Available components for installation")
+        comp_string = "Components: \n"
+        for idx, component in enumerate(Components):
+            comp_string += f"\t {idx + 1}. {component.value} \n"
+            comp_string += f"\t\t Subcomponents: \n"
+            for subcomponent in AVAILABLE_COMPONENTS[component]:
+                comp_string += f"\t\t\t * {subcomponent} \n"
+
+        click.echo(comp_string.format(components=comp_string))
+
+    if component and subcomponent:
+        if quickstart:
+            Installer(component, subcomponent, quickstart=True).install()
+
+        elif config_file:
+            # JSON file is provided, load and parse the JSON data
+            with open(config_file, "r") as file:
+                options = json.load(file)
+                Installer(component, subcomponent, options=options).install()
 
 
 if __name__ == "__main__":
