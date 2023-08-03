@@ -72,7 +72,7 @@ Once the installation is completed, you are good to go.
 1. Run the LLM model
 
     ```bash
-    llmstack start
+    llmstack start --config_file llm_stack_config.json
     ```
 
 2. Now you should see a response like below.
