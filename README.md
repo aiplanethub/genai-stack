@@ -41,9 +41,7 @@ After completing the installation, you are ready to use the LLM Stack. Below are
 
     2.2. **name** should have a value that you will want to run. To check list of available prebuilt model, run the below command from the terminal in the environment where it is installed.
 
-        ```bash
          llmstack list-models
-        ```
 
     2.3. **fields** Holds a nested json required for passing to the model as arguements(if any).
     Since we want to use _ggml-gpt4all-j-v1.3-groovy_ gpt4all model, we added the value for the model field as _ggml-gpt4all-j-v1.3-groovy_. If we want to use _orca-mini-3b.ggmlv3.q4_0_, then we can set it as the value.
