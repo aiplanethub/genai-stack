@@ -20,6 +20,7 @@ requirements = [
     "fastapi==0.100.0",
     "weaviate-client",
     "transformers",
+    "gpt4all==1.0.5",
 ]
 
 test_requirements = []

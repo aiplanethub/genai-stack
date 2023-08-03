@@ -1,5 +1,7 @@
 import json
+import os
 from typing import List
+import requests
 
 from langchain import LLMChain, PromptTemplate
 from langchain.chains import ConversationalRetrievalChain
@@ -13,15 +15,24 @@ class Gpt4AllModel(BaseModel):
     model_name = "Gpt4All"
     required_fields = []
 
+    @staticmethod
+    def _download_file(file_path: str):
+        file_url = (
+            "https://huggingface.co/orel12/ggml-gpt4all-j-v1.3-groovy/resolve/main/ggml-gpt4all-j-v1.3-groovy.bin"
+        )
+        resp = requests.get(file_url, allow_redirects=True, timeout=500)
+        with open(file_path, "wb") as f:
+            f.write(resp.content)
+
+    def _model_downloaded(self, file_path: str):
+        if not os.path.exists("ggml-gpt4all-j-v1.3-groovy.bin"):
+            self._download_file()
+
     def load(self, model_path: str = None):
-        model = "ggml-gpt4all-j-v1.3-groovy"
-        if getattr(self, "model_config_fields", None):
-            model = self.model_config_fields.get(
-                "model",
-                "ggml-gpt4all-j-v1.3-groovy",
-            )
+        m = os.path.abspath("ggml-gpt4all-j-v1.3-groovy.bin")
+        self._model_downloaded(m)
         self.model = GPT4All(
-            model=model,
+            model=m,
             max_tokens=2048,
         )
 
