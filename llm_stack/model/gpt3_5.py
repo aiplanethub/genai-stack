@@ -1,10 +1,8 @@
-import json
-from typing import List
 
 from langchain import LLMChain, PromptTemplate
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chat_models import ChatOpenAI
-from langchain.schema import Document, Generation
+from langchain.schema import Generation
 
 from llm_stack.model.base import BaseModel
 

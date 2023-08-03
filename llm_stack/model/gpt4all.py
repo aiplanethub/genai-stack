@@ -2,6 +2,7 @@ import contextlib
 import json
 import os
 from typing import List
+from pathlib import Path
 
 from gpt4all import GPT4All
 from langchain import LLMChain, PromptTemplate
@@ -23,9 +24,9 @@ class Gpt4AllModel(BaseModel):
                 "model",
                 "orca-mini-3b.ggmlv3.q4_0",
             )
-        model_path = "."
+        model_path = Path(".")
         GPT4All(model_name=model, model_path=model_path)
-        model_path = f"{os.path.join(model_path, model)}"
+        model_path = os.path.join(model_path, model)
         print(f"Model {model} at {model_path}")
         self.model = LangChainGpt4aAll(
             model=model_path if model_path.endswith(".bin") else f"{model_path}.bin",
