@@ -83,7 +83,7 @@ def start(config_file):
             )
         )(config=config_file)
     except ValueError as e:
-        print(f"Failed to Initialize VectorDB. \n{e}")
+        print(f"Failed to Initialize VectorDB - {e}")
         vectordb_client = None
 
     try:
@@ -92,8 +92,8 @@ def start(config_file):
                 RETRIEVER_CONFIG_KEY,
             )
         )(config=config_file, vectordb=vectordb_client)
-    except ValueError:
-        print("Failed to get Retriever")
+    except ValueError as e:
+        print(f"Failed to Initialize Retriever - {e}")
         retriever = None
 
     model: str = config_loader.get_config_section_name(MODEL_CONFIG_KEY)

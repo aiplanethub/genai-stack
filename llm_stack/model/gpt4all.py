@@ -1,11 +1,12 @@
+import contextlib
 import json
 import os
 from typing import List
-import requests
 
+from gpt4all import GPT4All
 from langchain import LLMChain, PromptTemplate
 from langchain.chains import ConversationalRetrievalChain
-from langchain.llms import GPT4All
+from langchain.llms import GPT4All as LangChainGpt4aAll
 from langchain.schema import Document, Generation
 
 from llm_stack.model.base import BaseModel
@@ -15,35 +16,30 @@ class Gpt4AllModel(BaseModel):
     model_name = "Gpt4All"
     required_fields = []
 
-    @staticmethod
-    def _download_file(file_path: str):
-        file_url = (
-            "https://huggingface.co/orel12/ggml-gpt4all-j-v1.3-groovy/resolve/main/ggml-gpt4all-j-v1.3-groovy.bin"
-        )
-        resp = requests.get(file_url, allow_redirects=True, timeout=500)
-        with open(file_path, "wb") as f:
-            f.write(resp.content)
-
-    def _model_downloaded(self, file_path: str):
-        if not os.path.exists("ggml-gpt4all-j-v1.3-groovy.bin"):
-            self._download_file()
-
     def load(self, model_path: str = None):
-        m = os.path.abspath("ggml-gpt4all-j-v1.3-groovy.bin")
-        self._model_downloaded(m)
-        self.model = GPT4All(
-            model=m,
-            max_tokens=2048,
+        model = "orca-mini-3b.ggmlv3.q4_0"
+        if getattr(self, "model_config_fields", None):
+            model = self.model_config_fields.get(
+                "model",
+                "orca-mini-3b.ggmlv3.q4_0",
+            )
+        model_path = "."
+        GPT4All(model_name=model, model_path=model_path)
+        model_path = f"{os.path.join(model_path, model)}"
+        print(f"Model {model} at {model_path}")
+        self.model = LangChainGpt4aAll(
+            model=model_path if model_path.endswith(".bin") else f"{model_path}.bin",
         )
 
     def get_chat_history(self, *args, **kwargs):
         return "".join(" \n " + argument for argument in args)
 
     def predict(self, query: str):
-        query = query.decode("utf-8")
+        with contextlib.suppress(AttributeError):
+            query = query.decode("utf-8")
         llm = self.model
 
-        if self.model_config.get("chat", False):
+        if getattr(self, "model_config", None) and self.model_config.get("chat", False):
             return self._vector_retreiver_qa(llm, query)
         elif self.retriever:
             return self._vector_retreiver_qa(llm, query)
