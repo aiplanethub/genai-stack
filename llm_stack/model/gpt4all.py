@@ -25,12 +25,11 @@ class Gpt4AllModel(BaseModel):
                 "orca-mini-3b.ggmlv3.q4_0",
             )
         model_path = Path(".")
+        cwd = os.getcwd()
         GPT4All(model_name=model, model_path=str(model_path))
-        model_path = os.path.join(model_path, model)
+        model_path = os.path.join(cwd, model_path, model)
         print(f"Model {model} at {model_path}")
-        self.model = LangChainGpt4aAll(
-            model=model_path if model_path.endswith(".bin") else f"{model_path}.bin",
-        )
+        self.model = LangChainGpt4aAll(model=model_path)
 
     def get_chat_history(self, *args, **kwargs):
         return "".join(" \n " + argument for argument in args)
