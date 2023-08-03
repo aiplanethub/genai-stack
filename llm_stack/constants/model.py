@@ -17,9 +17,9 @@ AVAILABLE_MODEL_MAPS = {
 
 DEFAULT_MODEL_JSON = {
     "model": {
-        "name": Models.HUGGING_FACE,
+        "name": Models.GPT4ALL,
         "fields": {
-            "model": "nomic-ai/gpt4all-j",
+            "model": "ggml-gpt4all-j-v1.3-groovy",
         },
     },
 }
