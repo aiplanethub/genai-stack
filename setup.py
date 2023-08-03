@@ -19,7 +19,6 @@ requirements = [
     "uvicorn==0.23.0",
     "fastapi==0.100.0",
     "weaviate-client>=3.22.1",
-    "gpt4all>=1.0.5",
 ]
 
 test_requirements = []
