@@ -1,30 +1,32 @@
 # LLM Stack
 
-This framework is designed to make AI accessible to everyone, including those with a beginner's background in programming. With the power of Large Language Models (LLMs), we aim to democratize AI, enabling companies of all sizes to innovate while maintaining data privacy and security. Let's get started with the basics:
+An End to End LLM Framework
+
+## Motivation
+
+The revolution of Large Language Models has sparked a monumental revolution in the field of AI, enabling us into a future of boundless possibilities. The global market for AI in enterprise and business is projected to skyrocket to an astonishing $2.8 trillion by the year 2030, ushering in an era of unprecedented growth. As more and more enterprises recognize the transformative potential of AI, they eagerly embrace its power, reshaping industries, and unlocking new frontiers of innovation. This revolution in return brings the risk of Data Privacy.
+
+Yet, with every disruptive innovation, the uncharted territory presents both thrilling opportunities and puzzling unmet needs. The adoption of AI also conceals unknown risks, daring us to venture forth boldly while ensuring we remain vigilant to identify and mitigate potential pitfalls. The challenge of integrating AI tools seamlessly into existing infrastructures poses a test of adaptability and ingenuity. And, as the digital landscape expands, safeguarding data security becomes more critical.
 
 ## About
 
-AI Planet is committed to democratizing AI. We provide a secure and private AI framework that seamlessly integrates with your existing IT infrastructure, enabling companies of all sizes to leverage AI's power without compromising data privacy and security.
+At AI Planet, we are changing the narrative by Democratizing AI. We believe this will empower and allow companies of all sizes to innovate, and harness the power of AI without compromising on data privacy and security. We provide secure and private AI on your enterprise IT infrastructure, ensuring seamless integration with your existing systems and processes.
 
 ## Installation
-
-To get started, you need to install the LLM Stack using pip. Open your terminal or command prompt and run the following command:
 
 ```bash
 pip install git+https://github.com/aiplanethub/llmstack.git
 ```
 
-We recommend creating a virtual environment before installing the LLM Stack, but it's not mandatory.
+Note: Creating a virtual environment is not necessary but we recommend it.
 
-### Getting Started
+## How to run an LLM(without vector store)?
 
-#### How to run an LLM(without vector store)?
+Once the installation is completed, you are good to go.
 
-After completing the installation, you are ready to use the LLM Stack. Below are the steps to run an LLM in a Colab/Jupyter Notebook/Python Shell:
+### Running in a Colab/Jupyter Notebook/Python Shell
 
-**Running in a Colab/Jupyter Notebook/Python Shell**
-
-1.  Create a json file with the following contents:
+1. Create a json file with the following contents:
 
     ```json
     {
@@ -41,16 +43,14 @@ After completing the installation, you are ready to use the LLM Stack. Below are
 
     2.1. **model** is the key llmstack uses to extact the details of model to run.
 
-    2.2. **name** should have a value that you will want to run. To check list of available prebuilt model, run the below command from the terminal in the environment where it is installed.
-
-         llmstack list-models
+    2.2. **name** should have a value that you will want to run. To check list of available prebuilt model, run the command `llmstack list-models` from the terminal in the environment where it is installed.
 
     2.3. **fields** Holds a nested json required for passing to the model as arguements(if any).
     Since we want to use _ggml-gpt4all-j-v1.3-groovy_ gpt4all model, we added the value for the model field as _ggml-gpt4all-j-v1.3-groovy_. If we want to use _orca-mini-3b.ggmlv3.q4_0_, then we can set it as the value.
 
     **NOTE:** The nested json for fields depends on the model.
 
-2.  Import the required model(Here we will use gpt4all model) and initalize it and predict it.
+2. Import the required model(Here we will use gpt4all model) and initalize it and predict it.
 
     ```python
     from llm_stack.model import Gpt4AllModel
@@ -67,37 +67,84 @@ After completing the installation, you are ready to use the LLM Stack. Below are
     ```
     ````
 
-Running the model in terminal with a http server
+### Running the model in terminal with a http server
 
 1. Run the LLM model
 
     ```bash
-    pip install git+https://github.com/aiplanethub/llmstack.git
+    llmstack start
     ```
 
-2. Test the model using the below Python Script where we will make http request to the model predict endpoint.
+2. Now you should see a response like below.
+    ```python
+    ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
+    ██║     ██║     ████╗ ████║    ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
+    ██║     ██║     ██╔████╔██║    ███████╗   ██║   ███████║██║     █████╔╝
+    ██║     ██║     ██║╚██╔╝██║    ╚════██║   ██║   ██╔══██║██║     ██╔═██╗
+    ███████╗███████╗██║ ╚═╝ ██║    ███████║   ██║   ██║  ██║╚██████╗██║  ██╗
+    ╚══════╝╚══════╝╚═╝     ╚═╝    ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
+    
+    Failed to get VectorDB
+    Failed to get Retriever
+    INFO:     Started server process [641734]
+    INFO:     Waiting for application startup.
+    INFO:     Application startup complete.
+    INFO:     Uvicorn running on http://127.0.0.1:8082 (Press CTRL+C to quit)
+    ```
+
+3. Test the model using the below Python Script where we will make http request to the model predict endpoint.
     ```python
     import requests
     response = requests.post("http://localhost:8082/predict/",data="Python program to add two numbers.")
     print(response.text)
     ```
 
-**How to run LLM Stack with a Vector Store?**
+#### Using UI
 
-In this release, we support [Weaviate](https://weaviate.io/developers/weaviate) vector store only. More vector store support will be added in upcoming releases.
+This package is for the chat interface of the LLM stack.
 
-Here, we will create a **ChatWithPdf** python application as a example.
+**Installation steps**
 
-Pre-Requisites
+1. Clone the repository
+
+    ```
+    git clone https://github.com/aiplanethub/llmstack.git
+    ```
+
+2. Create a new virtualenv and activate it(Optional).
+
+    ```
+    python -m venv ./llmstack-ui
+    source ./llmstack-ui/bin/activate
+    ```
+
+3. Install the requirements
+
+    ```
+    pip install -r ui/requirements.txt
+    ```
+
+4. Run the streamlit app
+
+    ```
+    streamlit run ui/app/main.py
+    ```
+
+## How to run LLM Stack with a Vector Store?
+
+In this release, we support for [Weaviate](https://weaviate.io/developers/weaviate) vector store only.
+Here, we will create a **ChatWithPdf** python application.
+
+### Pre-Requisites
 
 Apart from the llmstack package and git, following tools has to be installed:
 
 1. [docker](https://www.docker.com/)
 2. [docker compose](https://docs.docker.com/compose/install/)
 
-**Installation**
+### Installation
 
-We have a ready-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
+We have a read-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
 
 1.  Create a _.env_ file with the below contents
     ```bash
@@ -220,35 +267,4 @@ We have a ready-to-use docker compose file, which we will use for setup of Weavi
 5.  Run the model with the command below,
     ```bash
     llmstack start --config_file ./model.json
-    ```
-
-#### Using UI
-
-This package is for the chat interface of the LLM stack.
-
-**Installation steps**
-
-1. Clone the repository
-
-    ```
-    git clone https://github.com/aiplanethub/llmstack.git
-    ```
-
-2. Create a new virtualenv and activate it(Optional).
-
-    ```
-    python -m venv ./llmstack-ui
-    source ./llmstack-ui/bin/activate
-    ```
-
-3. Install the requirements
-
-    ```
-    pip install -r ui/requirements.txt
-    ```
-
-4. Run the streamlit app
-
-    ```
-    streamlit run ui/app/main.py
     ```
