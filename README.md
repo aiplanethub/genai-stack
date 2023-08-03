@@ -80,37 +80,6 @@ After completing the installation, you are ready to use the LLM Stack. Below are
     print(response.text)
     ```
 
-#### Using UI
-
-This package is for the chat interface of the LLM stack.
-
-**Installation steps**
-
-1. Clone the repository
-
-    ```
-    git clone https://github.com/aiplanethub/llmstack.git
-    ```
-
-2. Create a new virtualenv and activate it(Optional).
-
-    ```
-    python -m venv ./llmstack-ui
-    source ./llmstack-ui/bin/activate
-    ```
-
-3. Install the requirements
-
-    ```
-    pip install -r ui/requirements.txt
-    ```
-
-4. Run the streamlit app
-
-    ```
-    streamlit run ui/app/main.py
-    ```
-
 ## How to run LLM Stack with a Vector Store?
 
 In this release, we support for [Weaviate](https://weaviate.io/developers/weaviate) vector store only.
@@ -248,4 +217,35 @@ We have a read-to-use docker compose file, which we will use for setup of Weavia
 5.  Run the model with the command below,
     ```bash
     llmstack start --config_file ./model.json
+    ```
+
+#### Using UI
+
+This package is for the chat interface of the LLM stack.
+
+**Installation steps**
+
+1. Clone the repository
+
+    ```
+    git clone https://github.com/aiplanethub/llmstack.git
+    ```
+
+2. Create a new virtualenv and activate it(Optional).
+
+    ```
+    python -m venv ./llmstack-ui
+    source ./llmstack-ui/bin/activate
+    ```
+
+3. Install the requirements
+
+    ```
+    pip install -r ui/requirements.txt
+    ```
+
+4. Run the streamlit app
+
+    ```
+    streamlit run ui/app/main.py
     ```
