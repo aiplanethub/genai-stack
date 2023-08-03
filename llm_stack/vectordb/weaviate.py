@@ -28,7 +28,12 @@ class Weaviate(BaseVectordb):
 
     def _check_text_key(self, client) -> None:
         text_key = self.vectordb_config_fields.get("text_key")
-        class_schema = client.schema.get(self.vectordb_config.get("class_name"))
+        class_schema = client.schema.get(
+            self.vectordb_config.get(
+                "class_name",
+                "",
+            ).capitalize()
+        )
         available_text_keys = [prop["name"] for prop in class_schema["properties"]]
 
         if text_key not in available_text_keys:
