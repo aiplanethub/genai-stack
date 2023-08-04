@@ -1,8 +1,9 @@
 import contextlib
 import json
+import logging
 import os
-from typing import List
 from pathlib import Path
+from typing import List
 
 from gpt4all import GPT4All
 from langchain import LLMChain, PromptTemplate
@@ -11,6 +12,8 @@ from langchain.llms import GPT4All as LangChainGpt4aAll
 from langchain.schema import Document, Generation
 
 from llm_stack.model.base import BaseModel
+
+logger = logging.getLogger(__name__)
 
 
 class Gpt4AllModel(BaseModel):
@@ -28,7 +31,7 @@ class Gpt4AllModel(BaseModel):
         cwd = os.getcwd()
         GPT4All(model_name=model, model_path=str(model_path))
         model_path = os.path.join(cwd, model_path, model)
-        print(f"Model {model} at {model_path}")
+        logger.info(f"Model {model} at {model_path}")
         self.model = LangChainGpt4aAll(model=model_path)
 
     def get_chat_history(self, *args, **kwargs):

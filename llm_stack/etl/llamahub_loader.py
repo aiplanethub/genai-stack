@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 from langchain.docstore.document import Document as LangDocument
@@ -11,6 +12,8 @@ from llm_stack.utils.extraction import (
     extract_method_params,
 )
 from llm_stack.utils.importing import import_class
+
+logger = logging.getLogger(__name__)
 
 
 class LLamaHubEtl(EtlBase):
@@ -77,7 +80,7 @@ class LLamaHubEtl(EtlBase):
             ).get("url"),
             index_name=class_name,
         )
-        print("Stored to vectordb")
+        logger.info("Stored to vectordb")
 
     def run(self):
         source_docs: List[LangDocument] = self.load_from_source()

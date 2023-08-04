@@ -1,8 +1,10 @@
 """Console script for llm_stack."""
+import json
+import logging
+import logging.handlers
 import sys
 
 import click
-import json
 
 from llm_stack import __version__
 from llm_stack.config import ConfigLoader
@@ -12,10 +14,11 @@ from llm_stack.constants import (
     RETRIEVER_CONFIG_KEY,
     VECTORDB_CONFIG_KEY,
 )
-from llm_stack.constants.model import AVAILABLE_MODEL_MAPS
 from llm_stack.constants.install import AVAILABLE_COMPONENTS, Components
+from llm_stack.constants.model import AVAILABLE_MODEL_MAPS
 from llm_stack.etl.run import run_etl_loader
 from llm_stack.exception import LLMStackException
+from llm_stack.install.installer import Installer
 from llm_stack.model.run import (
     get_model_class,
     get_retriever_class,
@@ -23,7 +26,6 @@ from llm_stack.model.run import (
     list_supported_models,
     run_custom_model,
 )
-from llm_stack.install.installer import Installer
 from llm_stack.utils.model import create_default_model_json_file
 from llm_stack.utils.run import execute_command_in_directory
 
@@ -35,6 +37,8 @@ BANNER = """
 ███████╗███████╗██║ ╚═╝ ██║    ███████║   ██║   ██║  ██║╚██████╗██║  ██╗
 ╚══════╝╚══════╝╚═╝     ╚═╝    ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
 """
+
+logger = logging.getLogger(__name__)
 
 
 class LLMStackCommand(click.Group):
@@ -75,7 +79,7 @@ def start(config_file):
     `llmstack start --model gpt3.5`
     """
     if not config_file:
-        print("WARNING: No Config file provided, creating a default one.")
+        logger.warning("No Config file provided, creating a default one.")
         config_file = create_default_model_json_file()
     config_loader = ConfigLoader(config=config_file)
 
@@ -86,7 +90,7 @@ def start(config_file):
             )
         )(config=config_file)
     except ValueError as e:
-        print(f"Failed to Initialize VectorDB - {e}")
+        logger.warning(f" Failed to Initialize VectorDB - {e}")
         vectordb_client = None
 
     try:
@@ -96,7 +100,7 @@ def start(config_file):
             )
         )(config=config_file, vectordb=vectordb_client)
     except ValueError as e:
-        print(f"Failed to Initialize Retriever - {e}")
+        logger.warning(f" Failed to Initialize Retriever - {e}")
         retriever = None
 
     model: str = config_loader.get_config_section_name(MODEL_CONFIG_KEY)
@@ -154,7 +158,7 @@ def install(component, subcomponent, list_components, quickstart, config_file):
         comp_string = "Components: \n"
         for idx, component in enumerate(Components):
             comp_string += f"\t {idx + 1}. {component.value} \n"
-            comp_string += f"\t\t Subcomponents: \n"
+            comp_string += "\t\t Subcomponents: \n"
             for subcomponent in AVAILABLE_COMPONENTS[component]:
                 comp_string += f"\t\t\t * {subcomponent} \n"
 

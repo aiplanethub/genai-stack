@@ -4,9 +4,12 @@ from langchain import document_loaders
 from langchain.docstore.document import Document as LangDocument
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Weaviate
+import logging
 
 from llm_stack.etl.base import EtlBase
 from llm_stack.utils.importing import import_class
+
+logger = logging.getLogger(__name__)
 
 documentloaders_type_to_cls_dict: Dict[str, Any] = {
     documentloader_name: import_class(
@@ -58,7 +61,7 @@ class LangLoaderEtl(EtlBase):
         class_name = destination.get("class_name")
         if not class_name:
             class_name = "llm_stack"
-            print(f"Defaulted class name to {class_name}")
+            logger.info(f"Defaulted class name to {class_name}")
 
         class_name = class_name.capitalize()
 
@@ -72,7 +75,7 @@ class LangLoaderEtl(EtlBase):
             index_name=class_name,
             text_key=destination.get("fields", {}).get("text_key"),
         )
-        print("Stored to vectordb")
+        logger.info("Stored to vectordb")
 
     def run(self):
         source_docs: List[LangDocument] = self.load_from_source()
