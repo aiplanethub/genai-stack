@@ -1,14 +1,14 @@
-from typing import Any, Optional, List
 import json
-from fastapi.responses import Response
+from typing import Any, List, Optional
 
-from langchain.schema import Document
+import torch
 from langchain.memory import VectorStoreRetrieverMemory
+from langchain.schema import Document
 
+from llm_stack.config import ConfigLoader
+from llm_stack.constants.model import MODEL_CONFIG_KEY
 from llm_stack.model.server import HttpServer
 from llm_stack.retriever import BaseRetriever
-from llm_stack.constants.model import MODEL_CONFIG_KEY
-from llm_stack.config import ConfigLoader
 
 
 class BaseModel(HttpServer, ConfigLoader):
@@ -48,6 +48,9 @@ class BaseModel(HttpServer, ConfigLoader):
 
     def predict(self, query: Any):
         raise NotImplementedError
+
+    def get_device(self):
+        return torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
     @classmethod
     def from_config(

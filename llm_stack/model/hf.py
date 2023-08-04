@@ -24,6 +24,7 @@ class HuggingFaceModel(BaseModel):
             model_id=model,
             task=self.model_config_fields.get("task", "text-generation"),
             model_kwargs=self.model_config_fields.get("model_kwargs"),
+            device=self.get_device(),
         )
 
     def get_chat_history(self, *args, **kwargs):
