@@ -23,7 +23,8 @@ requirements = [
     "transformers",
     "gpt4all>=1.0.5",
     "jsonschema==4.18.6",
-    "Jinja2==3.1.2"
+    "Jinja2==3.1.2",
+    "torch",
 ]
 
 test_requirements = []
