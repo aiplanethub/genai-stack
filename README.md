@@ -125,14 +125,14 @@ Apart from the llmstack package and git, following tools has to be installed:
 
 We have a read-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
 
-1.  Create a `_.env_` file with the below contents
+1.  Create a `.env` file with the below contents
 
     ```bash
     PORT=8080
     OPENAI_APIKEY=sk-xxx
     ```
 
-2.  Create a `_docker-compose.yaml_` file with the below contents and run the command `docker compose up -d`
+2.  Create a `docker-compose.yaml` file with the below contents and run the command `docker compose up -d`
 
     ```yaml
     version: "3.4"
@@ -158,7 +158,7 @@ We have a read-to-use docker compose file, which we will use for setup of Weavia
     weaviate_data:
     ```
 
-3.  Create a `_etl.json_` and `_model.json_` files with the following contents.
+3.  Create a `etl.json` and `model.json` files with the following contents.
 
     **etl.json:**
 
