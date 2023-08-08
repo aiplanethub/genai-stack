@@ -76,13 +76,18 @@ Note: Here we will be running just an LLM Model without any vector stores. We wi
 
 ### 🚀 Running the model in terminal with a http server
 
-1. Run the LLM model
+Follow these steps to set up and run the Language Model (LLM) Stack using an HTTP server:
+
+#### Step 1: Starting the LLM Model
+Open your terminal and run the following command to start the LLM model using the llmstack package:
 
     ```bash
     llmstack start --config_file llm_stack_config.json
     ```
 
-2. Now you should see a response like below.
+Once started, you will see a response that includes a visual representation of the service's startup progress. It will also show the address where the server is running (e.g., http://127.0.0.1:8082).
+
+Now you should see a response like below.
 
     ```bash
     ██╗     ██╗     ███╗   ███╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
@@ -99,15 +104,17 @@ Note: Here we will be running just an LLM Model without any vector stores. We wi
     INFO:     Application startup complete.
     INFO:     Uvicorn running on http://127.0.0.1:8082 (Press CTRL+C to quit)
     ```
+    
+#### Step 2: Testing the Model via Python Script
 
-    Let the server run. Now open a new terminal or a code editor and enter the below python script.
+In a separate terminal or code editor, use the following Python script to test the LLM model by making an HTTP request to its predict endpoint:
 
-3. Test the model using the below Python Script where we will make http request to the model predict endpoint.
-    ```python
-    import requests
-    response = requests.post("http://localhost:8082/predict/",data="Python program to add two numbers.")
-    print(response.text)
-    ```
+```python
+import requests
+response = requests.post("http://localhost:8082/predict/",data="Python program to add two numbers.")
+print(response.text)
+```
+This script sends a text input to the model and prints the response from the model.
 
 ## How to run LLM Stack with a Vector Store?
 
@@ -116,23 +123,30 @@ Here, we will create a **ChatWithPdf** python application.
 
 ### 🚀 Pre-Requisites
 
-Apart from the llmstack package and git, following tools has to be installed:
+To enhance the LLM Stack's capabilities, you can integrate it with a vector store (Weaviate). Follow these steps:
 
-1. [docker](https://www.docker.com/)
-2. [docker compose](https://docs.docker.com/compose/install/)
+Before proceeding, ensure you have the following tools installed:
+1. [Docker](https://www.docker.com/)
+2. [Docker compose](https://docs.docker.com/compose/install/)
 
 ### 🚀 Installation
 
 We have a read-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
 
-1.  Create a `.env` file with the below contents
+#### 1.  Create a `.env` file with the below contents
 
     ```bash
     PORT=8080
     OPENAI_APIKEY=sk-xxx
     ```
+Replace sk-xxx with your own `OPENAI_API_KEY`.
 
-2.  Create a `docker-compose.yaml` file with the below contents and run the command `docker compose up -d`
+- PORT: This variable specifies the port number that your application will use to listen for incoming connections. Applications running on your system communicate through specific ports, much like doors in a building.
+- OPENAI_APIKEY: This variable likely holds your OpenAI API key. An API key is a unique identifier that authenticates your application when interacting with OpenAI's services. It's used to ensure secure and authorized access.
+
+#### 2.  Create a `docker-compose.yaml` file with the below contents and run the command `docker compose up -d`
+
+The `docker-compose.yaml` file defines a multi-container Docker application. It's used to run your entire application stack, including Weaviate and other necessary services.
 
     ```yaml
     version: "3.4"
@@ -158,7 +172,12 @@ We have a read-to-use docker compose file, which we will use for setup of Weavia
     weaviate_data:
     ```
 
-3.  Create a `etl.json` and `model.json` files with the following contents.
+#### 3.  Create a `etl.json` and `model.json` files with the following contents.
+
+The `etl.json` file specifies how data is extracted, transformed, and loaded into your application's vector store (Weaviate).
+- ETL: ETL stands for Extract, Transform, Load. It's a process used to gather data from various sources, transform it to fit your needs, and then load it into a database or storage system.
+- Source: This section defines the source of data for the ETL process. In your case, you're using a loader named PyPDFLoader to load data from a PDF file.
+- Destination: This section defines where the transformed data will be loaded. The data is loaded into Weaviate, using the class chatpdf and associating it with specific fields.
 
     **etl.json:**
 
@@ -198,6 +217,8 @@ We have a read-to-use docker compose file, which we will use for setup of Weavia
     _text_key_: A column name in the vector db to store the data in the namespace(class_name).
 
     **model.json:**
+
+The `model.json` file configures the components of your LLM stack, including the language model, retriever, and vector database (Weaviate).
 
     ```json
     {
@@ -239,13 +260,20 @@ We have a read-to-use docker compose file, which we will use for setup of Weavia
 
     **NOTE:** Refer to [components docs](https://github.com/aiplanethub/llmstack/blob/main/docs/components) to know more about the components of llmstack.
 
-4.  Run the etl process with command below, which would run the etl process.
+#### 4.  Run the etl process with command below, which would run the etl process.
+
+These are the final steps to run your configured ETL process and start the LLM model along with the components you've set up.
+
+**ETL Run**: By running the ETL process (``llmstack etl --config_file etl.json``), you're initiating the extraction, transformation, and loading of data from your defined source to the destination in the vector database.
 
     ```bash
     llmstack etl --config_file etl.json
     ```
 
-5.  Run the model with the command below,
+#### 5.  Run the model with the command below
+
+**Start Model**: The final step is to start the LLM model along with its configured components using ``llmstack start --config_file ./model.json``.
+
     ```bash
     llmstack start --config_file ./model.json
     ```
