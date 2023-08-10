@@ -1,7 +1,7 @@
 import Head from "next/head";
 
-import ThemeRegistry from "./common/config/ThemeRegistry";
-import "./globals.css";
+import ThemeRegistry from "../common/config/ThemeRegistry";
+import "../../styles/globals.css";
 
 export default function RootLayout({
   children,
