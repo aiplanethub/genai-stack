@@ -56,13 +56,7 @@ class ConfigLoader:
                 f"{config_key} config section does not have any or some of these compulsory fields {GLOBAL_REQUIRED_FIELDS}."
             )
 
-        config_fields = config.get("fields", None)
-
-        if not config_fields and required_fields:
-            raise ValueError(
-                f"Config fields are missing for {config_key} config."
-                f"There are some compulsory fields that needs to be present for this config they are {required_fields}"
-            )
+        config_fields = config.get("fields", {})
         absent_required_fields = []
 
         # Check if all compulsory fields are present either in the fields section or in the
@@ -80,7 +74,7 @@ class ConfigLoader:
         setattr(self, f"{config_key}_config_fields", config_fields)
 
     def get_config_section_name(self, config_section: str):
-        config_section = self.config.get(config_section, None)
+        config_section = self.get_config_section(config_section)
         if not config_section:
             raise ValueError(f"Config Section {config_section} does not exist. Please check your config file")
 
@@ -88,6 +82,9 @@ class ConfigLoader:
             return name
         else:
             raise ValueError(f"Name not found for config section {config_section}")
+
+    def get_config_section(self, config_section: str):
+        return self.config.get(config_section, None)
 
     def run(self):
         """This method should contain the actual logic for creating the EtL pipeline"""

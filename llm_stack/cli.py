@@ -123,7 +123,32 @@ def start(config_file):
 @click.option("--config_file", help="Config file", type=str)
 def etl(config_file):
     """Running an ETL process"""
-    run_etl_loader(config_file=config_file)
+    config_loader = ConfigLoader(config=config_file)
+
+    if not config_loader.get_config_section("openai_api_key"):
+        openai_key_config = {"openai_api_key": "<YOUR OPENAI API KEY>"}
+        raise ValueError(f"Please provide your OPENAI api key in your config file like {openai_key_config}")
+
+    try:
+        vectordb = get_vectordb_class(
+            config_loader.get_config_section_name(
+                VECTORDB_CONFIG_KEY,
+            )
+        )(config=config_file)
+    except ValueError as e:
+        logger.warning(f" Failed to Initialize VectorDB - {e}")
+        default_config = {
+            "name": "chromadb",
+            "class_name": "llm_stack",
+            "fields": {
+                "persistent_path": "<YOUR DIR PATH TO PERSIST EMBEDDING DATA>"
+            },  # A temp directory to persist the vector embeddings
+        }
+
+        logger.info(f"Set up a default vectordb with these configs: {default_config}")
+        raise e
+
+    run_etl_loader(config_file=config_file, vectordb=vectordb)
 
 
 @main.command()

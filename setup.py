@@ -21,9 +21,10 @@ requirements = [
     "fastapi==0.100.0",
     "weaviate-client",
     "transformers",
-    "gpt4all>=1.0.5",
+    "gpt4all>=1.0.8",
     "jsonschema==4.18.6",
     "Jinja2==3.1.2",
+    "faiss-cpu==1.7.4",
     "torch",
 ]
 

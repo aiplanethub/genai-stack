@@ -8,7 +8,7 @@ def list_etl_loaders():
     return PREBUILT_ETL_LOADERS.keys()
 
 
-def run_etl_loader(config_file: str):
+def run_etl_loader(config_file: str, vectordb):
     config_cls = ConfigLoader(name="EtlLoader", config=config_file)
     etl_cls = import_class(
         f"{ETL_MODULE}.{PREBUILT_ETL_LOADERS.get(config_cls.config.get('etl'))}".replace(
@@ -16,5 +16,5 @@ def run_etl_loader(config_file: str):
             ".",
         )
     )
-    etl = etl_cls(config=config_file)
+    etl = etl_cls(config=config_file, vectordb=vectordb)
     return etl.run()

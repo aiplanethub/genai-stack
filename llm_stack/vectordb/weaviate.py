@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Iterable
 
 import weaviate
 from langchain.docstore.document import Document
@@ -46,7 +46,7 @@ class Weaviate(BaseVectordb):
         self._check_text_key(client)
         return LangChainWeaviate(
             client,
-            self.vectordb_config.get("class_name"),
+            self.vectordb_config.get("class_name").capitalize(),
             self.vectordb_config_fields.get("text_key"),
         )
 

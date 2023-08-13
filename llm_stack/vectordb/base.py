@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from langchain.docstore.document import Document
 from llm_stack.config import ConfigLoader
@@ -30,6 +30,10 @@ class BaseVectordb(ConfigLoader):
 
     def get_langchain_memory_client(self):
         raise NotImplementedError()
+
+    def store_documents(self, documents: List[Document]):
+        client = self.get_langchain_client()
+        client.add_documents(documents)
 
     @classmethod
     def from_config(cls, config):

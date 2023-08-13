@@ -6,12 +6,12 @@
             "file_path": "/home/sln/dphi_projects/llaim/TrainTicket-31-Mar-2023.pdf"
         }
     },
+    "openai_api_key": "YOUR OPENAI API Key",
     "destination": {
-        "name": "weaviate",
-        "class_name": "chatpdf",
+        "name": "chromadb",
+        "class_name": "llm_stack",
         "fields": {
-            "url": "http://localhost:8002/",
-            "text_key": "pdf_content"
+            "persistent_file": "<YOUR FILE PATH WHERE YOU WANT TO PERSIST>" 
         }
     }
 }
