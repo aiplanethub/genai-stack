@@ -1,0 +1,19 @@
+{
+    "source": {
+        "name": "PyPDFLoader",
+        "fields": {
+            "file_path": "sample.pdf"
+        }
+    },
+    "vectordb": {
+        "name": "chromadb",
+        "class_name": "llm_stack",
+        "embedding": {
+            "name": "HuggingFaceEmbeddings",
+            "fields": {
+                "model_name": "sentence-transformers/all-mpnet-base-v2",
+                "model_kwargs": { "device": "cpu" }
+            }
+        }
+    }
+}
