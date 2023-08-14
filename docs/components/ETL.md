@@ -28,7 +28,7 @@ Here is custom config.json for the Data loaders.
             "file_path": "users.csv"
         }
     },
-    "destination": {
+    "vectordb": {
         "name": "weaviate",
         "class_name": null,
         "fields": {
