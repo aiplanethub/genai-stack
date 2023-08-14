@@ -31,7 +31,7 @@ class HuggingFaceModel(BaseModel):
         return "".join(" \n " + argument for argument in args)
 
     def predict(self, query: str):
-        query = query.decode("utf-8")
+        query = self.preprocess(query)
         llm = self.model
 
         if self.model_config.get("chat", False):

@@ -1,4 +1,4 @@
-from llm_stack.config.loader import ConfigLoader
+from llm_stack.core import ConfigLoader
 from llm_stack.utils.importing import import_class
 from llm_stack.constants.model import (
     MODEL_CONFIG_KEY,

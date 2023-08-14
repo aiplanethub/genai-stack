@@ -2,7 +2,6 @@ import json
 import logging
 from pathlib import Path
 import typing
-
 from llm_stack.constants.config import GLOBAL_REQUIRED_FIELDS
 
 
@@ -10,7 +9,7 @@ class ConfigLoader:
     name: str
     config: str
 
-    def __init__(self, name: str = "ConfigLoader", config: str = None) -> None:
+    def __init__(self, name: str = "ConfigLoader", config: typing.Union[str, dict] = None) -> None:
         """Initializes the instances based on the name and config
 
         Args:
@@ -32,6 +31,10 @@ class ConfigLoader:
         """Loads the configs and can set as class attrs"""
         logging.info("Loading Configs")
 
+        if isinstance(self._config, dict):
+            self.config = self._config
+            return
+
         f = Path(self._config)
 
         if not f.exists():
@@ -47,14 +50,8 @@ class ConfigLoader:
 
     def parse_config(self, config_key: str, required_fields: typing.List[str] = None):
         config = self.config.get(config_key, None)
-        if not config:
+        if config is None:
             raise ValueError(f"{config_key} config not found.")
-
-        # Check if all the compulsory fields are present at config section level
-        if not all(comp_key in config.keys() for comp_key in GLOBAL_REQUIRED_FIELDS):
-            raise ValueError(
-                f"{config_key} config section does not have any or some of these compulsory fields {GLOBAL_REQUIRED_FIELDS}."
-            )
 
         config_fields = config.get("fields", {})
         absent_required_fields = []

@@ -5,13 +5,16 @@ import torch
 from langchain.memory import VectorStoreRetrieverMemory
 from langchain.schema import Document
 
-from llm_stack.config import ConfigLoader
+from llm_stack.core import BaseComponent, ConfigLoader
 from llm_stack.constants.model import MODEL_CONFIG_KEY
 from llm_stack.model.server import HttpServer
 from llm_stack.retriever import BaseRetriever
+from llm_stack.utils.defaults import get_default_retriever
+from llm_stack.etl.lang_loader import LangLoaderEtl
+from llm_stack.etl.utils import get_config_from_source_kwargs
 
 
-class BaseModel(HttpServer, ConfigLoader):
+class BaseModel(BaseComponent, HttpServer):
     module_name = "Model"
     config_key = MODEL_CONFIG_KEY
 
@@ -25,10 +28,18 @@ class BaseModel(HttpServer, ConfigLoader):
             ConfigLoader.__init__(self, self.module_name, config=config)
             self.parse_config(self.config_key, getattr(self, "required_fields", None))
         self.load(model_path=model_path)
-        self.retriever = retriever
+        if not retriever:
+            self.retriever = get_default_retriever()
+        else:
+            self.retriever = retriever
 
     def get_vector_query(self, query_type: str = "similarity"):
         pass
+
+    def preprocess(self, query: str):
+        if isinstance(query, bytes):
+            return query.decode("utf-8")
+        return query
 
     def get_memory(self):
         return VectorStoreRetrieverMemory(
@@ -52,22 +63,15 @@ class BaseModel(HttpServer, ConfigLoader):
     def get_device(self):
         return torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
-    @classmethod
-    def from_config(
-        cls,
-        config,
-        model_path: Optional[str] = None,
-        retriever: BaseRetriever = None,
-    ):
-        # TODO: Init a class without config file.
-        # cfg = ConfigLoader(cls.module_name, config=config)
-        # kls = cls(retriever, model_path)
-        # kls.config_fields = cfg.parse_config(
-        #     kls.config_key,
-        #     getattr(kls, "required_fields", None),
-        # )
-        # return kls
-        raise NotImplementedError
+    def add_source(self, source_type: str, source: dict):
+        vectordb = self.retriever.vectordb
+
+        etl = LangLoaderEtl(
+            config=get_config_from_source_kwargs(source_type=source_type, source=source), vectordb=vectordb
+        )
+        print("Storing everything to vectordb")
+        etl.run()
+        print("ETL Process completed")
 
     def _jsonify(self, result: dict) -> str:
         return json.dumps(result)

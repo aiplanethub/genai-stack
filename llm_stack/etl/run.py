@@ -1,7 +1,7 @@
 from llm_stack.constants.etl import PREBUILT_ETL_LOADERS, ETL_MODULE
 from llm_stack.utils.importing import import_class
 
-from llm_stack.config.loader import ConfigLoader
+from llm_stack.core import ConfigLoader
 
 
 def list_etl_loaders():

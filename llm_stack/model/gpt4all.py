@@ -38,8 +38,7 @@ class Gpt4AllModel(BaseModel):
         return "".join(" \n " + argument for argument in args)
 
     def predict(self, query: str):
-        with contextlib.suppress(AttributeError):
-            query = query.decode("utf-8")
+        query = self.preprocess(query)
         llm = self.model
 
         if getattr(self, "model_config", None) and self.model_config.get("chat", False):

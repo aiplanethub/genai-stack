@@ -5,6 +5,7 @@ from langchain.docstore.document import Document as LangDocument
 import logging
 
 from llm_stack.etl.base import EtlBase
+from llm_stack.core import BaseComponent
 from llm_stack.vectordb.base import BaseVectordb
 from llm_stack.utils.importing import import_class
 from llm_stack.constants.vectordb import VECTORDB_CONFIG_KEY
@@ -25,7 +26,7 @@ def list_langchain_loaders():
     )
 
 
-class LangLoaderEtl(EtlBase):
+class LangLoaderEtl(BaseComponent):
     def __init__(
         self,
         config: str,
@@ -36,7 +37,7 @@ class LangLoaderEtl(EtlBase):
         super().__init__(name=name, config=config)
 
     def load_from_source(self):
-        source = self.config_dict.get("source")
+        source = self.config.get("source")
         LoaderCls = import_class(
             f"langchain.document_loaders.{source.get('name')}",
         )
@@ -45,15 +46,6 @@ class LangLoaderEtl(EtlBase):
         return self.documents
 
     def load_into_destination(self, source_docs: List[LangDocument]):
-        destination = self.config_dict.get(VECTORDB_CONFIG_KEY)
-
-        class_name = destination.get("class_name")
-        if not class_name:
-            class_name = "llm_stack"
-            logger.info(f"Defaulted class name to {class_name}")
-
-        class_name = class_name.capitalize()
-
         self.vectordb.store_documents(source_docs)
         logger.info("Stored to vectordb")
 

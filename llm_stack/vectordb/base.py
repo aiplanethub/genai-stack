@@ -3,12 +3,12 @@ from typing import List, Any
 from langchain.docstore.document import Document
 from langchain.embeddings import HuggingFaceEmbeddings
 
-from llm_stack.config import ConfigLoader
+from llm_stack.core import BaseComponent
 from llm_stack.utils.importing import import_class
 from llm_stack.constants.vectordb import VECTORDB_CONFIG_KEY
 
 
-class BaseVectordb(ConfigLoader):
+class BaseVectordb(BaseComponent):
     module_name = "VectorDB"
     config_key = VECTORDB_CONFIG_KEY
 

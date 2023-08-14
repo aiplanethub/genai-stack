@@ -2,7 +2,7 @@ import json
 import logging
 from pathlib import Path
 
-from llm_stack.config.loader import ConfigLoader
+from llm_stack.core import ConfigLoader
 from .exception import LLMStackEtlException
 
 

@@ -7,7 +7,7 @@ import sys
 import click
 
 from llm_stack import __version__
-from llm_stack.config import ConfigLoader
+from llm_stack.core import ConfigLoader
 from llm_stack.constants import (
     CUSTOM_MODEL_KEY_NAME,
     MODEL_CONFIG_KEY,
