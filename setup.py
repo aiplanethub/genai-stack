@@ -18,7 +18,7 @@ requirements = [
     "llama-hub",
     "llama-index",
     "uvicorn==0.23.0",
-    "fastapi==0.100.0",
+    "fastapi>=0.95.2",
     "weaviate-client",
     "transformers",
     "gpt4all>=1.0.8",
