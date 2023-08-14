@@ -1,18 +1,12 @@
 {
     "model": {
-        "name": "gpt3.5",
-        "fields": {
-            "openai_api_key": "sk-xxxx"
-        }
+        "name": "gpt4all"
     },
     "retriever": {
         "name": "langchain"
     },
     "vectordb": {
         "name": "chromadb",
-        "class_name": "llm_stack",
-        "fields": {
-            "persistent_file_path": "<YOUR FILE PATH WHERE YOU WANT TO PERSIST>" 
-        }
+        "class_name": "llm_stack"
     }
 }

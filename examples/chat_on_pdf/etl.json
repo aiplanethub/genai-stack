@@ -8,9 +8,6 @@
     },
     "vectordb": {
         "name": "chromadb",
-        "class_name": "llm_stack",
-        "fields": {
-            "persistent_file_path": "<YOUR FILE PATH WHERE YOU WANT TO PERSIST>" 
-        }
+        "class_name": "llm_stack"
     }
 }

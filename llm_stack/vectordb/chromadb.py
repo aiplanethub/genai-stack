@@ -2,7 +2,7 @@ import typing, os
 import tempfile
 
 from langchain.vectorstores.chroma import Chroma as LangchainChroma
-from langchain.embeddings import OpenAIEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 from chromadb import PersistentClient
 from langchain.docstore.document import Document
 
@@ -27,7 +27,7 @@ class ChromaDB(BaseVectordb):
         return LangchainChroma(
             collection_name=self.vectordb_config.get("class_name"),
             client=self.create_client(),
-            embedding_function=OpenAIEmbeddings(openai_api_key=self.config.get("openai_api_key", "")),
+            embedding_function=self.get_embedding(),
         )
 
     def search(self, query: str) -> typing.List[Document]:
@@ -35,4 +35,6 @@ class ChromaDB(BaseVectordb):
         return langchain_faiss_client.similarity_search(query)
 
     def get_langchain_memory_client(self):
-        return LangchainChroma(collection_name=MEMORY_INDEX_NAME, client=self.create_client())
+        return LangchainChroma(
+            collection_name=MEMORY_INDEX_NAME, client=self.create_client(), embedding_function=self.get_embedding()
+        )

@@ -2,7 +2,6 @@ from typing import Any, Dict, List
 
 from langchain import document_loaders
 from langchain.docstore.document import Document as LangDocument
-from langchain.embeddings import OpenAIEmbeddings
 import logging
 
 from llm_stack.etl.base import EtlBase
@@ -44,17 +43,6 @@ class LangLoaderEtl(EtlBase):
         loader = LoaderCls(**source.get("fields"))
         self.documents = loader.load()
         return self.documents
-
-    def _get_embedding(self):
-        destination = self.config_dict.get("destination", {})
-        if embedding := destination.get("embedding"):
-            embedding_cls = import_class(
-                f"langchain.embeddings.{embedding.get('name')}",
-            )
-            self.embedding = embedding_cls(**embedding.get("fields"))
-        elif not self.embedding:
-            self.embedding = OpenAIEmbeddings(openai_api_key=embedding.get("openai_api_key", ""))
-        return self.embedding
 
     def load_into_destination(self, source_docs: List[LangDocument]):
         destination = self.config_dict.get(VECTORDB_CONFIG_KEY)

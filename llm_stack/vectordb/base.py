@@ -1,7 +1,10 @@
 from typing import List, Any
 
 from langchain.docstore.document import Document
+from langchain.embeddings import HuggingFaceEmbeddings
+
 from llm_stack.config import ConfigLoader
+from llm_stack.utils.importing import import_class
 from llm_stack.constants.vectordb import VECTORDB_CONFIG_KEY
 
 
@@ -34,6 +37,22 @@ class BaseVectordb(ConfigLoader):
     def store_documents(self, documents: List[Document]):
         client = self.get_langchain_client()
         client.add_documents(documents)
+
+    def _get_default_embedding(self):
+        model_name = "sentence-transformers/all-mpnet-base-v2"
+        model_kwargs = {"device": "cpu"}
+        encode_kwargs = {"normalize_embeddings": False}
+        return HuggingFaceEmbeddings(model_name=model_name, model_kwargs=model_kwargs, encode_kwargs=encode_kwargs)
+
+    def get_embedding(self):
+        if embedding := self.vectordb_config.get("embedding"):
+            embedding_cls = import_class(
+                f"langchain.embeddings.{embedding.get('name')}",
+            )
+            embedding = embedding_cls(**embedding.get("fields"))
+        elif not embedding:
+            embedding = self._get_default_embedding()
+        return embedding
 
     @classmethod
     def from_config(cls, config):

@@ -24,8 +24,8 @@ requirements = [
     "gpt4all>=1.0.8",
     "jsonschema==4.18.6",
     "Jinja2==3.1.2",
-    "faiss-cpu==1.7.4",
     "torch",
+    "sentence-transformers==2.2.2",
 ]
 
 test_requirements = []
