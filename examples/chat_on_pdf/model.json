@@ -9,11 +9,10 @@
         "name": "langchain"
     },
     "vectordb": {
-        "name": "weaviate",
-        "class_name": "Chatpdf",
+        "name": "chromadb",
+        "class_name": "llm_stack",
         "fields": {
-            "url": "http://localhost:8002/",
-            "text_key": "text"
+            "persistent_file_path": "<YOUR FILE PATH WHERE YOU WANT TO PERSIST>" 
         }
     }
 }
