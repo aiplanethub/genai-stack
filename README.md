@@ -12,13 +12,35 @@ Yet, with every disruptive innovation, the uncharted territory presents both thr
 
 At AI Planet, we are changing the narrative by Democratizing AI. We believe this will empower and allow companies of all sizes to innovate, and harness the power of AI without compromising on data privacy and security. We provide secure and private AI on your enterprise IT infrastructure, ensuring seamless integration with your existing systems and processes.
 
+## Setup environment
+
+### Create python environment
+
+```bash
+python3 -m venv env
+```
+
+### Activate environment
+
+**For mac & Linux**
+
+```bash
+source env/bin/activate
+```
+
+**For windows (PowerShell)**
+
+```bash
+env\Scripts\Activate.ps1
+```
+
+**Note**: For more information about python environmet please visit the docs [here](https://docs.python.org/3/library/venv.html#creating-virtual-environments).
+
 ## Installation
 
 ```bash
 pip install git+https://github.com/aiplanethub/llmstack.git
 ```
-
-Note: Creating a virtual environment is not necessary but we recommend it.
 
 ## How to run an LLM?
 
