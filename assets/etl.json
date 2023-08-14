@@ -1,16 +1,14 @@
 {
     "etl": "langchain",
     "source": {
-        "name": "CSVLoader",
+        "name": "PyPDFLoader",
         "fields": {
-            "file_path": "users.csv"
+            "file_path": "/home/samjoel/Dphi/llaim/sandbox/private/TrainTicket-31-Mar-2023.pdf"
         }
     },
-    "destination": {
-        "name": "weaviate",
-        "class_name": null,
-        "fields": {
-            "url": "http://localhost:8002/"
-        }
+    "openai_api_key": "sk-xxx",
+    "vectordb": {
+        "name": "chromadb",
+        "class_name": "llm_stack"
     }
 }
