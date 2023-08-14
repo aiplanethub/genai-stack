@@ -26,6 +26,7 @@ requirements = [
     "Jinja2==3.1.2",
     "torch",
     "chromadb==0.4.5",
+    "pypdf==3.14.0",
     "sentence-transformers==2.2.2",
 ]
 
