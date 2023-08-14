@@ -125,10 +125,6 @@ def etl(config_file):
     """Running an ETL process"""
     config_loader = ConfigLoader(config=config_file)
 
-    if not config_loader.get_config_section("openai_api_key"):
-        openai_key_config = {"openai_api_key": "<YOUR OPENAI API KEY>"}
-        raise ValueError(f"Please provide your OPENAI api key in your config file like {openai_key_config}")
-
     try:
         vectordb = get_vectordb_class(
             config_loader.get_config_section_name(
