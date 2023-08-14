@@ -214,7 +214,6 @@ The `etl.json` file specifies how data is extracted, transformed, and loaded int
                     "file_path": "/your_path/<file_name>.pdf"
                 }
             },
-            "openai_api_key": "sk-xxx",
             "vectordb": {
                 "name": "chromadb",
                 "class_name": "llm_stack"
@@ -230,10 +229,8 @@ The `etl.json` file specifies how data is extracted, transformed, and loaded int
         - _name_: should the Loaderclass from the required loader you have added above(key `etl`)
 
         - _fields_: should be a nested dictionary with the fields required for the loader.
-
-    3.1.3. __openai_api_key_ : in fields holds the API key for OpenAI.
-
-    3.1.4. Key _vectordb_ holds a json to know about the destination of that data i.e., Vector database.
+  
+    3.1.3. Key _vectordb_ holds a json to know about the destination of that data i.e., Vector database.
        - _name_: should be the name of the open source Vector database, for e.g., ChromaDB and Weaviate
        - _class_name_: a namespace for the data to store in.
     
