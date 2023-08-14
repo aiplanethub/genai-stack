@@ -25,6 +25,7 @@ requirements = [
     "jsonschema==4.18.6",
     "Jinja2==3.1.2",
     "torch",
+    "chromadb==0.4.5",
     "sentence-transformers==2.2.2",
 ]
 
