@@ -198,46 +198,45 @@ The `docker-compose.yaml` file defines a multi-container Docker application. It'
 
 The `etl.json` file specifies how data is extracted, transformed, and loaded into your application's vector store (Weaviate).
 - ETL: ETL stands for Extract, Transform, Load. It's a process used to gather data from various sources, transform it to fit your needs, and then load it into a database or storage system.
+  
 - Source: This section defines the source of data for the ETL process. In your case, you're using a loader named PyPDFLoader to load data from a PDF file.
-- Destination: This section defines where the transformed data will be loaded. The data is loaded into Weaviate, using the class chatpdf and associating it with specific fields.
+  
+- Destination (VectorDB): This section defines where the transformed data will be loaded. The data is loaded into ChromaDB Weaviate, using the class chatpdf and associating it with specific fields.
 
     **etl.json:**
 
     ```json
-    {
-        "etl": "langchain",
-        "source": {
-            "name": "PyPDFLoader",
-            "fields": {
-                "file_path": "<absolute path to the pdf file>"
-            }
-        },
-        "destination": {
-            "name": "weaviate",
-            "class_name": "chatpdf",
-            "fields": {
-                "url": "http://localhost:8002/",
-                "text_key": "pdf_content"
+        {
+            "etl": "langchain",
+            "source": {
+                "name": "PyPDFLoader",
+                "fields": {
+                    "file_path": "/your_path/<file_name>.pdf"
+                }
+            },
+            "openai_api_key": "sk-xxx",
+            "vectordb": {
+                "name": "chromadb",
+                "class_name": "llm_stack"
             }
         }
-    }
     ```
 
     3.1.1. _etl_ in the above json file is the key used to select a the type of etl loader to use.
     Currently we support langchain and llamahub loaders.
 
-    3.1.2. _class_name_ a namespace for the data to store in.
+    3.1.2. Key _source_ holds a json to know about the source to load the data from.
 
-    3.1.3. Key _source_ holds a json to know about the source to load the data from.
+        - _name_: should the Loaderclass from the required loader you have added above(key `etl`)
 
-    _name_: should the Loaderclass from the required loader you have added above(key `etl`)
+        - _fields_: should be a nested dictionary with the fields required for the loader.
 
-    _fields_: should be a nested dictionary with the fields required for the loader.
+    3.1.3. __openai_api_key_ : in fields holds the API key for OpenAI.
 
-    _url_: in fields, this should have the value to the weavaite url.
-
-    _text_key_: A column name in the vector db to store the data in the namespace(class_name).
-
+    3.1.4. Key _vectordb_ holds a json to know about the destination of that data i.e., Vector database.
+       - _name_: should be the name of the open source Vector database, for e.g., ChromaDB and Weaviate
+       - _class_name_: a namespace for the data to store in.
+    
     **model.json:**
 
 The `model.json` file configures the components of your LLM stack, including the language model, retriever, and vector database (Weaviate).
