@@ -49,17 +49,6 @@ def _setup_vectordb_memory(self, client: weaviate.Client):
 
 LLM stack furthermore supports ChromaDB VectorDB that helps to store embeddings in memory and search.
 
-```python
-    def search(self, query: str) -> typing.List[Document]:
-        langchain_faiss_client = self.get_langchain_client()
-        return langchain_faiss_client.similarity_search(query)
-
-    def get_langchain_memory_client(self):
-        return LangchainChroma(
-            collection_name=MEMORY_INDEX_NAME, client=self.create_client(), embedding_function=self.get_embedding()
-        )
-```
-
 Currently LLM Stack supports only ChromaDB and Weaviate for the Vector Database. In the coming few days, we will also integrate Milvus and Qdrant. 
 
 Once the similarity search is performed within the VectorDB, the retrieved data is passed on to the Retrieval class. The Retrieval class is responsible for further processing and presenting the results to the user.
