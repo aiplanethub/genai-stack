@@ -32,7 +32,10 @@ class Gpt4AllModel(BaseModel):
         GPT4All(model_name=model, model_path=str(model_path))
         model_path = os.path.join(cwd, model_path, model)
         logger.info(f"Model {model} at {model_path}")
-        self.model = LangChainGpt4aAll(model=model_path)
+        self.model = LangChainGpt4aAll(
+            model=model_path,
+            max_tokens=self.model_config_fields("max_tokens", 2500),
+        )
 
     def get_chat_history(self, *args, **kwargs):
         return "".join(" \n " + argument for argument in args)
@@ -74,24 +77,20 @@ class Gpt4AllModel(BaseModel):
         return json.dumps(result)
 
     def parse_chat_result(self, chat_result: dict):
-        return self._jsonify(
-            {
-                "result": chat_result["answer"],
-                "source_documents": self._parse_source_documents(
-                    chat_result["source_documents"],
-                ),
-            }
-        )
+        return {
+            "result": chat_result["answer"],
+            "source_documents": self._parse_source_documents(
+                chat_result["source_documents"],
+            ),
+        }
 
     def parse_qa_result(self, qa_result: dict):
-        return self._jsonify(
-            {
-                "result": qa_result["result"],
-                "source_documents": self._parse_source_documents(
-                    qa_result["source_documents"],
-                ),
-            }
-        )
+        return {
+            "result": qa_result["result"],
+            "source_documents": self._parse_source_documents(
+                qa_result["source_documents"],
+            ),
+        }
 
     def _parse_source_documents(self, source_documents: List[Document]):
         return [
