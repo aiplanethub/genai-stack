@@ -29,7 +29,7 @@ def get_config_from_source_kwargs(source_type: str, source: typing.Union[str, di
     fields = {}
 
     if isinstance(source, str):
-        fields[source_map["default_kwarg"]] = source_map
+        fields[source_map["default_kwarg"]] = source
     elif isinstance(source, dict):
         fields.update(source)
 
