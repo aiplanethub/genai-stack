@@ -1,7 +1,7 @@
 # LLM Stack
 
 [![PyPI](https://img.shields.io/pypi/v/llmstack)](https://pypi.org/project/llmstack/)
-[![Discord](https://dcbadge.vercel.app/api/server/6PzXDgEjG5?style=flat)](https://discord.gg/4aWV7He2QU)
+[![Discord](https://dcbadge.vercel.app/api/server/4aWV7He2QU?style=flat)](https://discord.gg/4aWV7He2QU)
 [![Twitter](https://img.shields.io/twitter/follow/aiplanet4all)](https://twitter.com/embedchain)
 [![Open in Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/drive/1R-vnA0X5gTo_era8YChOvhFMVTVu7K-8?usp=sharing)
 
