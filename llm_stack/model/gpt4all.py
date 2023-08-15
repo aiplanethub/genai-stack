@@ -34,7 +34,7 @@ class Gpt4AllModel(BaseModel):
         logger.info(f"Model {model} at {model_path}")
         self.model = LangChainGpt4aAll(
             model=model_path,
-            max_tokens=self.model_config_fields("max_tokens", 2500),
+            max_tokens=self.model_config_fields.get("max_tokens", 2500),
         )
 
     def get_chat_history(self, *args, **kwargs):
