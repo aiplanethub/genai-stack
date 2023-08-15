@@ -5,18 +5,32 @@
 [![Twitter](https://img.shields.io/twitter/follow/aiplanet4all)](https://twitter.com/embedchain)
 [![Open in Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/drive/1R-vnA0X5gTo_era8YChOvhFMVTVu7K-8?usp=sharing)
 
-LLM Stack is an End to End LLM Framework.
+LLM Stack is an end-to-end framework for the integration of LLMs into any application. It comes with everything you need for data extraction/loading, vector embeddings, vector stores, LLMs, model deployment and serving.
 
-## Motivation
+## Getting started on Colab 
+Try out a quick demo of llmstack on Google Colab:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1R-vnA0X5gTo_era8YChOvhFMVTVu7K-8?usp=sharing)
 
+## Quick install
+```bash
+pip install git+https://github.com/aiplanethub/llmstack.git
+```
 
-The revolution of Large Language Models has sparked a monumental revolution in the field of AI, enabling us into a future of boundless possibilities. The global market for AI in enterprise and business is projected to skyrocket to an astonishing $2.8 trillion by the year 2030, ushering in an era of unprecedented growth. As more and more enterprises recognize the transformative potential of AI, they eagerly embrace its power, reshaping industries, and unlocking new frontiers of innovation. This revolution in return brings the risk of Data Privacy.
+## Documentation
+The documentation for llmstack can be found at [llmstack.aiplanet.com](https://llmstack.aiplanet.com).
 
-Yet, with every disruptive innovation, the uncharted territory presents both thrilling opportunities and puzzling unmet needs. The adoption of AI also conceals unknown risks, daring us to venture forth boldly while ensuring we remain vigilant to identify and mitigate potential pitfalls. The challenge of integrating AI tools seamlessly into existing infrastructures poses a test of adaptability and ingenuity. And, as the digital landscape expands, safeguarding data security becomes more critical.
+## Technical Architecture (design)
+Add the technical arch diagram here.
 
-## About
+## What is llmstack all about?
 
-At AI Planet, we are changing the narrative by Democratizing AI. We believe this will empower and allow companies of all sizes to innovate, and harness the power of AI without compromising on data privacy and security. We provide secure and private AI on your enterprise IT infrastructure, ensuring seamless integration with your existing systems and processes.
+## How llmstack can be help? (link to the blog)
+
+## Contribution guidelines
+
+## Citation
+
+--------------
 
 ## Setup environment
 
