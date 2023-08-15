@@ -1,4 +1,3 @@
-
 from langchain import LLMChain, PromptTemplate
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chat_models import ChatOpenAI
@@ -55,24 +54,20 @@ class OpenAIGpt35Model(BaseModel):
         return self.parse_chat_result(results)
 
     def parse_chat_result(self, chat_result: dict):
-        return self._jsonify(
-            {
-                "result": chat_result["answer"],
-                "source_documents": self._parse_source_documents(
-                    chat_result["source_documents"],
-                ),
-            }
-        )
+        return {
+            "result": chat_result["answer"],
+            "source_documents": self._parse_source_documents(
+                chat_result["source_documents"],
+            ),
+        }
 
     def parse_qa_result(self, qa_result: dict):
-        return self._jsonify(
-            {
-                "result": qa_result["result"],
-                "source_documents": self._parse_source_documents(
-                    qa_result["source_documents"],
-                ),
-            }
-        )
+        return {
+            "result": qa_result["result"],
+            "source_documents": self._parse_source_documents(
+                qa_result["source_documents"],
+            ),
+        }
 
     def parse_generations(self, generation_lst: list):
         """
