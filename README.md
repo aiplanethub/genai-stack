@@ -24,7 +24,7 @@ pip install git+https://github.com/aiplanethub/llmstack.git
 The documentation for LLM Stack can be found at [llmstack.aiplanet.com](https://llmstack.aiplanet.com).
 
 ## LLM Stack Workflow
-
+![Copy of Copy of Dark AI Planet card (1280 × 720 px) (1920 × 900 px) (2160 × 900 px) (2160 × 1170 px) (3)](https://github.com/aiplanethub/llmstack/assets/96718666/2ecba830-aebb-4b97-9edf-1ca4bb0c1545)
 
 
 ## What is LLM Stack all about?
