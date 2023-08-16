@@ -1,9 +1,68 @@
 # 📘 Default Data Types
 
-By default, we support the following data types:
+By default, the LLM stack supports the following data types:
 
-1. CSV
-2. PDF
-3. Web
-4. JSON
-5. Markdown
+### CSV
+
+To use CSV as a source, use the data type (the first argument to the `add_source()` method) as `csv`. Eg:&#x20;
+
+```python
+from llm_stack.model import OpenAIGpt35Model
+
+model = OpenAIGpt35Model.from_kwargs(
+ fields={"openai_api_key": "Paste your Open AI key"}
+)
+model.add_source("csv", "valid_csv_path_or_url")
+```
+
+### PDF
+
+To use pdf as a source, use the data type as `pdf`. Eg:
+
+```python
+from llm_stack.model import OpenAIGpt35Model
+
+model = OpenAIGpt35Model.from_kwargs(
+ fields={"openai_api_key": "Paste your Open AI key"}
+)
+model.add_source("pdf", "valid_pdf_path_or_url")
+```
+
+### Web
+
+To use the web as a source, use the data type as `web`. Eg:
+
+```python
+from llm_stack.model import OpenAIGpt35Model
+
+model = OpenAIGpt35Model.from_kwargs(
+ fields={"openai_api_key": "Paste your Open AI key"}
+)
+model.add_source("web", "valid_web_url")
+```
+
+### JSON
+
+To use JSON as a source, use the data type as `json`. Eg:
+
+```python
+from llm_stack.model import OpenAIGpt35Model
+
+model = OpenAIGpt35Model.from_kwargs(
+ fields={"openai_api_key": "Paste your Open AI key"}
+)
+model.add_source("json", "valid_json_path_or_url")
+```
+
+### Markdown
+
+To use markdown as a source, use the data type as `markdown`. Eg:
+
+```python
+from llm_stack.model import OpenAIGpt35Model
+
+model = OpenAIGpt35Model.from_kwargs(
+ fields={"openai_api_key": "Paste your Open AI key"}
+)
+model.add_source("markdown", "valid_markdown_path_or_url")
+```
