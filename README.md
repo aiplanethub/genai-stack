@@ -51,3 +51,12 @@ LLM Stack is an end-to-end framework designed to integrate large language models
 LLM Stack thrives in the rapidly evolving landscape of open-source projects. We wholeheartedly welcome contributions in various capacities, be it through innovative features, enhanced infrastructure, or refined documentation.
 
 For a comprehensive guide on the contribution process, please click [here](https://app.gitbook.com/o/-Mg1afEUq3HypLm46Vbq/s/fWJ1RLdoXjMtPiYoXUMB/getting-started/installation).
+
+## Acknowledgements
+
+* [LangChain](https://github.com/langchain-ai/langchain)
+* [LlamaIndex](https://github.com/jerryjliu/llama_index)
+* [Weaviate](https://github.com/weaviate/weaviate)
+* [ChromaDB](https://github.com/chroma-core/chroma)
+  
+and the entire OpenSource community.
