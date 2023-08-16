@@ -16,7 +16,7 @@ The building blocks of the Data loaders are:
 **Data loader**: Langchain loader and Llama Hub loader. 
 **Destination data** are the Vector Databases e.g., Weaviate, Qdrant and Milvus. 
 
-Currently we support only Weaviate as the destination Vector database. But in the next update we will get to see Qdrant and Milvus implementations. 
+Currently LLM Stack supports only ChromaDB and Weaviate for the Vector Database. In the coming few days, we will also integrate Milvus and Qdrant.
 
 Here is custom config.json for the Data loaders. 
 
