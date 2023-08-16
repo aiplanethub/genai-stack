@@ -366,7 +366,7 @@ Check the components for detailed explaination on the components:
 ### Citation
 
 If you use LLM Stack in your research, please cite using the following
-[citation](./CITATION.cff:
+[citation](./CITATION.cff):
 
 ```bibtex
 @software{LLM Stack,
