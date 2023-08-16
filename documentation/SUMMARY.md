@@ -13,6 +13,10 @@
   * [🔗 ETL: Extract transform and load](getting-started/our-components/etl-extract-transform-and-load.md)
   * [🔮 VectorDB](getting-started/our-components/vectordb.md)
   * [📤 Retrieval](getting-started/our-components/retrieval.md)
+  * [🦄 Models/LLMs](getting-started/our-components/models-llms/README.md)
+    * [OpenAI](getting-started/our-components/models-llms/openai.md)
+    * [GPT4All](getting-started/our-components/models-llms/gpt4all.md)
+    * [Custom Model](getting-started/our-components/models-llms/custom-model.md)
   * [🪅 Model/LLM](getting-started/our-components/model-llm.md)
 
 ## Fundamentals
