@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: 'AI Planet'
+message: >-
+  If you use this software, please cite it using this
+  metadata.
+type: software
+authors:
+  - given-names: Shreehari
+    family-names: Vaasistha
+    email: shreehari@aiplanet.com
+  - given-names: Sam
+    family-names: Joel
+    email: sam@aiplanet.com
+  - given-names: Tarun
+    family-names: Jain
+    email: Tarun@aiplanet.com
+repository-code: 'https://github.com/aiplanethub/llmstack'
+url: 'https://aiplanet.com/'
+license: Apache-2.0

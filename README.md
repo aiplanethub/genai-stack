@@ -7,19 +7,23 @@
 
 LLM Stack is an end-to-end framework for the integration of LLMs into any application. It comes with everything you need for data extraction/loading, vector embeddings, vector stores, LLMs, model deployment and serving.
 
-## Getting started on Colab 
+## Getting started on Colab
+
 Try out a quick demo of llmstack on Google Colab:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1R-vnA0X5gTo_era8YChOvhFMVTVu7K-8?usp=sharing)
 
 ## Quick install
+
 ```bash
 pip install git+https://github.com/aiplanethub/llmstack.git
 ```
 
 ## Documentation
+
 The documentation for llmstack can be found at [llmstack.aiplanet.com](https://llmstack.aiplanet.com).
 
 ## Technical Architecture (design)
+
 Add the technical arch diagram here.
 
 ## What is llmstack all about?
@@ -30,7 +34,7 @@ Add the technical arch diagram here.
 
 ## Citation
 
---------------
+---
 
 ## Setup environment
 
@@ -121,6 +125,7 @@ Note: Here we will be running just an LLM Model without any vector stores. We wi
 Follow these steps to set up and run the Language Model (LLM) Stack using an HTTP server:
 
 #### Step 1: Starting the LLM Model
+
 Open your terminal and run the following command to start the LLM model using the llmstack package:
 
     ```bash
@@ -146,7 +151,7 @@ Now you should see a response like below.
     INFO:     Application startup complete.
     INFO:     Uvicorn running on http://127.0.0.1:8082 (Press CTRL+C to quit)
     ```
-    
+
 #### Step 2: Testing the Model via Python Script
 
 In a separate terminal or code editor, use the following Python script to test the LLM model by making an HTTP request to its predict endpoint:
@@ -156,6 +161,7 @@ import requests
 response = requests.post("http://localhost:8082/predict/",data="Python program to add two numbers.")
 print(response.text)
 ```
+
 This script sends a text input to the model and prints the response from the model.
 
 ## How to run LLM Stack with a Vector Store?
@@ -168,6 +174,7 @@ Here, we will create a **ChatWithPdf** python application.
 To enhance the LLM Stack's capabilities, you can integrate it with a vector store (Weaviate). Follow these steps:
 
 Before proceeding, ensure you have the following tools installed:
+
 1. [Docker](https://www.docker.com/)
 2. [Docker compose](https://docs.docker.com/compose/install/)
 
@@ -175,18 +182,19 @@ Before proceeding, ensure you have the following tools installed:
 
 We have a read-to-use docker compose file, which we will use for setup of Weaviate vector store here. Referring to the original documentation is preferrable.
 
-#### 1.  Create a `.env` file with the below contents
+#### 1. Create a `.env` file with the below contents
 
     ```bash
     PORT=8080
     OPENAI_APIKEY=sk-xxx
     ```
+
 Replace sk-xxx with your own `OPENAI_API_KEY`.
 
-- PORT: This variable specifies the port number that your application will use to listen for incoming connections. Applications running on your system communicate through specific ports, much like doors in a building.
-- OPENAI_APIKEY: This variable likely holds your OpenAI API key. An API key is a unique identifier that authenticates your application when interacting with OpenAI's services. It's used to ensure secure and authorized access.
+-   PORT: This variable specifies the port number that your application will use to listen for incoming connections. Applications running on your system communicate through specific ports, much like doors in a building.
+-   OPENAI_APIKEY: This variable likely holds your OpenAI API key. An API key is a unique identifier that authenticates your application when interacting with OpenAI's services. It's used to ensure secure and authorized access.
 
-#### 2.  Create a `docker-compose.yaml` file with the below contents and run the command `docker compose up -d`
+#### 2. Create a `docker-compose.yaml` file with the below contents and run the command `docker compose up -d`
 
 The `docker-compose.yaml` file defines a multi-container Docker application. It's used to run your entire application stack, including Weaviate and other necessary services.
 
@@ -214,31 +222,30 @@ The `docker-compose.yaml` file defines a multi-container Docker application. It'
     weaviate_data:
     ```
 
-#### 3.  Create a `etl.json` and `model.json` files with the following contents.
+#### 3. Create a `etl.json` and `model.json` files with the following contents.
 
 The `etl.json` file specifies how data is extracted, transformed, and loaded into your application's vector store (Weaviate).
-- ETL: ETL stands for Extract, Transform, Load. It's a process used to gather data from various sources, transform it to fit your needs, and then load it into a database or storage system.
-  
-- Source: This section defines the source of data for the ETL process. In your case, you're using a loader named PyPDFLoader to load data from a PDF file.
-  
-- Destination (VectorDB): This section defines where the transformed data will be loaded. The data is loaded into ChromaDB Weaviate, using the class chatpdf and associating it with specific fields.
+
+-   ETL: ETL stands for Extract, Transform, Load. It's a process used to gather data from various sources, transform it to fit your needs, and then load it into a database or storage system.
+-   Source: This section defines the source of data for the ETL process. In your case, you're using a loader named PyPDFLoader to load data from a PDF file.
+-   Destination (VectorDB): This section defines where the transformed data will be loaded. The data is loaded into ChromaDB Weaviate, using the class chatpdf and associating it with specific fields.
 
     **etl.json:**
 
     ```json
-        {
-            "etl": "langchain",
-            "source": {
-                "name": "PyPDFLoader",
-                "fields": {
-                    "file_path": "/your_path/<file_name>.pdf"
-                }
-            },
-            "vectordb": {
-                "name": "chromadb",
-                "class_name": "llm_stack"
+    {
+        "etl": "langchain",
+        "source": {
+            "name": "PyPDFLoader",
+            "fields": {
+                "file_path": "/your_path/<file_name>.pdf"
             }
+        },
+        "vectordb": {
+            "name": "chromadb",
+            "class_name": "llm_stack"
         }
+    }
     ```
 
     3.1.1. _etl_ in the above json file is the key used to select a the type of etl loader to use.
@@ -246,14 +253,12 @@ The `etl.json` file specifies how data is extracted, transformed, and loaded int
 
     3.1.2. Key _source_ holds a json to know about the source to load the data from.
 
-        - _name_: should the Loaderclass from the required loader you have added above(key `etl`)
+          - _name_: should the Loaderclass from the required loader you have added above(key `etl`)
 
-        - _fields_: should be a nested dictionary with the fields required for the loader.
-  
-    3.1.3. Key _vectordb_ holds a json to know about the destination of that data i.e., Vector database.
-       - _name_: should be the name of the open source Vector database, for e.g., ChromaDB and Weaviate
-       - _class_name_: a namespace for the data to store in.
-    
+          - _fields_: should be a nested dictionary with the fields required for the loader.
+
+    3.1.3. Key _vectordb_ holds a json to know about the destination of that data i.e., Vector database. - _name_: should be the name of the open source Vector database, for e.g., ChromaDB and Weaviate - _class_name_: a namespace for the data to store in.
+
     **model.json:**
 
 The `model.json` file configures the components of your LLM stack, including the language model, retriever, and vector database (Weaviate).
@@ -298,19 +303,19 @@ The `model.json` file configures the components of your LLM stack, including the
 
     **NOTE:** Refer to [components docs](https://github.com/aiplanethub/llmstack/blob/main/docs/components) to know more about the components of llmstack.
 
-#### 4.  Run the etl process with command below, which would run the etl process.
+#### 4. Run the etl process with command below, which would run the etl process.
 
 These are the final steps to run your configured ETL process and start the LLM model along with the components you've set up.
 
-**ETL Run**: By running the ETL process (``llmstack etl --config_file etl.json``), you're initiating the extraction, transformation, and loading of data from your defined source to the destination in the vector database.
+**ETL Run**: By running the ETL process (`llmstack etl --config_file etl.json`), you're initiating the extraction, transformation, and loading of data from your defined source to the destination in the vector database.
 
     ```bash
     llmstack etl --config_file etl.json
     ```
 
-#### 5.  Run the model with the command below
+#### 5. Run the model with the command below
 
-**Start Model**: The final step is to start the LLM model along with its configured components using ``llmstack start --config_file ./model.json``.
+**Start Model**: The final step is to start the LLM model along with its configured components using `llmstack start --config_file ./model.json`.
 
     ```bash
     llmstack start --config_file ./model.json
@@ -357,3 +362,17 @@ Check the components for detailed explaination on the components:
 -   [VectorDB](https://github.com/aiplanethub/llmstack/blob/main/docs/components/VectorDB.md)
 -   [Retrieval](https://github.com/aiplanethub/llmstack/blob/main/docs/components/Retreiver.md)
 -   [Model](https://github.com/aiplanethub/llmstack/blob/main/docs/components/Model.md)
+
+### Citation
+
+If you use LLM Stack in your research, please cite using the following
+[citation](./CITATION.cff:
+
+```bibtex
+@software{LLM Stack,
+author = {Shreehari, Sam, Tarun},
+license = {Apache-2.0},
+title = {{AI Planet}},
+url = {https://github.com/aiplanethub/llmstack}
+}
+```
