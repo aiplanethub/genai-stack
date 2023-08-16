@@ -1,6 +1,5 @@
-# LLM Stack
+# LLM Stack (Your data, your LLM, your Control)
 
-[![PyPI](https://img.shields.io/pypi/v/llmstack)](https://pypi.org/project/llmstack/)
 [![Discord](https://dcbadge.vercel.app/api/server/4aWV7He2QU?style=flat)](https://discord.gg/4aWV7He2QU)
 [![Twitter](https://img.shields.io/twitter/follow/aiplanet4all)](https://twitter.com/aiplanet4all)
 [![Open in Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/drive/1R-vnA0X5gTo_era8YChOvhFMVTVu7K-8?usp=sharing)
@@ -31,12 +30,15 @@ The documentation for LLM Stack can be found at [llmstack.aiplanet.com](https://
 
 LLM Stack is an end-to-end framework designed to integrate large language models (LLMs) into applications seamlessly. The purpose is to bridge the gap between raw data and actionable insights or responses that applications can utilize, leveraging the power of LLMs.
 
+In short, it orchestrates and streamlines your Generative AI Stack development journey. From the initial steps of ETL (Extract, Transform, Load) data processing to the refined LLM inference stage, LLM Stack revolutionizes the way you harness the potential of AI, ensuring data privacy, domain-driven, and ensuring factuality without the pitfalls of hallucinations commonly associated with traditional LLMs.
+
 ## How can LLM Stack be helpful?
 
-- Integration Ease: LLM Stack offers a unified structure that allows developers to incorporate large language models into their applications without having to start from scratch.
-- Data Utilization: By converting raw data into vector embeddings, it ensures that the valuable information within your data is optimally used for generating insights.
-- Enhanced Search: Using embeddings and retrieval mechanisms, it provides a way to search through vast datasets quickly and accurately.
-- Consistency: By using an established framework like LLM Stack, developers can ensure that their implementation is consistent with best practices and is optimized for performance.
+
+1. *ETL Simplified:* LLM Stack acts as the guiding hand that navigates the complex landscape of data processing. 
+2. *Hallucination-Free Inference:* Bid adieu to the common headaches associated with AI-generated content filled with hallucinations. Our orchestrator’s unique architecture ensures that the LLM inference stage produces outputs rooted in reality and domain expertise. This means you can trust the information generated and confidently utilize it for decision-making, research, and communication purposes.
+3. *Seamless Integration:* Integrating the LLM Stack into your existing workflow is straight forward whether you’re a seasoned AI developer or just starting out.
+4. *Customization and Control:* Tailor the ETL processes, vector databases, fine-tune inference parameters, and calibrate the system to meet your project’s unique requirements.
 
 ## Use Cases:
 
