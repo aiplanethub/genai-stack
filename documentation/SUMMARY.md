@@ -18,6 +18,7 @@
     * [GPT4All](getting-started/our-components/models-llms/gpt4all.md)
     * [Custom Model](getting-started/our-components/models-llms/custom-model.md)
   * [🪅 Model/LLM](getting-started/our-components/model-llm.md)
+* [📄 Data Extraction and Loading](getting-started/data-extraction-and-loading.md)
 
 ## Fundamentals
 
