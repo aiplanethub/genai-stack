@@ -2,13 +2,12 @@
 
 * [👋 LLM STACK](README.md)
 
-## Getting Started
+## 👋 Getting Started
 
 * [📚 Introduction](getting-started/introduction.md)
 * [🚀 Quickstart with colab](getting-started/quickstart-with-colab.md)
 * [📘 Default Data Types](getting-started/default-data-types.md)
 * [🪛 Installation](getting-started/installation.md)
-* [💡 Installation](getting-started/installation-1.md)
 * [✨ Our Components](getting-started/our-components/README.md)
   * [🔗 ETL: Extract transform and load](getting-started/our-components/etl-extract-transform-and-load.md)
   * [🔮 VectorDB](getting-started/our-components/vectordb.md)
@@ -18,8 +17,21 @@
     * [GPT4All](getting-started/our-components/models-llms/gpt4all.md)
     * [Custom Model](getting-started/our-components/models-llms/custom-model.md)
   * [🪅 Model/LLM](getting-started/our-components/model-llm.md)
-* [📄 Data Extraction and Loading](getting-started/data-extraction-and-loading.md)
-* [🏪 Vector Database](getting-started/vector-database.md)
+
+***
+
+* [Page](page.md)
+
+## 💡 Data Loading - ETL
+
+* [Data Loaders](data-loading-etl/data-loaders.md)
+* [Supported Data Loaders](data-loading-etl/supported-data-loaders.md)
+* [How to use Data Loaders?](data-loading-etl/how-to-use-data-loaders.md)
+
+## 🪅 Vector Database
+
+* [Supported Vector Databases](vector-database/supported-vector-databases.md)
+* [How to use Vector Database?](vector-database/how-to-use-vector-database.md)
 
 ## Fundamentals
 

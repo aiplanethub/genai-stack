@@ -1,4 +1,4 @@
-# 🏪 Vector Database
+# How to use Vector Database?
 
 ## Quickstart
 

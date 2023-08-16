@@ -20,8 +20,8 @@ AI Planet provides an End-to-End orchestration. We oversee AI projects from ince
 
 ## Quick links
 
-{% content-ref url="getting-started/installation-1.md" %}
-[installation-1.md](getting-started/installation-1.md)
+{% content-ref url="broken-reference" %}
+[Broken link](broken-reference)
 {% endcontent-ref %}
 
 {% content-ref url="getting-started/our-components/" %}
