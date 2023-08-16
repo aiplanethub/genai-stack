@@ -3,11 +3,17 @@ import tempfile
 
 from langchain.vectorstores.chroma import Chroma as LangchainChroma
 from langchain.embeddings import HuggingFaceEmbeddings
-from chromadb import PersistentClient
 from langchain.docstore.document import Document
 
 from .base import BaseVectordb
 
+try:
+    import chromadb
+except RuntimeError:
+    from llm_stack.vectordb.utils import use_pysqlite3
+
+    use_pysqlite3()
+    import chromadb
 
 MEMORY_INDEX_NAME = "MemoryIndex"
 
@@ -19,7 +25,7 @@ class ChromaDB(BaseVectordb):
         return os.path.join(tempfile.gettempdir(), "llmstack")
 
     def create_client(self):
-        return PersistentClient(
+        return chromadb.PersistentClient(
             path=self.vectordb_config_fields.get("persistent_file_path") or self._get_persistent_path()
         )
 
