@@ -12,7 +12,7 @@ LLM Stack has two main components level abstraction:
 
 Check the components for detailed explaination on the components:
 
-* [ETL](../../docs/components/ETL.md)
-* [VectorDB](../../docs/components/VectorDB.md)
-* [Retrieval](../../docs/components/Retreiver.md)
-* [Model](../../docs/components/Model.md)
+-   [ETL](https://llmstack.aiplanet.com/components/data-extraction-and-loading)
+-   [VectorDB](https://llmstack.aiplanet.com/components/vector-database)
+-   [Retrieval](https://llmstack.aiplanet.com/components/retrieval)
+-   [Model](https://llmstack.aiplanet.com/components/llms)
