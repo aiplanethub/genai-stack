@@ -1,10 +1,10 @@
-# LLM Stack (Your data, your LLM, your Control)
+# LLM Stack - End-to-End Secure & Private Generative AI for All (Your data, your LLM, your Control)
 
 [![Discord](https://dcbadge.vercel.app/api/server/4aWV7He2QU?style=flat)](https://discord.gg/4aWV7He2QU)
 [![Twitter](https://img.shields.io/twitter/follow/aiplanet4all)](https://twitter.com/aiplanet4all)
 [![Open in Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/drive/1R-vnA0X5gTo_era8YChOvhFMVTVu7K-8?usp=sharing)
 
-LLM Stack is an end-to-end framework for the integration of LLMs into any application. It comes with everything you need for data extraction/loading, vector embeddings, vector stores, LLMs, model deployment and serving.
+LLM Stack is an end-to-end framework for the integration of LLMs into any application. It comes with everything you need for data extraction/loading, vector embeddings, vector stores, LLMs, model deployment and serving. It can be deployed on your own infrastructure, providing you with the required data privacy.
 
 ## Getting started on Colab
 
@@ -30,7 +30,7 @@ The documentation for LLM Stack can be found at [llmstack.aiplanet.com](https://
 
 LLM Stack is an end-to-end framework designed to integrate large language models (LLMs) into applications seamlessly. The purpose is to bridge the gap between raw data and actionable insights or responses that applications can utilize, leveraging the power of LLMs.
 
-In short, it orchestrates and streamlines your Generative AI Stack development journey. From the initial steps of ETL (Extract, Transform, Load) data processing to the refined LLM inference stage, LLM Stack revolutionizes the way you harness the potential of AI, ensuring data privacy, domain-driven, and ensuring factuality without the pitfalls of hallucinations commonly associated with traditional LLMs.
+In short, it orchestrates and streamlines your Generative AI development journey. From the initial steps of ETL (Extract, Transform, Load) data processing to the refined LLM inference stage, LLM Stack revolutionizes the way you harness the potential of AI, ensuring data privacy, domain-driven, and ensuring factuality without the pitfalls of hallucinations commonly associated with traditional LLMs.
 
 ## How can LLM Stack be helpful?
 
