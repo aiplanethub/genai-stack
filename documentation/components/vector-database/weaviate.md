@@ -2,7 +2,7 @@
 
 ### Weaviate
 
-In case of weaviate you would have to install weaviate with docker-compose and then use that component in the LLM Stack.
+In case of weaviate you would have to install weaviate with docker-compose and then use that component in the GenAI Stack.
 
 **Compulsory Arguments:**
 
@@ -53,7 +53,7 @@ volumes:
 
 This docker compose file uses sentence transformers for embedding for more embeddings and other options [refer this doc.](https://weaviate.io/developers/weaviate/modules/retriever-vectorizer-modules)&#x20;
 
-LLM Stack Configurations for Weaviate:
+GenAI Stack Configurations for Weaviate:
 
 \=> Sample vectordb configuration for weaviate
 

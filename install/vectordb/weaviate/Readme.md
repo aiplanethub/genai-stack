@@ -8,7 +8,7 @@ git clone https://github.com/dphi-official/llaim.git
 cd llaim/install/vectordb/weaviate/
 ```
 
-2. Update your env variable file in llm_stack/vector_store/weaviate/.env
+2. Update your env variable file in genai_stack/vector_store/weaviate/.env
    Copy the values from .env.example to your own .env file
    **Note**: Populating either of the AZURE_APIKEY or OPENAI_APIKEY is enough.
 ```

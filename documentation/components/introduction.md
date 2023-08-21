@@ -1,10 +1,10 @@
 # ✨ Introduction
 
-LLM Stack has two main components level abstraction:
+GenAI Stack has two main components level abstraction:
 
 ### ETL
 
-<figure><img src="../.gitbook/assets/llm_stack.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/genai_stack.png" alt=""><figcaption></figcaption></figure>
 
 ### Retrival/Model
 
@@ -12,7 +12,7 @@ LLM Stack has two main components level abstraction:
 
 Check the components for detailed explaination on the components:
 
--   [ETL](https://llmstack.aiplanet.com/components/data-extraction-and-loading)
--   [VectorDB](https://llmstack.aiplanet.com/components/vector-database)
--   [Retrieval](https://llmstack.aiplanet.com/components/retrieval)
--   [Model](https://llmstack.aiplanet.com/components/llms)
+-   [ETL](https://genai-stack.aiplanet.com/components/data-extraction-and-loading)
+-   [VectorDB](https://genai-stack.aiplanet.com/components/vector-database)
+-   [Retrieval](https://genai-stack.aiplanet.com/components/retrieval)
+-   [Model](https://genai-stack.aiplanet.com/components/llms)

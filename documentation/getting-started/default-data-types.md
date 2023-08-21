@@ -7,7 +7,7 @@ By default, the LLM stack supports the following data types:
 To use CSV as a source, use the data type (the first argument to the `add_source()` method) as `csv`. Eg:&#x20;
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
+from genai_stack.model import OpenAIGpt35Model
 
 model = OpenAIGpt35Model.from_kwargs(
  fields={"openai_api_key": "Paste your Open AI key"}
@@ -20,7 +20,7 @@ model.add_source("csv", "valid_csv_path_or_url")
 To use pdf as a source, use the data type as `pdf`. Eg:
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
+from genai_stack.model import OpenAIGpt35Model
 
 model = OpenAIGpt35Model.from_kwargs(
  fields={"openai_api_key": "Paste your Open AI key"}
@@ -33,7 +33,7 @@ model.add_source("pdf", "valid_pdf_path_or_url")
 To use the web as a source, use the data type as `web`. Eg:
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
+from genai_stack.model import OpenAIGpt35Model
 
 model = OpenAIGpt35Model.from_kwargs(
  fields={"openai_api_key": "Paste your Open AI key"}
@@ -46,7 +46,7 @@ model.add_source("web", "valid_web_url")
 To use JSON as a source, use the data type as `json`. Eg:
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
+from genai_stack.model import OpenAIGpt35Model
 
 model = OpenAIGpt35Model.from_kwargs(
  fields={"openai_api_key": "Paste your Open AI key"}
@@ -59,7 +59,7 @@ model.add_source("json", "valid_json_path_or_url")
 To use markdown as a source, use the data type as `markdown`. Eg:
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
+from genai_stack.model import OpenAIGpt35Model
 
 model = OpenAIGpt35Model.from_kwargs(
  fields={"openai_api_key": "Paste your Open AI key"}

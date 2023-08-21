@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
-"""Tests for `llm_stack` package."""
+"""Tests for `genai_stack` package."""
 
 
 import unittest
 from click.testing import CliRunner
 
-from llm_stack import cli
+from genai_stack import cli
 
 
-class Testllm_stack(unittest.TestCase):
-    """Tests for `llm_stack` package."""
+class Testgenai_stack(unittest.TestCase):
+    """Tests for `genai_stack` package."""
 
     def setUp(self):
         """Set up test fixtures, if any."""

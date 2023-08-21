@@ -8,7 +8,7 @@ You can contribute in many ways:
 
 #### Report Bugs
 
-Report bugs at [https://github.com/aiplanethub/llmstack/issues](https://github.com/aiplanethub/llmstack/issues).
+Report bugs at [https://github.com/aiplanethub/genai-stack/issues](https://github.com/aiplanethub/genai-stack/issues).
 
 If you are reporting a bug, please include:
 
@@ -26,11 +26,11 @@ Look through the GitHub issues for features. Anything tagged with "enhancement" 
 
 #### Write Documentation
 
-LLM Stack could always use more documentation, whether as part of the official LLM Stack docs, in docstrings, or even on the web in blog posts, articles, and such.
+GenAI Stack could always use more documentation, whether as part of the official GenAI Stack docs, in docstrings, or even on the web in blog posts, articles, and such.
 
 #### Submit Feedback
 
-The best way to send feedback is to file an issue at [https://github.com/aiplanethub/llmstack/issues](https://github.com/aiplanethub/llmstack/issues).
+The best way to send feedback is to file an issue at [https://github.com/aiplanethub/genai-stack/issues](https://github.com/aiplanethub/genai-stack/issues).
 
 If you are proposing a feature:
 
@@ -46,13 +46,13 @@ Ready to contribute? Here's how to set up llm\_stack for local development.
 2.  Clone your fork locally:
 
     ```
-    $ git clone git@github.com:your_name_here/llm_stack.git
+    $ git clone git@github.com:your_name_here/genai_stack.git
     ```
 3.  Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development:
 
     ```
-    $ mkvirtualenv llm_stack
-    $ cd llm_stack/
+    $ mkvirtualenv genai_stack
+    $ cd genai_stack/
     $ python setup.py develop
     ```
 4.  Create a branch for local development:
@@ -65,7 +65,7 @@ Ready to contribute? Here's how to set up llm\_stack for local development.
 5.  When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox:
 
     ```
-    $ flake8 llm_stack tests
+    $ flake8 genai_stack tests
     $ python setup.py test or pytest
     $ tox
     ```
@@ -93,7 +93,7 @@ Before you submit a pull request, check that it meets these guidelines:
 To run a subset of tests:
 
 ```
-$ python -m unittest tests.test_llm_stack
+$ python -m unittest tests.test_genai_stack
 ```
 
 ### Deploying

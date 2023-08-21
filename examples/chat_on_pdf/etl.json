@@ -8,6 +8,6 @@
     },
     "vectordb": {
         "name": "chromadb",
-        "class_name": "llm_stack"
+        "class_name": "genai_stack"
     }
 }

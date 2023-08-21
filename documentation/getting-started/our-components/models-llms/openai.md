@@ -11,14 +11,14 @@
 #### Running in a Colab/Kaggle/Python scripts(s)
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
+from genai_stack.model import OpenAIGpt35Model
 
 llm  = OpenAIGpt35Model.from_kwargs(fields={"openai_api_key": "sk-xxxx"})  # Update with your OpenAI Key
 model_response = llm.predict("How long AI has been around.")
 print(model_response["result"])
 ```
 
-1. Import the model from llmstack
+1. Import the model from genai-stack
 2. Instantiate the class with `openai_api_key`
 3. call `.predict()` method and pass the query you want the model to answer to.
 4. Print the response. As the response is a dictionary, get the result only.
@@ -35,7 +35,7 @@ We use FastAPI + Uvicorn to run a model in a webserver.
 Set the response class. Default response class is `fastapi.responses.Response`. It can be customized as done in the below code snippet.
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
+from genai_stack.model import OpenAIGpt35Model
 from fastapi.responses import JSONResponse
 
 llm  = OpenAIGpt35Model.from_kwargs(fields={"openai_api_key": "sk-xxxx"})
@@ -81,7 +81,7 @@ Create a `model.json` file with the following contents:
 Run the below CLI&#x20;
 
 ```bash
-llmstack start --config_file model.json
+genai-stack start --config_file model.json
 ```
 
 ```bash

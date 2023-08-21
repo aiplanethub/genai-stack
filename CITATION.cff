@@ -14,6 +14,6 @@ authors:
   - given-names: Tarun
     family-names: Jain
     email: Tarun@aiplanet.com
-repository-code: 'https://github.com/aiplanethub/llmstack'
+repository-code: 'https://github.com/aiplanethub/genai-stack'
 url: 'https://aiplanet.com/'
 license: Apache-2.0

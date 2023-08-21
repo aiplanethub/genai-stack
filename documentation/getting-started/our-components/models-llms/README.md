@@ -4,7 +4,7 @@ description: Run an LLM model with few simple steps
 
 # 🦄 LLMs
 
-Model is the component that determines which LLM to run. This component is mainly for running LLM models under a http server and access through an API endpoint. Model is for loading the model and its necessary preprocess and postprocess functions to parse the retrieval context and the user prompt properly and give to the model for inference. The response classes can also be customized according to the model’s requirements. LLM Stack supports things like raw Response (strings or bytes) or JsonResponse. Default is JsonResponse.
+Model is the component that determines which LLM to run. This component is mainly for running LLM models under a http server and access through an API endpoint. Model is for loading the model and its necessary preprocess and postprocess functions to parse the retrieval context and the user prompt properly and give to the model for inference. The response classes can also be customized according to the model’s requirements. GenAI Stack supports things like raw Response (strings or bytes) or JsonResponse. Default is JsonResponse.
 
 LLMStack pre-includes few models for trying out some popular models available out there.
 

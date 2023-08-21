@@ -23,7 +23,7 @@ layout:
 **Running in a Colab/Kaggle/Python scripts(s)**
 
 ```python
-from llm_stack.model import Gpt4AllModel
+from genai_stack.model import Gpt4AllModel
 
 llm = Gpt4AllModel.from_kwargs()
 model_response = llm.predict("How many countries are there in the world?")
@@ -38,7 +38,7 @@ If you want to run the model in a webserver and interact with it with HTTP reque
 
 ```python
 from fastapi.responses import JSONResponse
-from llm_stack.model import Gpt4AllModel
+from genai_stack.model import Gpt4AllModel
 
 llm = Gpt4AllModel.from_kwargs()
 llm.run_http_server(response_class=JSONResponse)
@@ -80,7 +80,7 @@ Create a `model.json` file with the following contents:
 Run the below command:
 
 ```bash
-llmstack start --config_file model.json
+genai-stack start --config_file model.json
 ```
 
 ```bash

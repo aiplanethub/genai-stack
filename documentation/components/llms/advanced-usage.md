@@ -12,7 +12,7 @@ There are two ways we can implement this:
 \==> With default supported ETLs
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
+from genai_stack.model import OpenAIGpt35Model
 
 model = OpenAIGpt35Model.from_kwargs(
  fields={"openai_api_key": "Paste your Open AI key"}
@@ -29,10 +29,10 @@ For more context on default ETLs check the doc [here](../../getting-started/defa
 \==> With your own custom ETL, Retriever and Vectordb
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
-from llm_stack.etl import LangLoaderEtl 
-from llm_stack.retriever import LangChainRetriever
-from llm_stack.vectordb.chromadb import ChromaDB
+from genai_stack.model import OpenAIGpt35Model
+from genai_stack.etl import LangLoaderEtl 
+from genai_stack.retriever import LangChainRetriever
+from genai_stack.vectordb.chromadb import ChromaDB
 
 config = {
   "source": {
@@ -44,7 +44,7 @@ config = {
 }
 
 # Initialise vectordb 
-vectordb = ChromaDB.from_kwargs(class_name = "llmstack")
+vectordb = ChromaDB.from_kwargs(class_name = "genai-stack")
 
 # ETL Process
 etl = LangLoaderEtl.from_kwargs(vectordb=vectordb, **config)
@@ -78,7 +78,7 @@ You can write a etl.json for the etl process and model.json to perform inference
     },
     "vectordb": {
         "name": "chromadb",
-        "class_name": "llm_stack"
+        "class_name": "genai_stack"
     }
 }
 
@@ -87,7 +87,7 @@ You can write a etl.json for the etl process and model.json to perform inference
 Run the ETL command:
 
 ```
-llmstack etl --config_file etl.json
+genai-stack etl --config_file etl.json
 ```
 
 **model.json**
@@ -102,7 +102,7 @@ llmstack etl --config_file etl.json
     },
     "vectordb": {
         "name": "chromadb",
-        "class_name": "llm_stack"
+        "class_name": "genai_stack"
     }
 }
 ```
@@ -110,7 +110,7 @@ llmstack etl --config_file etl.json
 Run the model command
 
 ```
-llmstack start --config_file model.json
+genai-stack start --config_file model.json
 ```
 
 **Important Note:**  The vectordb section should be the same for the etl.json and model.json.&#x20;

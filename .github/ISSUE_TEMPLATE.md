@@ -1,4 +1,4 @@
-* LLM Stack version:
+* GenAI Stack version:
 * Python version:
 * Operating System:
 

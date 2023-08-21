@@ -5,7 +5,7 @@
 Since we have a PDF default data loader we can use it directly from [here](../getting-started/default-data-types.md#pdf).&#x20;
 
 ```python
-from llm_stack.model import OpenAIGpt35Model
+from genai_stack.model import OpenAIGpt35Model
 
 model = OpenAIGpt35Model.from_kwargs(
  fields={"openai_api_key": "Paste your Open AI key"}
@@ -29,7 +29,7 @@ etl.json
     },
     "vectordb": {
         "name": "chromadb",
-        "class_name": "llm_stack"
+        "class_name": "genai_stack"
     }
 }
 ```
@@ -37,7 +37,7 @@ etl.json
 Run the ETL command
 
 ```
-llmstack etl --config_file etl.json
+genai-stack etl --config_file etl.json
 ```
 
 model.json
@@ -52,7 +52,7 @@ model.json
     },
     "vectordb": {
         "name": "chromadb",
-        "class_name": "llm_stack"
+        "class_name": "genai_stack"
     }
 }
 ```
@@ -60,7 +60,7 @@ model.json
 Run the model server
 
 ```
-llmstack start --config_file model.json
+genai-stack start --config_file model.json
 ```
 
 You can make predictions on this model server:

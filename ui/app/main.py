@@ -1,7 +1,7 @@
 import streamlit as st
 from services import get_chat_history, get_response
 
-st.title("LLM Stack chatbot")
+st.title("GenAI Stack chatbot")
 
 if "messages" not in st.session_state:
     st.session_state.messages = get_chat_history()

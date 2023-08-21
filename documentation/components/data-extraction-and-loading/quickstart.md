@@ -25,8 +25,8 @@ The function `get_config_from_source_kwargs` is provided to generate a configura
 Here's how you can use the provided code to configure and use each default data source type:
 
 ```
-from llm_stack.etl.lang_loader import LangLoaderEtl
-from llm_stack.etl.utils import get_config_from_source_kwargs
+from genai_stack.etl.lang_loader import LangLoaderEtl
+from genai_stack.etl.utils import get_config_from_source_kwargs
 ```
 
 1. **CSV Source Example**:

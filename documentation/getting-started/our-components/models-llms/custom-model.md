@@ -2,7 +2,7 @@
 
 A custom model can be created with few steps.
 
-1. Import a `BaseModel`class from llmstack.
+1. Import a `BaseModel`class from genai-stack.
 2. Create a class with desired name(class name) and inherit the `BaseModel`class.
 3. Implement two methods:
    *   `load()` - Load  the model. This method is run at once on class instantiation.
@@ -13,10 +13,10 @@ A custom model can be created with few steps.
 
 #### Example
 
-Below code creates a GPT Neo model with LLM Stack.
+Below code creates a GPT Neo model with GenAI Stack.
 
 ```python
-from llm_stack.model.base import BaseModel
+from genai_stack.model.base import BaseModel
 from transformers import pipeline
 
 class GptNeoModel(BaseModel):

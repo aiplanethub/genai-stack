@@ -17,7 +17,7 @@ Here are some sample configurations:&#x20;
 ```
 "vectordb": {
     "name": "chromadb",
-    "class_name": "llm_stack",
+    "class_name": "genai_stack",
     "embedding": {
         "name": "HuggingFaceEmbeddings",
         "fields": {
@@ -33,14 +33,14 @@ Here are some sample configurations:&#x20;
 ```
 "vectordb": {
     "name": "chromadb",
-    "class_name": "llm_stack"
+    "class_name": "genai_stack"
 }
 ```
 
 **Python Usage:**
 
 ```
-from llm_stack.vectordb.chromadb import ChromaDB
+from genai_stack.vectordb.chromadb import ChromaDB
 
 config = {"class_name": "MyIndexName"}
 vectordb = ChromaDB.from_kwargs(config)

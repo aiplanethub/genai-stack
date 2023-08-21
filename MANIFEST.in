@@ -9,6 +9,6 @@ recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
 recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif 
-recursive-include llm_stack/install/templates/**/*.json 
-recursive-include llm_stack/install/templates/**/*.j2
+recursive-include genai_stack/install/templates/**/*.json 
+recursive-include genai_stack/install/templates/**/*.j2
 

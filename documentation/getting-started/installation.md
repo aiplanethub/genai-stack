@@ -27,7 +27,7 @@ env\Scripts\Activate.ps1
 ### Installation&#x20;
 
 ```
-pip install git+https://github.com/aiplanethub/llmstack.git
+pip install git+https://github.com/aiplanethub/genai-stack.git
 ```
 
 That's it your local setup is ready. Let's go ahead & test it.
@@ -48,7 +48,7 @@ Currently, we support the following models:
 Import the required model(Here we will use the gpt4all model) and initialize it and predict it.
 
 ```python
-from llm_stack.model import Gpt4AllModel
+from genai_stack.model import Gpt4AllModel
 
 llm = Gpt4AllModel.from_kwargs()
 model_response = llm.predict("How many countries are there in the world?")
@@ -66,4 +66,4 @@ python3 <file_name.py>
 There are currently 195 recognized independent states in the world.
 ```
 
-Now you know how to use the LLM Stack locally.
+Now you know how to use the GenAI Stack locally.

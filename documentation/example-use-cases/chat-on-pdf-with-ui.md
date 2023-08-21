@@ -17,7 +17,7 @@ You can write a etl.json for the etl process and model.json to perform inference
     },
     "vectordb": {
         "name": "chromadb",
-        "class_name": "llm_stack"
+        "class_name": "genai_stack"
     }
 }
 
@@ -26,7 +26,7 @@ You can write a etl.json for the etl process and model.json to perform inference
 Run the ETL command:
 
 ```
-llmstack etl --config_file etl.json
+genai-stack etl --config_file etl.json
 ```
 
 **model.json**
@@ -41,7 +41,7 @@ llmstack etl --config_file etl.json
     },
     "vectordb": {
         "name": "chromadb",
-        "class_name": "llm_stack"
+        "class_name": "genai_stack"
     }
 }
 ```
@@ -49,7 +49,7 @@ llmstack etl --config_file etl.json
 Run the model command
 
 ```
-llmstack start --config_file model.json
+genai-stack start --config_file model.json
 ```
 
 This would start a uvicorn
@@ -76,14 +76,14 @@ This package is for the chat interface of the LLM stack.
 > 1. Clone the repository
 
 ```
-git clone https://github.com/aiplanethub/llmstack.git
+git clone https://github.com/aiplanethub/genai-stack.git
 ```
 
 > 2. Create a new virtualenv and activate it(Optional).
 
 ```
-python -m venv ./llmstack-ui
-source ./llmstack-ui/bin/activate
+python -m venv ./genai-stack-ui
+source ./genai-stack-ui/bin/activate
 ```
 
 > 3. Install the requirements

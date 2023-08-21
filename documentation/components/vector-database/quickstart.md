@@ -7,9 +7,9 @@ To utilize the vectordb configuration with the default embedding:
 \=> **Vectordb usage with Retriever**
 
 ```python
-from llm_stack.vectordb.chroma import ChromaDB
-from llm_stack.retriever.langchain import LangChainRetriever
-vectordb =  ChromaDB.from_kwargs(class_name = "llmstack")
+from genai_stack.vectordb.chroma import ChromaDB
+from genai_stack.retriever.langchain import LangChainRetriever
+vectordb =  ChromaDB.from_kwargs(class_name = "genai-stack")
 retriever = LangChainRetriever.from_kwargs(vectordb = vectordb)
 retriever.retrieve("<My question>")
 
@@ -20,11 +20,11 @@ retriever.retrieve("<My question>")
 **=> Vectordb usage with ETL**
 
 ```python
-from llm_stack.vectordb.chroma import ChromaDB
-from llm_stack.etl.lang_loader import LangLoaderEtl
-from llm_stack.etl.utils import get_config_from_source_kwargs
+from genai_stack.vectordb.chroma import ChromaDB
+from genai_stack.etl.lang_loader import LangLoaderEtl
+from genai_stack.etl.utils import get_config_from_source_kwargs
 
-vectordb =  ChromaDB.from_kwargs(class_name = "llmstack")
+vectordb =  ChromaDB.from_kwargs(class_name = "genai-stack")
 etl = LangLoaderEtl.from_kwargs(vectordb = vectordb, get_config_from_source_kwargs("pdf", "/path/to/pdf"))
 etl.run()
 ```

@@ -1,4 +1,4 @@
-# LLM Stack UI 
+# GenAI Stack UI 
 
 This package is for the chat interface of the LLM stack. 
 
@@ -7,13 +7,13 @@ This package is for the chat interface of the LLM stack.
 1. Clone the repository
 
 ```
-git clone https://github.com/aiplanethub/llmstack.git
+git clone https://github.com/aiplanethub/genai-stack.git
 ```
 
 2. Create a new virtualenv and activate it.
 ```
-python -m venv ./llmstack-ui
-source ./llmstack-ui/bin/activate
+python -m venv ./genai-stack-ui
+source ./genai-stack-ui/bin/activate
 ```
 
 3. Install the requirements 

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-"""Tests for `llm_stack` package."""
+"""Tests for `genai_stack` package."""
 
 
 import unittest
 
-from llm_stack.etl.lang_loader import list_langchain_loaders, LangLoaderEtl
-from llm_stack.etl.llamahub_loader import LLamaHubEtl
+from genai_stack.etl.lang_loader import list_langchain_loaders, LangLoaderEtl
+from genai_stack.etl.llamahub_loader import LLamaHubEtl
 
 
 class TestEtl(unittest.TestCase):

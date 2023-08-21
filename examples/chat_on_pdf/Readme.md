@@ -5,10 +5,10 @@
 1. Run etl
 
     ```bash
-    llmstack etl --config_file etl.json
+    genai-stack etl --config_file etl.json
     ```
 
 2. Run model
     ```bash
-    llmstack start --config_file model.json
+    genai-stack start --config_file model.json
     ```
