@@ -1,29 +1,51 @@
+from genai_stack.stack.mediator import Mediator
+
+
 class Stack:
     """GenAI Stack class
 
     GenAI stack class is a collection of multiple stack components that are
     required to run the stack. There are some compulsory components (model) and other components like
-    (vectordb, retriever) that are required only if its needed by the user. 
-    
+    (vectordb, retriever) that are required only if its needed by the user.
+
     """
-    def __init__(self, *, model, etl = None, vectordb = None, retriever = None, prompt_engine = None, response_evaluator = None) -> None:
+
+    def __init__(
+        self, *, model, etl=None, vectordb=None, retriever=None, prompt_engine=None, response_evaluator=None
+    ) -> None:
         """Initializes and validates a stack instance.
 
         Args:
             model: Model component of the stack.
             etl: ETL component of the stack.
             vectordb: Vectordb component of the stack.
-            retriever: Retriever component of the stack. 
+            retriever: Retriever component of the stack.
             prompt_engine: PromptEngine component of the stack.
             response_evaluator: ResponseEvaluator component of the stack.
-            
+
         """
         self._model = model
-        self._etl = etl 
+        self._etl = etl
         self._vectordb = vectordb
-        self._retriever = retriever 
+        self._retriever = retriever
         self._prompt_engine = prompt_engine
         self._response_evaluator = response_evaluator
+
+        self._mediator = Mediator(stack=self)
+
+        # Connect all components to the mediator
+        if self._model:
+            self._model.mediator = self._mediator
+        if self._etl:
+            self._etl.mediator = self._mediator
+        if self._vectordb:
+            self._vectordb.mediator = self._mediator
+        if self._retriever:
+            self._retriever.mediator = self._mediator
+        if self._prompt_engine:
+            self._prompt_engine.mediator = self._mediator
+        if self._response_evaluator:
+            self._response_evaluator.mediator = self._mediator
 
     @property
     def model(self):
@@ -31,10 +53,9 @@ class Stack:
 
         Returns:
             The Model of the stack.
-        
+
         """
         return self._model
-    
 
     @property
     def etl(self):
@@ -45,7 +66,7 @@ class Stack:
             have a ETL.
         """
         self._etl
-    
+
     @property
     def vectordb(self):
         """The Vectordb of the stack.
@@ -55,8 +76,7 @@ class Stack:
             have a Vectordb.
         """
         return self._vectordb
-        
-    
+
     @property
     def retriever(self):
         """The Retriever of the stack.
@@ -65,7 +85,7 @@ class Stack:
             The Retriever of the stack or None if the stack does not
             have a Retriever.
         """
-        return self._retriever 
+        return self._retriever
 
     @property
     def prompt_engine(self):
