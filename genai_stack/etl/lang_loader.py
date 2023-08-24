@@ -1,10 +1,10 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 from langchain import document_loaders
 from langchain.docstore.document import Document as LangDocument
 import logging
 
-from genai_stack.etl.base import EtlBase
+from genai_stack.etl.base import BaseETL
 from genai_stack.core import BaseComponent
 from genai_stack.vectordb.base import BaseVectordb
 from genai_stack.utils.importing import import_class
