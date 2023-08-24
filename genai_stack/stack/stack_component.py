@@ -3,6 +3,7 @@ from abc import ABC
 from pathlib import Path
 
 from genai_stack.stack.stack_component_config import StackComponentConfig
+from genai_stack.stack.mediator import Mediator
 
 
 class StackComponent(ABC):
@@ -16,21 +17,19 @@ class StackComponent(ABC):
             mediator: Mediator which handles all the inter component communication in the stack
         """
         self._config = config
-        self._mediator = mediator
+        self._mediator: Mediator = mediator
 
     @property
-    def mediator(self):
+    def mediator(self) -> Mediator:
         return self._mediator
-    
+
     @mediator.setter
-    def mediator(self, mediator):
+    def mediator(self, mediator: Mediator):
         self._mediator = mediator
 
     @staticmethod
     def config_class() -> StackComponentConfig:
         return StackComponentConfig
-    
-    
 
     @classmethod
     def from_config_file(cls, config_file_path: str):
