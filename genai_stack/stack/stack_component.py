@@ -9,6 +9,8 @@ from genai_stack.stack.mediator import Mediator
 class StackComponent(ABC):
     """Base Component class for all other stack components"""
 
+    config_class = StackComponentConfig
+
     def __init__(self, config: StackComponentConfig, mediator=None) -> None:
         """Initialize the stack component
 
@@ -18,6 +20,7 @@ class StackComponent(ABC):
         """
         self._config = config
         self._mediator: Mediator = mediator
+        self._post_init()
 
     @property
     def mediator(self) -> Mediator:
@@ -27,13 +30,14 @@ class StackComponent(ABC):
     def mediator(self, mediator: Mediator):
         self._mediator = mediator
 
-    @staticmethod
-    def config_class() -> StackComponentConfig:
-        return StackComponentConfig
+    @property
+    def config(self):
+        return self._config
 
     @classmethod
     def from_config_file(cls, config_file_path: str):
         """Loads the configs and initialises the StackComponent from a json file"""
+        cls._check_config_class()
 
         f = Path(config_file_path)
 
@@ -44,7 +48,7 @@ class StackComponent(ABC):
 
         try:
             with open(f.absolute()) as file:
-                data = cls.config_class()(**json.load(file))
+                data = cls.config_class(**json.load(file))
                 return cls(data)
 
         except json.JSONDecodeError as e:
@@ -55,4 +59,16 @@ class StackComponent(ABC):
         """
         Loads the configs and initialises the StackComponent from kwargs
         """
-        return cls(cls.config_class()(**kwargs))
+        cls._check_config_class()
+        return cls(cls.config_class(**kwargs))
+
+    @classmethod
+    def _check_config_class(cls):
+        if not cls.config_class:
+            raise ValueError(f"Config class not defined for component {cls.__name__}")
+
+    def _post_init(self, *args, **kwargs):
+        """
+        Override this method if you want to extend the functionality of the init function
+        """
+        pass

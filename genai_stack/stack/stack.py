@@ -1,6 +1,3 @@
-from genai_stack.stack.mediator import Mediator
-
-
 class Stack:
     """GenAI Stack class
 
@@ -31,6 +28,8 @@ class Stack:
         self._prompt_engine = prompt_engine
         self._response_evaluator = response_evaluator
 
+        # Import here due to circular import conflict
+        from genai_stack.stack.mediator import Mediator
         self._mediator = Mediator(stack=self)
 
         # Connect all components to the mediator

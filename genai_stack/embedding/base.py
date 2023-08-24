@@ -17,6 +17,9 @@ class BaseEmbeddingConfig(StackComponentConfig):
 
 
 class BaseEmbedding(StackComponent):
+    def _post_init(self, *args, **kwargs):
+        self.embedding = self.load()
+
     def load(self):
         """
         Load the embedding

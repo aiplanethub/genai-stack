@@ -1,5 +1,4 @@
 from genai_stack.stack.stack import Stack
-from genai_stack.stack.stack_component import StackComponent
 
 
 class Mediator:

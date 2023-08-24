@@ -1,6 +1,6 @@
-from abc import ABC
+from abc import ABCMeta, ABC
 from typing import Any
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 
 class StackComponentConfig(ABC):
@@ -21,3 +21,6 @@ class StackComponentConfig(ABC):
             return data
         except ValidationError as e:
             raise (e)
+
+    def __getattr__(self, name):
+        return getattr(self.config, name)
