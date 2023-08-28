@@ -16,7 +16,8 @@ class Stack:
         vectordb=None,
         retriever=None,
         prompt_engine=None,
-        response_evaluator=None
+        response_evaluator=None,
+        memory=None
     ) -> None:
         """Initializes and validates a stack instance.
 
@@ -27,7 +28,7 @@ class Stack:
             retriever: Retriever component of the stack.
             prompt_engine: PromptEngine component of the stack.
             response_evaluator: ResponseEvaluator component of the stack.
-
+            memory: Memory component of the stack
         """
         self._model = model
         self._embedding = embedding
@@ -36,6 +37,7 @@ class Stack:
         self._retriever = retriever
         self._prompt_engine = prompt_engine
         self._response_evaluator = response_evaluator
+        self._memory = memory
 
         # Import here due to circular import conflict
         from genai_stack.stack.mediator import Mediator
@@ -57,6 +59,8 @@ class Stack:
             self._prompt_engine.mediator = self._mediator
         if self._response_evaluator:
             self._response_evaluator.mediator = self._mediator
+        if self._memory:
+            self._memory.mediator = self._mediator
 
     @property
     def model(self):
@@ -127,3 +131,13 @@ class Stack:
             have a ResponseEvaluator.
         """
         return self._response_evaluator
+    
+    @property
+    def memory(self):
+        """The Memory of the stack.
+
+        Returns:
+            The Memory of the stack or None if the stack does not
+            have a Memory.
+        """
+        return self._memory
