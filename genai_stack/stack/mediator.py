@@ -11,4 +11,7 @@ class Mediator:
     def __init__(self, stack: Stack):
         self._stack = stack
 
+    # Embedding component
+    def get_embedded_text(self,  text):
+        return self._stack.embedding.embed_text(text)
     # Add more methods for inter component communication as we build the components

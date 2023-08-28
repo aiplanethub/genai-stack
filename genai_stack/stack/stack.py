@@ -8,7 +8,15 @@ class Stack:
     """
 
     def __init__(
-        self, *, model, etl=None, vectordb=None, retriever=None, prompt_engine=None, response_evaluator=None
+        self,
+        *,
+        model,
+        embedding=None,
+        etl=None,
+        vectordb=None,
+        retriever=None,
+        prompt_engine=None,
+        response_evaluator=None
     ) -> None:
         """Initializes and validates a stack instance.
 
@@ -22,6 +30,7 @@ class Stack:
 
         """
         self._model = model
+        self._embedding = embedding
         self._etl = etl
         self._vectordb = vectordb
         self._retriever = retriever
@@ -30,11 +39,14 @@ class Stack:
 
         # Import here due to circular import conflict
         from genai_stack.stack.mediator import Mediator
+
         self._mediator = Mediator(stack=self)
 
         # Connect all components to the mediator
         if self._model:
             self._model.mediator = self._mediator
+        if self._embedding:
+            self._embedding.mediator = self._mediator
         if self._etl:
             self._etl.mediator = self._mediator
         if self._vectordb:
@@ -55,6 +67,16 @@ class Stack:
 
         """
         return self._model
+
+    @property
+    def embedding(self):
+        """The Embedding of the stack.
+
+        Returns:
+            The Embedding of the stack or None if the stack does not
+            have a Embedding.
+        """
+        return self._embedding
 
     @property
     def etl(self):

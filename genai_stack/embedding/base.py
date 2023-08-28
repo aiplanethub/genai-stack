@@ -17,8 +17,7 @@ class BaseEmbeddingConfig(StackComponentConfig):
 
 
 class BaseEmbedding(StackComponent):
-    def _post_init(self, *args, **kwargs):
-        self.embedding = self.load()
+    config_class = BaseEmbeddingConfig
 
     def load(self):
         """
@@ -29,9 +28,11 @@ class BaseEmbedding(StackComponent):
     def embed_text(self, text: str):
         """
         Embed the text and return the embedding
+
+        Args:
+            text: Text to embed
+
+        Returns:
+            Embedded vector
         """
         raise NotImplementedError()
-
-    @staticmethod
-    def config_class() -> BaseEmbeddingConfig:
-        return BaseEmbeddingConfig
