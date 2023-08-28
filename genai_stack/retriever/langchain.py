@@ -20,7 +20,7 @@ class LangChain(BaseRetriever):
 
         context = self.get_context(prompt_template)  
 
-        conversation_history = ""
+        conversation_history = self.get_chat_history()
 
         new_prompt_template = f"{prompt_template} {context} {conversation_history}"
 
@@ -28,10 +28,10 @@ class LangChain(BaseRetriever):
 
     def get_context(self, query: str):
 
-        if not self._mediator._stack.vectordb:
+        if not self.mediator._stack.vectordb:
             raise ValueError("VectorDB component is not provided, Retriever component require a vectordb component.")
         
-        vectorDB = self._mediator._stack.vectordb
+        vectorDB = self.mediator._stack.vectordb
 
         return self.parse_search_results(vectorDB.search(query))
     
@@ -48,8 +48,13 @@ class LangChain(BaseRetriever):
     
     def get_chat_history(self):
 
-        if not self._mediator._stack.memory:
-            raise ValueError("Memory component is not provided, Retriever component require a memory component.")
+        if not self.mediator._stack.vectordb:
+            raise ValueError("VectorDB is not provided, Retriever component require a vectordb component.")
+        
+        vectorDB = self.mediator._stack.vectordb
+        
+        return vectorDB.get_chat_history()
+        
 
     @staticmethod
     def config_class() -> LangChainConfig:
