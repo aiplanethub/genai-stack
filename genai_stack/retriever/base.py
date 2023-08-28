@@ -20,10 +20,10 @@ class BaseRetriever(StackComponent):
         """
         This method returns the prompt template from the prompt engine component
         """
-        if not self._mediator._stack.prompt_engine:
+        if not self.mediator._stack.prompt_engine:
             raise ValueError("Prompt Engine component is not provided, Retriever component require a prompt engine component.")
         
-        return self._mediator._stack.prompt_engine.get_prompt()
+        return self.mediator._stack.prompt_engine.get_prompt()
 
     def retrive(self):
         """
