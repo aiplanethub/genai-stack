@@ -34,20 +34,8 @@ class BaseModelConfig(StackComponentConfig):
 class BaseModel(StackComponent):
     config_class = BaseModelConfig
 
-    def __init__(
-        self,
-        config: str = None,
-        model_path: Optional[str] = None,
-        retriever: BaseRetriever = None,
-    ):
-        if config:
-            ConfigLoader.__init__(self, self.module_name, config=config)
-            self.parse_config(self.config_key, getattr(self, "required_fields", None))
-        self.load(model_path=model_path)
-        if not retriever:
-            self.retriever = get_default_retriever()
-        else:
-            self.retriever = retriever
+    def _post_init(self, *args, **kwargs):
+        self.model = self.load()
 
     def load(self):
         raise NotImplementedError
@@ -57,11 +45,6 @@ class BaseModel(StackComponent):
 
     def parameters(self):
         pass
-
-    def preprocess(self, query: str):
-        if isinstance(query, bytes):
-            return query.decode("utf-8")
-        return query
 
 
 # class BasedModel(BaseComponent, HttpServer):
