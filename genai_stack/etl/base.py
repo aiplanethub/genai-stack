@@ -37,3 +37,8 @@ class BaseETL(StackComponent):
         Load the transformed data into the vectordb
         """
         raise NotImplementedError()
+
+    def run(self):
+        self.extract()
+        self.transform()
+        self.load()
