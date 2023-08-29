@@ -108,15 +108,20 @@ class Gpt4AllModel(BaseModel):
     def load(self):
         cwd = os.getcwd()
 
-        # Downloading the model weights
+        """
+        Downloading the model weights
+        """
         GPT4All.retrieve_model(model_name=self.config.model, model_path=self.config.model_path)
         abs_model_path = os.path.join(cwd, self.config.model_path, self.config.model)
 
-        # Load the model
-        self.model = LangChainGpt4aAll(
+        """
+        Load the model
+        """
+        model = LangChainGpt4aAll(
             model=abs_model_path,
             **self.config.parameters,
         )
+        return model
 
     def predict(self, prompt: str):
         return self.model.predict(prompt)
