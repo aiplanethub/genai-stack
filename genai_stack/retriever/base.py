@@ -18,16 +18,16 @@ class BaseRetriever(StackComponent):
 
     def get_prompt(self):
         """
-        This method returns the prompt template from the prompt engine component
+        This method returns the context prompt and the chat history prompt from the prompt engine component
         """
-        if not self.mediator._stack.prompt_engine:
-            raise ValueError("Prompt Engine component is not provided, Retriever component require a prompt engine component.")
-        
-        return self.mediator._stack.prompt_engine.get_prompt()
+        context_prompt = self.mediator.get_context_prompt()
+        chat_history_prompt = self.mediator.get_chat_history_prompt()
 
-    def retrive(self):
+        return context_prompt, chat_history_prompt
+
+    def retrive(self, query:str):
         """
-        This method returns the prompt template by adding the relevant documents context and chat conversation history
+        This method returns the final prompt by combining the context prompt and chat history prompt.
         """
         raise NotImplementedError()
     
@@ -41,7 +41,7 @@ class BaseRetriever(StackComponent):
         """
         This method returns the chat conversation history
         """
-        raise NotImplementedError()
+        return self.mediator.get_chat_history()
 
     @staticmethod
     def config_class() -> BaseRetrieverConfig:

@@ -1,7 +1,5 @@
-from typing import List
-from langchain.docstore.document import Document
-
 from .base import BaseRetrieverConfigModel, BaseRetrieverConfig, BaseRetriever
+from utils import parse_search_results
 
 
 class LangChainConfigModel(BaseRetrieverConfigModel):
@@ -15,47 +13,24 @@ class LangChainConfig(BaseRetrieverConfig):
 class LangChain(BaseRetriever):
     config_class = LangChainConfig
 
-    def retrive(self): 
-        prompt_template = self.get_prompt()
+    def retrive(self, query:str): 
+        context_prompt, chat_history_prompt = self.get_prompt()
 
-        context = self.get_context(prompt_template)  
+        context = self.get_context(query)
+        chat_history = self.get_chat_history()
 
-        conversation_history = self.get_chat_history()
+        final_prompt = chat_history_prompt.format(
+            chat_history=chat_history, 
+            prompt=context_prompt.format(context=context, query=query)
+        )
 
-        new_prompt_template = f"{prompt_template} {context} {conversation_history}"
-
-        return new_prompt_template
+        return final_prompt
 
     def get_context(self, query: str):
-
-        if not self.mediator._stack.vectordb:
-            raise ValueError("VectorDB component is not provided, Retriever component require a vectordb component.")
+        context = self.mediator.search_vectordb(query)
+         
+        return parse_search_results(context)
         
-        vectorDB = self.mediator._stack.vectordb
-
-        return self.parse_search_results(vectorDB.search(query))
-    
-    def parse_search_results(self, search_results: List[Document]):
-        """
-        This method returns a content extracted from the documents list.
-        """
-        result = ""
-
-        for idx, search_result in enumerate(search_results):
-            result += f"{idx + 1}. {search_result.page_content} \n"
-
-        return result
-    
-    def get_chat_history(self):
-
-        if not self.mediator._stack.vectordb:
-            raise ValueError("VectorDB is not provided, Retriever component require a vectordb component.")
-        
-        vectorDB = self.mediator._stack.vectordb
-        
-        return vectorDB.get_chat_history()
-        
-
     @staticmethod
     def config_class() -> LangChainConfig:
         return LangChainConfig
