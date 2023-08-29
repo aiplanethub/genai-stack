@@ -14,13 +14,14 @@ class HuggingFaceModelConfigModel(BaseModelConfigModel):
     Data Model for the configs
     """
 
-    """Model name to use."""
     model: Optional[str] = "nomic-ai/gpt4all-j"
-    """Key word arguments passed to the model."""
+    """Model name to use."""
     model_kwargs: Optional[Dict] = None
-    """Key word arguments passed to the pipeline."""
+    """Key word arguments passed to the model."""
     pipeline_kwargs: Optional[dict] = None
+    """Key word arguments passed to the pipeline."""
     task: str = "text-generation"
+    """Valid tasks: 'text2text-generation', 'text-generation', 'summarization'"""
 
 
 class HuggingFaceModelConfig(BaseModelConfig):
@@ -37,15 +38,15 @@ class HuggingFaceModel(BaseModel):
         return torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
     def load(self):
-        self.model = HuggingFacePipeline.from_model_id(
+        model = HuggingFacePipeline.from_model_id(
             model_id=self.config.model,
             task=self.config.task,
             model_kwargs=self.config.model_kwargs,
             device=self.get_device(),
         )
+        return model
 
     def predict(self, prompt: str):
-        print("prompt", prompt)
         return self.model(prompt)
 
 

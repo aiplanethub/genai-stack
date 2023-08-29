@@ -12,7 +12,7 @@ from genai_stack.model.base import BaseModel, BaseModelConfig, BaseModelConfigMo
 class OpenAIGpt35Parameters(BaseModelConfigModel):
     model_name: str = Field(default="gpt-3.5-turbo-16k", alias="model")
     """Model name to use."""
-    temperature: float = 0.7
+    temperature: float = 0
     """What sampling temperature to use."""
     model_kwargs: Dict[str, Any] = Field(default_factory=dict)
     """Holds any model parameters valid for `create` call not explicitly specified."""
@@ -64,22 +64,14 @@ class OpenAIGpt35Model(BaseModel):
         self.model = self.load()
 
     def load(self):
-        self.model = ChatOpenAI(
-            model_name=self.config.parameters.model_name,
-            openai_api_key=self.config.parameters.openai_api_key,
-            temperature=0,
-            **self.config.parameters,
-        )
+        """
+        Using __dict__ here to dynamically access object attributes
+        """
+        model = ChatOpenAI(**self.config.parameters.__dict__)
+        return model
 
-    def predict(self, human_prompt: str, system_prompt: Optional[str] = "You are a helpful assistant."):
-        return self.model.generate(
-            [
-                [
-                    SystemMessage(content=system_prompt),
-                    HumanMessage(content=human_prompt),
-                ]
-            ]
-        )
+    def predict(self, prompt: str):
+        return self.model.predict(prompt)
 
 
 # class OpenAIGpt35Model(BaseModel):
