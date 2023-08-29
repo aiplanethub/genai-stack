@@ -1,0 +1,18 @@
+{
+    "model": {
+        "name": "gpt3.5",
+        "fields": {
+            "openai_api_key": "sk-****"
+        }
+    },
+    "retriever": {
+        "name": "Langchain"
+    },
+    "vectordb": {
+        "name": "weaviate",
+        "class_name": "Chatgpt",
+        "fields": {
+            "url": "http://localhost:8002/"
+        }
+    }
+}

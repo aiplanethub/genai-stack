@@ -1,0 +1,5 @@
+{% extends "base.j2" %}
+{% block vectoriser %}
+ENABLE_MODULES: text2vec-openai
+OPENAI_APIKEY: {{ openai_api_key }}
+{% endblock vectoriser %}

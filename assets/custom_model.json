@@ -1,0 +1,22 @@
+{
+    "model": {
+        "name": "custom",
+        "fields": {
+            "class_name": "Gpt4Model",
+            "path": "/home/sln/dphi_projects/llaim/12.py",
+            "response_class": "JSONResponse"
+        }
+    },
+    "retriever": {
+        "name": "langchain"
+    },
+    "vectordb": {
+        "name": "weaviate",
+        "class_name": "LegalDocs",
+        "fields": {
+            "url": "http://localhost:9999/",
+            "api_key": "weaviate-api-key",
+            "text_key": "clause_text"
+        }
+    }
+}

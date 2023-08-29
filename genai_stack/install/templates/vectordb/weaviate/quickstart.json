@@ -1,0 +1,5 @@
+{
+    "huggingface": {
+        "model_name": "sentence-transformers/multi-qa-MiniLM-L6-cos-v1"
+    }
+}

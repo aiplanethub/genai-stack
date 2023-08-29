@@ -1,0 +1,13 @@
+{
+    "etl": "langchain",
+    "source": {
+        "name": "PyPDFLoader",
+        "fields": {
+            "file_path": "/home/samjoel/Dphi/llaim/sandbox/private/TrainTicket-31-Mar-2023.pdf"
+        }
+    },
+    "vectordb": {
+        "name": "chromadb",
+        "class_name": "llm_stack"
+    }
+}

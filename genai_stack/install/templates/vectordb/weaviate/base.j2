@@ -1,0 +1,26 @@
+version: '3.4'
+services:
+  weaviate:
+    image: semitechnologies/weaviate:1.20.1
+    ports:
+    - {{ port }}:8080
+    restart: always
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      {% filter indent(width=6, first=True) %}
+        {% block vectoriser %}
+        {% endblock vectoriser %}
+      {% endfilter %}
+      CLUSTER_HOSTNAME: 'node1'
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+  
+  {% filter indent(width = 2, first=True) %}
+    {% block additional_services %}
+    {% endblock additional_services %}
+  {% endfilter %}
+
+volumes:
+  weaviate_data:

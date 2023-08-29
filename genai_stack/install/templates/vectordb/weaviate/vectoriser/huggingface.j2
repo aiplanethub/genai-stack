@@ -1,0 +1,14 @@
+{% extends "base.j2" %}
+
+{% block vectoriser %}
+DEFAULT_VECTORIZER_MODULE: text2vec-transformers
+ENABLE_MODULES: text2vec-transformers
+TRANSFORMERS_INFERENCE_API: http://t2v-transformers:8080
+{% endblock vectoriser %}
+
+{% block additional_services %}
+t2v-transformers:
+  image: semitechnologies/transformers-inference:{{ model_name|replace('/', '-') }}
+  environment:
+    ENABLE_CUDA: {{ cuda|default(0, True) }}
+{% endblock additional_services %}
