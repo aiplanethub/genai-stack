@@ -18,7 +18,7 @@ from .base import BaseModelConfigModel, BaseModelConfig, BaseModel
 logger = logging.getLogger(__name__)
 
 
-class GPT4AllParameters(BaseModelConfigModel):
+class Gpt4AllParameters(BaseModelConfigModel):
     backend: Optional[str] = Field(None, alias="backend")
 
     max_tokens: int = Field(200, alias="max_tokens")
@@ -85,22 +85,22 @@ class GPT4AllParameters(BaseModelConfigModel):
     client: Any = None
 
 
-class GPT4AllModelConfigModel(BaseModelConfigModel):
+class Gpt4AllModelConfigModel(BaseModelConfigModel):
     """
     Data Model for the configs
     """
 
     model: Optional[str] = "orca-mini-3b.ggmlv3.q4_0"
     model_path: Optional[Union[Path, str]] = "."
-    parameters: GPT4AllParameters
+    parameters: Optional[Gpt4AllParameters]
 
 
-class GPT4AllModelConfig(BaseModelConfig):
-    data_model = GPT4AllModelConfigModel
+class Gpt4AllModelConfig(BaseModelConfig):
+    data_model = Gpt4AllModelConfigModel
 
 
-class GPT4AllModel(BaseModel):
-    config_class = GPT4AllModelConfig
+class Gpt4AllModel(BaseModel):
+    config_class = Gpt4AllModelConfig
 
     def _post_init(self, *args, **kwargs):
         self.model = self.load()
