@@ -65,9 +65,9 @@ class OpenAIGpt35Model(BaseModel):
 
     def load(self):
         """
-        Using __dict__ here to dynamically access object attributes
+        Using dict method here to dynamically access object attributes
         """
-        model = ChatOpenAI(**self.config.parameters.__dict__)
+        model = ChatOpenAI(**self.config.parameters.dict())
         return model
 
     def predict(self, prompt: str):
