@@ -3,9 +3,7 @@ from typing import Union
 from langchain import PromptTemplate
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 
-from genai_stack.model.prompts import BASIC_QA
-from genai_stack.model.prompts.conversation import CONVERSATIONAL_PROMPT_WITH_CONTEXT, CONVERSATIONAL_PROMPT
-from genai_stack.model.prompts.validation import VALIDATION_PROMPT
+from prompts import BASIC_QA, CONVERSATIONAL_PROMPT_WITH_CONTEXT, CONVERSATIONAL_PROMPT, VALIDATION_PROMPT
 from genai_stack.prompt_engine.base import BasePromptEngine, BasePromptEngineConfigModel, BasePromptEngineConfig
 from genai_stack.prompt_engine.utils import ValidationResponseDict
 
