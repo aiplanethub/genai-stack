@@ -12,7 +12,10 @@ class Mediator:
         self._stack = stack
 
     # Embedding component
-    def get_embedded_text(self,  text):
+    def get_embedded_text(self, text):
         return self._stack.embedding.embed_text(text)
-    
+
+    def query_llm(self, prompt: str) -> str:
+        return self._stack.model.predict(prompt)
+
     # Add more methods for inter component communication as we build the components
