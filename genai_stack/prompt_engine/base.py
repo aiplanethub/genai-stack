@@ -1,6 +1,7 @@
 from typing import Union
 
-from genai_stack.model import BaseModel
+from pydantic import BaseModel
+
 from genai_stack.prompt_engine.utils import ValidationResponseDict
 from genai_stack.stack.stack_component import StackComponent
 from genai_stack.stack.stack_component_config import StackComponentConfig
