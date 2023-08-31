@@ -25,7 +25,7 @@ class BaseRetriever(StackComponent):
 
         return context_prompt, chat_history_prompt
 
-    def retrive(self, query:str):
+    def retrieve(self, query:str):
         """
         This method returns the final prompt by combining the context prompt and chat history prompt.
         """
@@ -42,10 +42,6 @@ class BaseRetriever(StackComponent):
         This method returns the chat conversation history
         """
         return self.mediator.get_chat_history()
-
-    @staticmethod
-    def config_class() -> BaseRetrieverConfig:
-        return BaseRetrieverConfig
 
 
 # from typing import Any
