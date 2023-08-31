@@ -1,5 +1,5 @@
 from langchain.memory import ConversationBufferMemory as cbm
-from .base import BaseMemoryConfigModel, BaseMemoryConfig, BaseMemory
+from genai_stack.memory.base import BaseMemoryConfigModel, BaseMemoryConfig, BaseMemory
 
 
 class ConversationBufferMemoryConfigModel(BaseMemoryConfigModel):
@@ -24,10 +24,14 @@ class ConversationBufferMemory(BaseMemory):
         self.memory.save_context({"input": user_text}, {"output": model_text})
 
     def get_user_text(self):
-        return self.input_text
+        if len(self.memory.chat_memory.messages) == 0:
+            return None
+        return self.memory.chat_memory.messages[-2].content
     
     def get_model_text(self):
-        return self.output_text
+        if len(self.memory.chat_memory.messages) == 0:
+            return None
+        return self.memory.chat_memory.messages[-1].content
     
     def get_text(self):
         return {
@@ -36,9 +40,4 @@ class ConversationBufferMemory(BaseMemory):
         }
 
     def get_chat_history(self):
-        return self.memory.load_memory_variables({})
-    
-
-
-obj = ConversationBufferMemory()
-print(obj)
+        return self.memory.chat_memory.messages
