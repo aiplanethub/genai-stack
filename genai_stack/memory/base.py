@@ -32,7 +32,7 @@ class BaseMemory(StackComponent):
         """
         raise NotImplementedError()
     
-    def add_text(self):
+    def add_text(self, user_text, model_text):
         """
         This method stores both user query and model response
         """
