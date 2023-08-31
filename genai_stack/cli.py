@@ -17,7 +17,7 @@ from genai_stack.constants import (
 from genai_stack.constants.install import AVAILABLE_COMPONENTS, Components
 from genai_stack.constants.model import AVAILABLE_MODEL_MAPS
 from genai_stack.etl.run import run_etl_loader
-from genai_stack.exception import LLMStackException
+from genai_stack.exception import GenAIStackException
 from genai_stack.install.installer import Installer
 from genai_stack.model.run import (
     get_model_class,
@@ -30,11 +30,11 @@ from genai_stack.utils.model import create_default_model_json_file
 from genai_stack.utils.run import execute_command_in_directory
 
 BANNER = """
- ██████╗ ███████╗███╗   ██╗ █████╗ ██╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗    
-██╔════╝ ██╔════╝████╗  ██║██╔══██╗██║    ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝    
-██║  ███╗█████╗  ██╔██╗ ██║███████║██║    ███████╗   ██║   ███████║██║     █████╔╝     
-██║   ██║██╔══╝  ██║╚██╗██║██╔══██║██║    ╚════██║   ██║   ██╔══██║██║     ██╔═██╗     
-╚██████╔╝███████╗██║ ╚████║██║  ██║██║    ███████║   ██║   ██║  ██║╚██████╗██║  ██╗    
+ ██████╗ ███████╗███╗   ██╗ █████╗ ██╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
+██╔════╝ ██╔════╝████╗  ██║██╔══██╗██║    ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
+██║  ███╗█████╗  ██╔██╗ ██║███████║██║    ███████╗   ██║   ███████║██║     █████╔╝
+██║   ██║██╔══╝  ██║╚██╗██║██╔══██║██║    ╚════██║   ██║   ██╔══██║██║     ██╔═██╗
+╚██████╔╝███████╗██║ ╚████║██║  ██║██║    ███████║   ██║   ██║  ██║╚██████╗██║  ██╗
  ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝    ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
 """
 
@@ -112,7 +112,7 @@ def start(config_file):
             config_file=config_file,
         )
     if model not in AVAILABLE_MODEL_MAPS.keys():
-        raise LLMStackException(
+        raise GenAIStackException(
             "Unkown Prebuilt Model Provided. Checkout how to run a custom model with GenAI Stack."  # noqa: E501
         )
     model_class = get_model_class(model)(config=config_file, retriever=retriever)

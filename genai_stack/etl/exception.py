@@ -1,5 +1,5 @@
-from genai_stack.exception import LLMStackException
+from genai_stack.exception import GenAIStackException
 
 
-class LLMStackEtlException(LLMStackException):
+class LLMStackEtlException(GenAIStackException):
     pass
