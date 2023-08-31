@@ -5,7 +5,7 @@
 
 import unittest
 
-from genai_stack.etl.lang_loader import list_langchain_loaders, LangLoaderEtl
+from genai_stack.etl.langchain import list_langchain_loaders, LangLoaderEtl
 from genai_stack.etl.llamahub_loader import LLamaHubEtl
 
 
