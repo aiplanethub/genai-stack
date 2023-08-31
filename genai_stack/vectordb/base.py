@@ -1,59 +1,27 @@
-from typing import List, Any
+from pydantic import BaseModel
 
-from langchain.docstore.document import Document
-from langchain.embeddings import HuggingFaceEmbeddings
-
-from genai_stack.core import BaseComponent
-from genai_stack.utils.importing import import_class
-from genai_stack.constants.vectordb import VECTORDB_CONFIG_KEY
+from genai_stack.stack.stack_component import StackComponent, StackComponentConfig
 
 
-class BaseVectordb(BaseComponent):
-    module_name = "VectorDB"
-    config_key = VECTORDB_CONFIG_KEY
+class BaseVectorDBConfigModel(BaseModel):
+    """Base Data Model for VectorDB"""
 
-    def __init__(self, config: dict) -> None:
-        """
-        A wrapper around the weaviate-client and langchain's weaviate class
+    pass
 
-        Args:
-            config: Pass the parsed config file into this class
-        """
-        super().__init__(name=self.module_name, config=config)
-        self.parse_config(self.config_key, self.required_fields)
 
-    def search(self, query: str) -> List[Document]:
-        raise NotImplementedError()
+class BaseVectorDBConfig(StackComponentConfig):
+    """Base VectorDB Config Stack Component Config"""
 
-    def create_client(self):
-        raise NotImplementedError()
+    db_parameters = BaseVectorDBConfigModel
 
-    def get_langchain_client(self):
-        raise NotImplementedError()
 
-    def get_langchain_memory_client(self):
-        raise NotImplementedError()
+class BaseVectorDB(StackComponent):
+    """Base VectorDB Stack Component"""
 
-    def store_documents(self, documents: List[Document]):
-        client = self.get_langchain_client()
-        client.add_documents(documents)
+    config_class = BaseVectorDBConfig
 
-    def _get_default_embedding(self):
-        model_name = "sentence-transformers/all-mpnet-base-v2"
-        model_kwargs = {"device": "cpu"}
-        encode_kwargs = {"normalize_embeddings": False}
-        return HuggingFaceEmbeddings(model_name=model_name, model_kwargs=model_kwargs, encode_kwargs=encode_kwargs)
+    def get_client(self):
+        raise NotImplementedError
 
-    def get_embedding(self):
-        if embedding := self.vectordb_config.get("embedding"):
-            embedding_cls = import_class(
-                f"langchain.embeddings.{embedding.get('name')}",
-            )
-            embedding = embedding_cls(**embedding.get("fields"))
-        elif not embedding:
-            embedding = self._get_default_embedding()
-        return embedding
-
-    @classmethod
-    def from_config(cls, config):
+    def search(self):
         raise NotImplementedError
