@@ -47,7 +47,8 @@ class HuggingFaceModel(BaseModel):
         return model
 
     def predict(self, prompt: str):
-        return self.model(prompt)
+        response = self.model(prompt)
+        return {"output": response[0]["generated_text"]}
 
 
 # class HuggingFaceModel(BaseModel):
