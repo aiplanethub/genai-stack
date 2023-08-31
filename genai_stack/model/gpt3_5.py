@@ -71,7 +71,8 @@ class OpenAIGpt35Model(BaseModel):
         return model
 
     def predict(self, prompt: str):
-        return self.model.predict(prompt)
+        response = self.model.predict(prompt)
+        return {"output": response}
 
 
 # class OpenAIGpt35Model(BaseModel):

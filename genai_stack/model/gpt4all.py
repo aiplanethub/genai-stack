@@ -124,7 +124,8 @@ class Gpt4AllModel(BaseModel):
         return model
 
     def predict(self, prompt: str):
-        return self.model.predict(prompt)
+        response = self.model.predict(prompt)
+        return {"output": response["result"]}
 
 
 # class Gpt4AllModel(BaseModel):
