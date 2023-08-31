@@ -40,12 +40,7 @@ class AirbyteETLConfig(BaseETLConfig):
 class AirbyteETL(BaseETL):
     """Airbyte ETL Class
 
-    Attributes:
-        name: A string to name the ETL class
-        config: A string that holds the json file path which contains the configs
-                required to setup airbyte connection.
-        host: A string which contains the host of the airbyte
-        workspace_id: An optional string which contains the workspace id of the airbyte
+    The class which creates sources, destinations and connections in Airbyte to execute the ETL Process.
     """
 
     @property
@@ -109,7 +104,7 @@ class AirbyteETL(BaseETL):
     def _create_workspace_id(self):
         """If a workspace_id is not provided in the config.json, it will be created."""
         data = {"name": uuid4().hex}
-        
+
         response = self._call_airbyte_api("post", url="/api/v1/workspaces/create", data=data)
         print(f'Created Workspace - {response.json().get("workspaceId")}')
 
