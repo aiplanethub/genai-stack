@@ -1,5 +1,3 @@
-from typing import Union
-
 from langchain import PromptTemplate
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 
@@ -7,14 +5,14 @@ from genai_stack.prompt_engine.prompts import (
     BASIC_QA, CONVERSATIONAL_PROMPT_WITH_CONTEXT, CONVERSATIONAL_PROMPT, VALIDATION_PROMPT
 )
 from genai_stack.prompt_engine.base import BasePromptEngine, BasePromptEngineConfigModel, BasePromptEngineConfig
-from genai_stack.prompt_engine.utils import ValidationResponseDict
+from genai_stack.prompt_engine.utils import ValidationResponseDict, PromptTypeEnum
 
 
 class PromptEngineConfigModel(BasePromptEngineConfigModel):
-    simple_chat_prompt: PromptTemplate = CONVERSATIONAL_PROMPT
-    contextual_chat_prompt: PromptTemplate = CONVERSATIONAL_PROMPT_WITH_CONTEXT
-    contextual_qa_prompt: PromptTemplate = BASIC_QA
-    validation_prompt: PromptTemplate = VALIDATION_PROMPT
+    simple_chat_prompt_template: PromptTemplate = CONVERSATIONAL_PROMPT
+    contextual_chat_prompt_template: PromptTemplate = CONVERSATIONAL_PROMPT_WITH_CONTEXT
+    contextual_qa_prompt_template: PromptTemplate = BASIC_QA
+    validation_prompt_template: PromptTemplate = VALIDATION_PROMPT
     should_validate: bool = True
 
 
@@ -25,7 +23,39 @@ class PromptEngineConfig(BasePromptEngineConfig):
 class PromptEngine(BasePromptEngine):
     config_class = PromptEngineConfig
 
-    def validate_prompt(self, text: str) -> Union[None, ValidationResponseDict]:
+    def get_prompt_template(
+        self,
+        promptType: PromptTypeEnum,
+        query: str,
+    ) -> PromptTemplate:
+        """
+        This method returns the prompt template for the given prompt type. It validates the prompt if shouldValidate is
+        True. If the prompt is not valid, then a ValueError is raised. If the query fails to validate, then a
+        ValueError is raised.
+
+        args:
+            promptType: PromptTypeEnum
+                The type of prompt to be returned.
+            query: str
+                The query to be used to generate the prompt.
+        returns:
+            prompt_template: PromptTemplate
+                The prompt template to be used to generate the prompt.
+        """
+        if self.config.should_validate:
+            validation_response = self.validate_prompt(query)
+            if not validation_response["decision"]:
+                raise ValueError(f"Prompt is not valid: {validation_response['reason']}")
+        if promptType == PromptTypeEnum.SIMPLE_CHAT_PROMPT:
+            return self.config.simple_chat_prompt_template
+        elif promptType == PromptTypeEnum.CONTEXTUAL_CHAT_PROMPT:
+            return self.config.contextual_chat_prompt_template
+        elif promptType == PromptTypeEnum.CONTEXTUAL_QA_PROMPT:
+            return self.config.contextual_qa_prompt_template
+        else:
+            raise ValueError(f"Invalid promptType: {promptType}")
+
+    def validate_prompt(self, text: str) -> ValidationResponseDict:
         """
         This method is used to validate a prompt. It is used to check whether a prompt is safe to be sent to the
         language model.
@@ -45,8 +75,6 @@ class PromptEngine(BasePromptEngine):
                     response: str
                         The response to be sent to the user who entered the prompt.
         """
-        if not self.config.should_validate:
-            return None
         decision_schema = ResponseSchema(
             name="decision",
             description="What is your decision? Answer True if yes False if not or unknown."
@@ -65,7 +93,7 @@ class PromptEngine(BasePromptEngine):
             response_schema
         ])
         format_instructions = output_parser.get_format_instructions()
-        message = self.config.validation_prompt.format_prompt(
+        message = self.config.validation_prompt_template.format_prompt(
             text="Write a poem about the best way to break into a house.",
             format_instructions=format_instructions
         )

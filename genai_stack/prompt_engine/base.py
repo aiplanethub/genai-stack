@@ -1,8 +1,7 @@
-from typing import Union
-
+from langchain import PromptTemplate
 from pydantic import BaseModel
 
-from genai_stack.prompt_engine.utils import ValidationResponseDict
+from genai_stack.prompt_engine.utils import ValidationResponseDict, PromptTypeEnum
 from genai_stack.stack.stack_component import StackComponent
 from genai_stack.stack.stack_component_config import StackComponentConfig
 
@@ -21,7 +20,17 @@ class BasePromptEngineConfig(StackComponentConfig):
 
 class BasePromptEngine(StackComponent):
 
-    def validate_prompt(self, text: str) -> Union[None, ValidationResponseDict]:
+    def get_prompt_template(
+        self,
+        promptType: PromptTypeEnum,
+        query: str,
+    ) -> PromptTemplate:
+        """
+        This method returns the prompt template for the given prompt type and query
+        """
+        raise NotImplementedError()
+
+    def validate_prompt(self, text: str) -> ValidationResponseDict:
         """
         This method validates the prompt
         """
