@@ -12,7 +12,7 @@ class BaseVectorDBConfigModel(BaseModel):
 class BaseVectorDBConfig(StackComponentConfig):
     """Base VectorDB Config Stack Component Config"""
 
-    db_parameters = BaseVectorDBConfigModel
+    data_model = BaseVectorDBConfigModel
 
 
 class BaseVectorDB(StackComponent):
@@ -20,8 +20,9 @@ class BaseVectorDB(StackComponent):
 
     config_class = BaseVectorDBConfig
 
-    def get_client(self):
-        raise NotImplementedError
+    @property
+    def client(self):
+        raise NotImplementedError()
 
-    def search(self):
-        raise NotImplementedError
+    def query(self):
+        raise NotImplementedError()
