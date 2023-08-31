@@ -1,4 +1,16 @@
-from genai_stack.stack.stack_component import StackComponent
+from pydantic import BaseModel
+from genai_stack.stack.stack_component import StackComponentConfig, StackComponent
+
+class BaseMemoryConfigModel(BaseModel):
+    """
+    Data Model for the configs
+    """
+    pass
+
+
+class BaseMemoryConfig(StackComponentConfig):
+    data_model = BaseMemoryConfigModel
+
 
 class BaseMemory(StackComponent):
     

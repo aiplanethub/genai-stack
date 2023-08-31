@@ -1,17 +1,26 @@
 from langchain.memory import ConversationBufferMemory as cbm
-from .base import BaseMemory
+from .base import BaseMemoryConfigModel, BaseMemoryConfig, BaseMemory
+
+
+class ConversationBufferMemoryConfigModel(BaseMemoryConfigModel):
+    """
+    Data Model for the configs
+    """
+    pass
+
+
+class ConversationBufferMemoryConfig(BaseMemoryConfig):
+    data_model = ConversationBufferMemoryConfigModel
+
 
 class ConversationBufferMemory(BaseMemory):
+    config_class = ConversationBufferMemoryConfig
     memory = None
-    input_text = None
-    output_text = None
 
     def _post_init(self, *args, **kwargs):
         self.memory = cbm(return_messages=True)
 
     def add_text(self, user_text, model_text):
-        self.input_text = user_text
-        self.output_text = model_text
         self.memory.save_context({"input": user_text}, {"output": model_text})
 
     def get_user_text(self):
@@ -28,3 +37,8 @@ class ConversationBufferMemory(BaseMemory):
 
     def get_chat_history(self):
         return self.memory.load_memory_variables({})
+    
+
+
+obj = ConversationBufferMemory()
+print(obj)
