@@ -3,7 +3,10 @@ from utils import parse_search_results
 
 
 class LangChainConfigModel(BaseRetrieverConfigModel):
-    name:str
+    """
+    Data Model for the configs
+    """
+    pass
 
 
 class LangChainConfig(BaseRetrieverConfig):
@@ -13,7 +16,7 @@ class LangChainConfig(BaseRetrieverConfig):
 class LangChain(BaseRetriever):
     config_class = LangChainConfig
 
-    def retrive(self, query:str): 
+    def retrieve(self, query:str): 
         context_prompt, chat_history_prompt = self.get_prompt()
 
         context = self.get_context(query)
@@ -30,10 +33,6 @@ class LangChain(BaseRetriever):
         context = self.mediator.search_vectordb(query)
          
         return parse_search_results(context)
-        
-    @staticmethod
-    def config_class() -> LangChainConfig:
-        return LangChainConfig
     
 
 # from typing import List
