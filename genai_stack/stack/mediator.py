@@ -19,15 +19,20 @@ class Mediator:
         return self._stack.model.predict(prompt)
 
     # Prompt Engine
-    @property
-    def has_vectordb_component(self):
-        return bool(self._stack.vectordb)
-
-    @property
-    def has_memory_component(self):
-        return bool(self._stack.memory)
-
     def get_prompt_template(self, query: str):
-        return self._stack.prompt_engine.get_prompt_template(query)
+        if self._stack.vectordb and self._stack.memory:
+            return self._stack.prompt_engine.get_prompt_template(
+                query=query, promptType="CONTEXTUAL_CHAT_PROMPT"
+            )
+        elif self._stack.memory:
+            return self._stack.prompt_engine.get_prompt_template(
+                query=query, promptType="SIMPLE_CHAT_PROMPT"
+            )
+        elif self._stack.vectordb:
+            return self._stack.prompt_engine.get_prompt_template(
+                query=query, promptType="CONTEXTUAL_QA_PROMPT"
+            )
+        else:
+            raise ValueError("VectorDB and Memory components are not provided, PromptEngine require atleast anyone of it for the prompt template.")
 
     # Add more methods for inter component communication as we build the components
