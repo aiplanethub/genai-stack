@@ -6,7 +6,7 @@ don't try to make up an answer.
 
 CURRENT CONVERSATIONS:
 {history}
-HUMAN: {input}
+HUMAN: {query}
 YOU:
 """
 
@@ -21,15 +21,15 @@ CONTEXT: {context}
 
 CURRENT CONVERSATIONS:
 {history}
-HUMAN: {input}
+HUMAN: {query}
 YOU:
 """
 
 CONVERSATIONAL_PROMPT = PromptTemplate(
     template=conversational_prompt_template,
-    input_variables=["history", "input"]
+    input_variables=["history", "query"]
 )
 CONVERSATIONAL_PROMPT_WITH_CONTEXT = PromptTemplate(
     template=conversational_prompt_with_context_template,
-    input_variables=["context", "history", "input"]
+    input_variables=["context", "history", "query"]
 )
