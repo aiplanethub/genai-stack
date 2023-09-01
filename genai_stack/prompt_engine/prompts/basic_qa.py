@@ -6,8 +6,8 @@ Please provide an answer which is factually correct and based on the information
 Please also mention any quotes supporting the answer if any present in the context supplied within two double quotes "" .
 {context}
 
-QUESTION:```{question}```
+QUESTION:```{query}```
 ANSWER:
 """
 
-BASIC_QA = PromptTemplate(template=template, input_variables=["context", "question"])
+BASIC_QA = PromptTemplate(template=template, input_variables=["context", "query"])
