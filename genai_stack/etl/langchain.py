@@ -7,6 +7,7 @@ from langchain.docstore.document import Document as LangDocument
 
 from genai_stack.utils.importing import import_class
 
+from .utils import LangchainETLDocument
 from .base import BaseETL, BaseETLConfig, BaseETLConfigModel
 
 logger = logging.getLogger(__name__)
@@ -32,12 +33,6 @@ class LangchainETLConfigModel(BaseETLConfigModel):
 
 class LangchainETLConfig(BaseETLConfig):
     data_model = LangchainETLConfigModel
-
-
-class LangchainETLDocument(BaseModel):
-    document: LangDocument
-    embedding: List[float]
-    """To store the reference to the embeddings as well in the document"""
 
 
 class LangchainETL(BaseETL):

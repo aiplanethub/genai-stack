@@ -1,10 +1,18 @@
 import typing
+from pydantic import BaseModel
 
+from langchain.docstore.document import Document as LangDocument
 from langchain.document_loaders import JSONLoader
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.document_loaders import UnstructuredMarkdownLoader
 from langchain.document_loaders import PyPDFLoader
 from langchain.document_loaders import WebBaseLoader
+
+
+class LangchainETLDocument(BaseModel):
+    document: LangDocument
+    embedding: typing.List[float]
+    """To store the reference to the embeddings as well in the document"""
 
 
 class FileDataSources:
