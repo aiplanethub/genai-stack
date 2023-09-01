@@ -8,7 +8,7 @@ from genai_stack.prompt_engine.base import BasePromptEngine, BasePromptEngineCon
 from genai_stack.prompt_engine.utils import ValidationResponseDict
 
 
-class PromptEngineConfigModel(BasePromptEngineConfigModel): 
+class PromptEngineConfigModel(BasePromptEngineConfigModel):
     simple_chat_prompt_template: PromptTemplate = CONVERSATIONAL_PROMPT
     contextual_chat_prompt_template: PromptTemplate = CONVERSATIONAL_PROMPT_WITH_CONTEXT
     contextual_qa_prompt_template: PromptTemplate = BASIC_QA
@@ -26,20 +26,17 @@ class PromptEngine(BasePromptEngine):
     def _post_init(self, *args, **kwargs):
         self.prompt_template = self.find_prompt_template()
 
-    def find_prompt_template(self):
+    def find_prompt_template(self) -> PromptTemplate:
         if self.mediator.has_vectordb_component and self.mediator.has_memory_component:
-            return CONVERSATIONAL_PROMPT_WITH_CONTEXT
+            return self.config.contextual_chat_prompt_template
         elif self.mediator.has_memory_component:
-            return CONVERSATIONAL_PROMPT
+            return self.config.simple_chat_prompt_template
         elif self.mediator.has_vectordb_component:
-            return BASIC_QA
+            return self.config.contextual_qa_prompt_template
         else:
             raise ValueError("VectorDB and Memory components are not provided, PromptEngine require atleast anyone of it for the prompt template.")
 
-    def get_prompt_template(
-        self,
-        query: str,
-    ) -> PromptTemplate:
+    def get_prompt_template(self, query: str) -> PromptTemplate:
         """
         This method validates the query(Optional) and returns the prompt template. It validates the query if shouldValidate is
         True. If the query is not valid, then a ValueError is raised.

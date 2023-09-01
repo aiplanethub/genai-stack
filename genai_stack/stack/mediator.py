@@ -17,17 +17,17 @@ class Mediator:
 
     def get_model_response(self, prompt: str) -> str:
         return self._stack.model.predict(prompt)
-    
+
     # Prompt Engine
     @property
     def has_vectordb_component(self):
         return bool(self._stack.vectordb)
-    
+
     @property
     def has_memory_component(self):
         return bool(self._stack.memory)
-    
-    def get_prompt_template(self, query:str):
+
+    def get_prompt_template(self, query: str):
         return self._stack.prompt_engine.get_prompt_template(query)
 
     # Add more methods for inter component communication as we build the components
