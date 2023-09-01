@@ -4,10 +4,12 @@
 
 import unittest
 
+from genai_stack.memory import ConversationBufferMemory
 from genai_stack.model import OpenAIGpt35Model
 from genai_stack.prompt_engine.engine import PromptEngine
 from genai_stack.prompt_engine.utils import PromptTypeEnum
 from genai_stack.stack.stack import Stack
+from genai_stack.vectordb.chromadb import ChromaDB
 
 
 class TestPromptEngine(unittest.TestCase):
@@ -72,3 +74,36 @@ class TestPromptEngine(unittest.TestCase):
             query="Hello, how are you?"
         )
         assert prompt == self.prompt_engine.config.simple_chat_prompt_template
+
+    def test_get_prompt_template_when_memory_is_provided(self):
+        self.prompt_engine.config.should_validate = False
+        stack = Stack(model=self.model, prompt_engine=self.prompt_engine, memory=ConversationBufferMemory.from_kwargs())
+        prompt = stack._mediator.get_prompt_template("Hello, how are you?")
+        assert prompt == self.prompt_engine.config.simple_chat_prompt_template
+
+    def test_get_prompt_template_when_vectordb_is_provided(self):
+        self.prompt_engine.config.should_validate = False
+        stack = Stack(
+            model=self.model,
+            prompt_engine=self.prompt_engine,
+            vectordb=ChromaDB.from_kwargs(required_fields=["url", "class_name", "text_key"], class_name="test")
+        )
+        prompt = stack._mediator.get_prompt_template("Hello, how are you?")
+        assert prompt == self.prompt_engine.config.contextual_qa_prompt_template
+
+    def test_get_prompt_template_when_memory_and_vectordb_is_provided(self):
+        self.prompt_engine.config.should_validate = False
+        stack = Stack(
+            model=self.model,
+            prompt_engine=self.prompt_engine,
+            vectordb=ChromaDB.from_kwargs(required_fields=["url", "class_name", "text_key"], class_name="test"),
+            memory=ConversationBufferMemory.from_kwargs()
+        )
+        prompt = stack._mediator.get_prompt_template("Hello, how are you?")
+        assert prompt == self.prompt_engine.config.contextual_chat_prompt_template
+
+    def test_get_prompt_template_when_memory_and_vectordb_is_not_provided(self):
+        self.prompt_engine.config.should_validate = False
+        stack = Stack(model=self.model, prompt_engine=self.prompt_engine)
+        with self.assertRaises(ValueError):
+            stack._mediator.get_prompt_template("Hello, how are you?")

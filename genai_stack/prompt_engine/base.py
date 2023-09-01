@@ -20,13 +20,11 @@ class BasePromptEngineConfig(StackComponentConfig):
 
 class BasePromptEngine(StackComponent):
 
-    def find_prompt_template(self):
-        """
-        This method finds the prompt template
-        """
-        raise NotImplementedError()
-
-    def get_prompt_template(self, query: str) -> PromptTemplate:
+    def get_prompt_template(
+        self,
+        promptType: PromptTypeEnum,
+        query: str,
+    ) -> PromptTemplate:
         """
         This method returns the prompt template for the given prompt type and query
         """
