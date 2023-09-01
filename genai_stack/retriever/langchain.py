@@ -17,20 +17,21 @@ class LangChain(BaseRetriever):
     config_class = LangChainConfig
 
     def retrieve(self, query:str): 
-        context_prompt, chat_history_prompt = self.get_prompt()
 
-        context = self.get_context(query)
-        chat_history = self.get_chat_history()
+        prompt_template = self.get_prompt(query=query)
 
-        final_prompt = chat_history_prompt.format(
-            chat_history=chat_history, 
-            prompt=context_prompt.format(context=context, query=query)
-        )
+        prompt_dict = {
+            "history": self.get_chat_history(),
+            "context": self.get_context(query=query),
+            "query": query
+        }
 
-        return final_prompt
+        prompt_template.format(**{k:v for k,v in prompt_dict.items() if k in prompt_template.input_variables})
+
+        return self.mediator.get_model_response(prompt=prompt_template)
 
     def get_context(self, query: str):
-        context = self.mediator.search_vectordb(query)
+        context = self.mediator.search_vectordb(query=query)
          
         return parse_search_results(context)
     
