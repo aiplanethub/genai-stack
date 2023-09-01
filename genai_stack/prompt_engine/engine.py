@@ -2,17 +2,13 @@ from langchain import PromptTemplate
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 
 from genai_stack.prompt_engine.prompts import (
-    BASIC_QA, CONVERSATIONAL_PROMPT_WITH_CONTEXT, CONVERSATIONAL_PROMPT, VALIDATION_PROMPT
+    BASIC_QA, CONVERSATIONAL_PROMPT_WITH_CONTEXT, CONVERSATIONAL_PROMPT
 )
 from genai_stack.prompt_engine.base import BasePromptEngine, BasePromptEngineConfigModel, BasePromptEngineConfig
-from genai_stack.prompt_engine.utils import ValidationResponseDict, PromptTypeEnum
+from genai_stack.prompt_engine.utils import ValidationResponseDict
 
 
-class PromptEngineConfigModel(BasePromptEngineConfigModel):
-    simple_chat_prompt_template: PromptTemplate = CONVERSATIONAL_PROMPT
-    contextual_chat_prompt_template: PromptTemplate = CONVERSATIONAL_PROMPT_WITH_CONTEXT
-    contextual_qa_prompt_template: PromptTemplate = BASIC_QA
-    validation_prompt_template: PromptTemplate = VALIDATION_PROMPT
+class PromptEngineConfigModel(BasePromptEngineConfigModel): 
     should_validate: bool = True
 
 
@@ -23,37 +19,38 @@ class PromptEngineConfig(BasePromptEngineConfig):
 class PromptEngine(BasePromptEngine):
     config_class = PromptEngineConfig
 
+    def _post_init(self, *args, **kwargs):
+        self.prompt_template = self.find_prompt_template()
+
+    def find_prompt_template(self):
+        if self.mediator.has_vectordb_component and self.mediator.has_memory_component:
+            return CONVERSATIONAL_PROMPT_WITH_CONTEXT
+        elif self.mediator.has_memory_component:
+            return CONVERSATIONAL_PROMPT
+        elif self.mediator.has_vectordb_component:
+            return BASIC_QA
+        else:
+            raise ValueError("VectorDB and Memory components are not provided, PromptEngine require atleast anyone of it for the prompt template.")
+
     def get_prompt_template(
         self,
-        promptType: PromptTypeEnum,
         query: str,
     ) -> PromptTemplate:
         """
-        This method returns the prompt template for the given prompt type. It validates the prompt if shouldValidate is
-        True. If the prompt is not valid, then a ValueError is raised. If the query fails to validate, then a
-        ValueError is raised.
-
+        This method validates the query(Optional) and returns the prompt template. It validates the query if shouldValidate is
+        True. If the query is not valid, then a ValueError is raised.
         args:
-            promptType: PromptTypeEnum
-                The type of prompt to be returned.
             query: str
-                The query to be used to generate the prompt.
+                To validate the query
         returns:
             prompt_template: PromptTemplate
-                The prompt template to be used to generate the prompt.
         """
         if self.config.should_validate:
             validation_response = self.validate_prompt(query)
             if not validation_response["decision"]:
                 raise ValueError(f"Prompt is not valid: {validation_response['reason']}")
-        if promptType == PromptTypeEnum.SIMPLE_CHAT_PROMPT:
-            return self.config.simple_chat_prompt_template
-        elif promptType == PromptTypeEnum.CONTEXTUAL_CHAT_PROMPT:
-            return self.config.contextual_chat_prompt_template
-        elif promptType == PromptTypeEnum.CONTEXTUAL_QA_PROMPT:
-            return self.config.contextual_qa_prompt_template
-        else:
-            raise ValueError(f"Invalid promptType: {promptType}")
+
+        return self.prompt_template
 
     def validate_prompt(self, text: str) -> ValidationResponseDict:
         """
