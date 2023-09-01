@@ -16,18 +16,15 @@ class BaseRetrieverConfig(StackComponentConfig):
 class BaseRetriever(StackComponent):
     config_class = BaseRetrieverConfig
 
-    def get_prompt(self):
+    def get_prompt(self, query:str):
         """
-        This method returns the context prompt and the chat history prompt from the prompt engine component
+        This method returns the prompt template from the prompt engine component
         """
-        context_prompt = self.mediator.get_context_prompt()
-        chat_history_prompt = self.mediator.get_chat_history_prompt()
-
-        return context_prompt, chat_history_prompt
+        return self.mediator.get_prompt_template(query)
 
     def retrieve(self, query:str):
         """
-        This method returns the final prompt by combining the context prompt and chat history prompt.
+        This method returns the model response for the prompt template.
         """
         raise NotImplementedError()
     
