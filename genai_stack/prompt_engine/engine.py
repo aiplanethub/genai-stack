@@ -2,13 +2,17 @@ from langchain import PromptTemplate
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 
 from genai_stack.prompt_engine.prompts import (
-    BASIC_QA, CONVERSATIONAL_PROMPT_WITH_CONTEXT, CONVERSATIONAL_PROMPT
+    BASIC_QA, CONVERSATIONAL_PROMPT_WITH_CONTEXT, CONVERSATIONAL_PROMPT, VALIDATION_PROMPT
 )
 from genai_stack.prompt_engine.base import BasePromptEngine, BasePromptEngineConfigModel, BasePromptEngineConfig
 from genai_stack.prompt_engine.utils import ValidationResponseDict
 
 
 class PromptEngineConfigModel(BasePromptEngineConfigModel): 
+    simple_chat_prompt_template: PromptTemplate = CONVERSATIONAL_PROMPT
+    contextual_chat_prompt_template: PromptTemplate = CONVERSATIONAL_PROMPT_WITH_CONTEXT
+    contextual_qa_prompt_template: PromptTemplate = BASIC_QA
+    validation_prompt_template: PromptTemplate = VALIDATION_PROMPT
     should_validate: bool = True
 
 
