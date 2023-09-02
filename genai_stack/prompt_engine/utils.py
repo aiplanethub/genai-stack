@@ -7,8 +7,7 @@ class ValidationResponseDict(TypedDict):
     reason: str
     response: str
 
-
 class PromptTypeEnum(enum.Enum):
-    SIMPLE_CHAT_PROMPT = "simple_chat_prompt"
-    CONTEXTUAL_CHAT_PROMPT = "contextual_chat_prompt"
-    CONTEXTUAL_QA_PROMPT = "contextual_qa_prompt"
+    SIMPLE_CHAT_PROMPT = "SIMPLE_CHAT_PROMPT"
+    CONTEXTUAL_CHAT_PROMPT = "CONTEXTUAL_CHAT_PROMPT"
+    CONTEXTUAL_QA_PROMPT = "CONTEXTUAL_QA_PROMPT"
