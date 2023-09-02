@@ -10,8 +10,8 @@ from genai_stack.core import BaseComponent, ConfigLoader
 from genai_stack.constants.model import MODEL_CONFIG_KEY
 
 # from genai_stack.model.server import HttpServer
-from genai_stack.retriever import BaseRetriever
-from genai_stack.utils.defaults import get_default_retriever
+# from genai_stack.retriever import BaseRetriever
+# from genai_stack.utils.defaults import get_default_retriever
 
 # from genai_stack.etl.lang_loader import LangLoaderEtl
 # from genai_stack.etl.utils import get_config_from_source_kwargs
