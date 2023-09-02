@@ -1,5 +1,6 @@
 from langchain.memory import ConversationBufferMemory as cbm
 from genai_stack.memory.base import BaseMemoryConfigModel, BaseMemoryConfig, BaseMemory
+from genai_stack.memory.utils import parse_chat_conversation_history
 
 
 class ConversationBufferMemoryConfigModel(BaseMemoryConfigModel):
@@ -39,5 +40,5 @@ class ConversationBufferMemory(BaseMemory):
             "model_text":self.get_model_text()
         }
 
-    def get_chat_history(self):
-        return self.memory.chat_memory.messages
+    def get_chat_history(self) -> str:
+        return parse_chat_conversation_history(self.memory.chat_memory.messages)
