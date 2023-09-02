@@ -1,5 +1,5 @@
 from .base import BaseRetrieverConfigModel, BaseRetrieverConfig, BaseRetriever
-from utils import parse_search_results
+from genai_stack.retriever.utils import parse_search_results
 
 
 class LangChainConfigModel(BaseRetrieverConfigModel):
