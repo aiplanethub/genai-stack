@@ -2,29 +2,33 @@ from .base import BaseRetrieverConfigModel, BaseRetrieverConfig, BaseRetriever
 from genai_stack.retriever.utils import parse_search_results
 
 
-class LangChainConfigModel(BaseRetrieverConfigModel):
+class LangChainRetrieverConfigModel(BaseRetrieverConfigModel):
     """
     Data Model for the configs
     """
     pass
 
 
-class LangChainConfig(BaseRetrieverConfig):
-    data_model = LangChainConfigModel
+class LangChainRetrieverConfig(BaseRetrieverConfig):
+    data_model = LangChainRetrieverConfigModel
 
 
-class LangChain(BaseRetriever):
-    config_class = LangChainConfig
+class LangChainRetriever(BaseRetriever):
+    config_class = LangChainRetrieverConfig
 
     def retrieve(self, query:str): 
 
         prompt_template = self.get_prompt(query=query)
 
         prompt_dict = {
-            "history": self.get_chat_history(),
-            "context": self.get_context(query=query),
             "query": query
         }
+
+        if "context" in prompt_template.input_variables:
+            prompt_dict['context'] = self.get_context(query=query)
+        
+        if "history" in prompt_template.input_variables:
+            prompt_dict['history'] = self.get_chat_history()
 
         final_prompt_template =  prompt_template.template.format(
             **{k:v for k,v in prompt_dict.items() if k in prompt_template.input_variables}
