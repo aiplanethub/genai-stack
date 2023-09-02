@@ -26,9 +26,11 @@ class LangChain(BaseRetriever):
             "query": query
         }
 
-        prompt_template.format(**{k:v for k,v in prompt_dict.items() if k in prompt_template.input_variables})
+        final_prompt_template =  prompt_template.template.format(
+            **{k:v for k,v in prompt_dict.items() if k in prompt_template.input_variables}
+        )
 
-        return self.mediator.get_model_response(prompt=prompt_template)
+        return self.mediator.get_model_response(prompt=final_prompt_template)
 
     def get_context(self, query: str):
         context = self.mediator.search_vectordb(query=query)
