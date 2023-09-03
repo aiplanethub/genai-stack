@@ -22,7 +22,7 @@ class BaseRetriever(StackComponent):
         """
         return self.mediator.get_prompt_template(query)
 
-    def retrieve(self, query:str):
+    def retrieve(self, query:str) -> dict:
         """
         This method returns the model response for the prompt template.
         """
@@ -34,7 +34,7 @@ class BaseRetriever(StackComponent):
         """
         raise NotImplementedError()
     
-    def get_chat_history(self):
+    def get_chat_history(self) -> str:
         """
         This method returns the chat conversation history
         """

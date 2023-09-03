@@ -19,20 +19,19 @@ class Mediator:
         return self._stack.model.predict(prompt)
     
     # Memory component
-    def add_text(self, user_text, model_text):
+    def add_text(self, user_text:str, model_text:str) -> None:
         self._stack.memory.add_text(user_text, model_text)
-        return
 
-    def get_user_text(self):
+    def get_user_text(self) -> str:
         return self._stack.memory.get_user_text()
 
-    def get_model_text(self):
+    def get_model_text(self) -> str:
         return self._stack.memory.get_model_text()
         
-    def get_text(self):
+    def get_text(self) -> dict:
         return self._stack.memory.get_text()
 
-    def get_chat_history(self):
+    def get_chat_history(self) -> str:
         return self._stack.memory.get_chat_history()
 
     # Prompt Engine
