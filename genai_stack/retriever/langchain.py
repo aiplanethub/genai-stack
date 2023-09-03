@@ -31,10 +31,15 @@ class LangChainRetriever(BaseRetriever):
             prompt_dict['history'] = self.get_chat_history()
 
         final_prompt_template =  prompt_template.template.format(
-            **{k:v for k,v in prompt_dict.items() if k in prompt_template.input_variables}
+            **{k:v for k,v in prompt_dict.items()}
         )
 
-        return self.mediator.get_model_response(prompt=final_prompt_template)
+        response = self.mediator.get_model_response(prompt=final_prompt_template)
+
+        if "history" in prompt_template.input_variables:
+            self.mediator.add_text(user_text=query, model_text=response['output'])
+
+        return response
 
     def get_context(self, query: str):
         context = self.mediator.search_vectordb(query=query)
