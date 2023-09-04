@@ -5,7 +5,7 @@
 
 import unittest
 
-from genai_stack.etl.langchain import list_langchain_loaders, LangLoaderEtl
+from genai_stack.etl.langchain import list_langchain_loaders, LangchainETL
 from genai_stack.etl.llamahub_loader import LLamaHubEtl
 
 
@@ -16,13 +16,8 @@ class TestEtl(unittest.TestCase):
         assert "CSVLoader" in langchain_loaders
 
     def test_langloader_etl(self):
-        langhub_etl = LangLoaderEtl(config="assets/etl.json")
-        langhub_etl.run()
-
-    def test_langloader_etl_custom_embedding(self):
-        langhub_etl = LangLoaderEtl(config="assets/config_custom_embedding.json")
-        langhub_etl.run()
-
-    def test_llamahub_loader_etl(self):
-        langhub_etl = LLamaHubEtl(config="assets/etl.json")
-        langhub_etl.run()
+        etl = LangchainETL.from_kwargs(
+            name="PyPDFLoader", fields={"file_path": "/path/to/pdf"}
+        )
+        etl.extract()
+        # Need to write testcases after integrating the vectordb component
