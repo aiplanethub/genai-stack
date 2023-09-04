@@ -1,10 +1,11 @@
-from typing import Any, Optional, Callable
+from typing import Any, Callable
+
+from langchain.vectorstores import Chroma as LanghChainChroma
+
+from genai_stack.utils.extraction import extract_class_init_attrs
 from genai_stack.vectordb.base import BaseVectorDB
 from genai_stack.vectordb.chromadb import ChromaDBConfig, ChromaDBConfigModel
-from genai_stack.vectordb.exception import GenAIStackException
-from langchain.vectorstores import Chroma as LanghChainChroma
-from genai_stack.vectordb.chromadb.constants import DEFAULT_COLLECTION_NAME, DEFAULT_SEARCH_OPTIONS
-from genai_stack.utils.extraction import extract_class_init_attrs
+from genai_stack.vectordb.chromadb.constants import DEFAULT_SEARCH_OPTIONS
 
 try:
     import chromadb
@@ -18,8 +19,6 @@ except RuntimeError:
 class ChromaDB(BaseVectorDB):
     config_class = ChromaDBConfig
     _client: chromadb.Client = None
-    _search_method: Callable = None
-    search_options: dict = DEFAULT_SEARCH_OPTIONS
 
     def _sanitize_params_dict(self, params_dict, source_dict, sanitized_dict):
         params_dict.pop("args", None)
@@ -31,9 +30,9 @@ class ChromaDB(BaseVectorDB):
         return sanitized_dict
 
     def _post_init(self, *args, **kwargs):
-        # Create a chromadb client
         db_parameters: ChromaDBConfigModel = self.config.data_model
 
+        # Create a chromadb client
         if db_parameters.host and db_parameters.port:
             self.client = chromadb.HttpClient(host=db_parameters.host, port=db_parameters.port)
         elif db_parameters.persist_path:
@@ -53,10 +52,18 @@ class ChromaDB(BaseVectorDB):
             sanitized_init_params,
         )
 
-        self.lc_chrome = LanghChainChroma(
+        self.lc_chroma = LanghChainChroma(
             client=self.client,
             **sanitized_init_params,
         )
+
+    @property
+    def client(self) -> chromadb.Client:
+        return self._client
+
+    @client.setter
+    def client(self, db_client: chromadb.Client):
+        self._client = db_client
 
     @property
     def search_method(self):
@@ -69,20 +76,8 @@ class ChromaDB(BaseVectorDB):
         }
         self._search_method = search_methods.get(search_method)
 
-    @property
-    def client(self):
-        return self._client
-
-    @client.setter
-    def client(self, db_client: chromadb.Client):
-        self._client = db_client
-
-    @property
-    def client(self) -> chromadb.Client:
-        return
-
     def similarity_search(self, query: Any):
-        return self.lc_chrome.similarity_search(
+        return self.lc_chroma.similarity_search(
             query=query,
             k=self.search_options["top_k"],
         )
