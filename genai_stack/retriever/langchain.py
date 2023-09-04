@@ -36,8 +36,7 @@ class LangChainRetriever(BaseRetriever):
 
         response = self.mediator.get_model_response(prompt=final_prompt_template)
 
-        if "history" in prompt_template.input_variables:
-            self.mediator.add_text(user_text=query, model_text=response['output'])
+        self.mediator.add_text(user_text=query, model_text=response['output'])
 
         return response
 

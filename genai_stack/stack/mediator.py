@@ -47,14 +47,10 @@ class Mediator:
     def add_text(self, user_text:str, model_text:str) -> None:
         if self._is_component_available("memory"):
             self._stack.memory.add_text(user_text, model_text)
-        else:
-            raise ValueError("Memory component is not provided.")
 
     def get_chat_history(self) -> str:
         if self._is_component_available("memory"):
             return self._stack.memory.get_chat_history()
-        else:
-            raise ValueError("Memory component is not provided.")
 
     # Prompt Engine
     def get_prompt_template(self, query: str):
