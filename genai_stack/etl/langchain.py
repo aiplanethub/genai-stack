@@ -36,6 +36,8 @@ class LangchainETLConfig(BaseETLConfig):
 
 
 class LangchainETL(BaseETL):
+    config_class = LangchainETLConfig
+
     def extract(self):
         LoaderCls = import_class(
             f"langchain.document_loaders.{self.config.name}",
