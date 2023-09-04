@@ -30,3 +30,4 @@ class BaseVectorDB(StackComponent):
 
     def query(self):
         raise NotImplementedError()
+    
