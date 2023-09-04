@@ -11,6 +11,31 @@ class Mediator:
     def __init__(self, stack: Stack):
         self._stack = stack
 
+    def _is_component_available(self, component_name:str) -> bool:
+        """
+        This method is for checking the required component is available or not.
+
+        Args:
+            component_name:str
+                Takes the component name
+            
+        Return:
+            True or False
+                True if component is available or False if None.
+        """
+        components = {
+            "etl":self._stack.etl,
+            "embedding":self._stack.embedding,
+            "vectordb":self._stack.vectordb,
+            "prompt_engine":self._stack.prompt_engine,
+            "model":self._stack.model,
+            "retriever":self._stack.retriever,
+            "memory":self._stack.memory
+        }
+
+        return bool(components.get(component_name))
+
+
     # Embedding component
     def get_embedded_text(self, text):
         return self._stack.embedding.embed_text(text)
@@ -20,19 +45,16 @@ class Mediator:
     
     # Memory component
     def add_text(self, user_text:str, model_text:str) -> None:
-        self._stack.memory.add_text(user_text, model_text)
-
-    def get_user_text(self) -> str:
-        return self._stack.memory.get_user_text()
-
-    def get_model_text(self) -> str:
-        return self._stack.memory.get_model_text()
-        
-    def get_text(self) -> dict:
-        return self._stack.memory.get_text()
+        if self._is_component_available("memory"):
+            self._stack.memory.add_text(user_text, model_text)
+        else:
+            raise ValueError("Memory component is not provided.")
 
     def get_chat_history(self) -> str:
-        return self._stack.memory.get_chat_history()
+        if self._is_component_available("memory"):
+            return self._stack.memory.get_chat_history()
+        else:
+            raise ValueError("Memory component is not provided.")
 
     # Prompt Engine
     def get_prompt_template(self, query: str):
