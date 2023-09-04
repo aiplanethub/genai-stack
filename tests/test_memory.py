@@ -20,7 +20,9 @@ class TestConversationBufferMemory(unittest.TestCase):
         print(memory.get_chat_history())
 
         # User query
+        assert memory.get_user_text() == "it’s Nader"
         print(memory.get_user_text())
 
          # Model response
+        assert memory.get_model_text() == "what are you doing for living?"
         print(memory.get_model_text())
