@@ -70,7 +70,7 @@ class Mediator:
                 query=query, promptType="CONTEXTUAL_QA_PROMPT"
             )
         else:
-            raise ValueError("VectorDB and Memory components are not provided, PromptEngine require atleast anyone of it for the prompt template.")
+            raise ValueError("VectorDB and Memory components are not provided, PromptEngine require at least anyone of it for the prompt template.")
 
         
     

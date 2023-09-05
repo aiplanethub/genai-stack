@@ -62,7 +62,8 @@ class ChromaDB(BaseVectorDB):
 
     def search_method(self, query: str):
         search_methods = {"similarity_search": self.similarity_search, "max_marginal_relevance_search": self.mmr}
-        self._search_method = search_methods.get(self.config.search_method)(query=query)
+        search_results = search_methods.get(self.config.search_method)(query=query)
+        return search_results
 
     def similarity_search(self, query: str):
         return self.lc_chroma.similarity_search(
