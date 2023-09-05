@@ -73,12 +73,27 @@ class Weaviate(BaseVectorDB):
         return search_results
 
     def similarity_search(self, query: str):
+        """
+        Return docs based on similarity search
+
+        Args:
+            query: Document or string against which you want to do the search
+        """
+
         return self.lc_client.similarity_search(
             query=query,
             **self.search_options,
         )
 
     def mmr(self, query: str):
+        """
+        Return docs selected using the maximal marginal relevance.
+        Maximal marginal relevance optimizes for similarity to query AND diversity
+        among selected documents.
+
+        Args:
+            query: Document or string against which you want to do the search
+        """
         return self.lc_client.max_marginal_relevance_search(query=query, **self.search_options)
 
     def search(self, query: str):
