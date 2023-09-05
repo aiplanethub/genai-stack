@@ -40,6 +40,9 @@ class Mediator:
     def get_embedded_text(self, text):
         return self._stack.embedding.embed_text(text)
 
+    def get_embedding_function(self):
+        return self._stack.embedding.embedding
+    
     def get_model_response(self, prompt: str) -> str:
         return self._stack.model.predict(prompt)
     
@@ -70,4 +73,5 @@ class Mediator:
             raise ValueError("VectorDB and Memory components are not provided, PromptEngine require atleast anyone of it for the prompt template.")
 
         
+    
     # Add more methods for inter component communication as we build the components
