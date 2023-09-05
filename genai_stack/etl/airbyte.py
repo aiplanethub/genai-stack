@@ -8,7 +8,7 @@ from uuid import uuid4
 from typing import Optional
 
 from .base import BaseETL, BaseETLConfig, BaseETLConfigModel
-from .exception import LLMStackEtlException
+from .exception import GenAIStackETLException
 
 
 class AirbyteAuth:
@@ -86,7 +86,7 @@ class AirbyteETL(BaseETL):
     def _call_airbyte_api(self, method: str, url: str, data: dict = None, query_params: dict = None):
         response = getattr(requests, method)(url=url, headers=self._headers, json=data, params=query_params)
         if not response.ok:
-            raise LLMStackEtlException(f"Exception: {response.text}")
+            raise GenAIStackETLException(f"Exception: {response.text}")
         return response.json()
 
     def _create_connection(self):

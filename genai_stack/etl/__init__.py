@@ -1,1 +1,1 @@
-from .exception import LLMStackEtlException
+from .exception import GenAIStackETLException
