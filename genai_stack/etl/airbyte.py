@@ -57,7 +57,6 @@ class AirbyteETL(BaseETL):
         if api_key:
             header["Authorization"] = f"Bearer {api_key}".strip()
         else:
-            header["Authorization"] = f"Bearer {api_key}".strip()
             encoded_auth = _basic_auth_str(
                 username=self.config.auth.username,
                 password=self.config.auth.password,
