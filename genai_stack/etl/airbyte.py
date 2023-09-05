@@ -43,6 +43,8 @@ class AirbyteETL(BaseETL):
     The class which creates sources, destinations and connections in Airbyte to execute the ETL Process.
     """
 
+    config_class = AirbyteETLConfig
+
     @property
     def workspace_id(self):
         return self.config.workspace_id or self._create_workspace_id()
