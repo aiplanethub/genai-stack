@@ -6,4 +6,4 @@ Memory is a vital component within a chat system responsible for storing and man
 
 Currently we have support only for:
 
--   ConversationBufferMemory
+-   Conversation Buffer Memory
