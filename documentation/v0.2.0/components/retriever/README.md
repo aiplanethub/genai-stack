@@ -18,45 +18,8 @@ There are three different types of prompt template available, you can look more 
 
 **Querying the Language Model (LLM)**: To generate responses, the Retriever interacts with a language model (LLM). It sends a prompt template to the LLM, which could involve asking questions, requesting responses, or seeking information based on the retrieved context and templates.
 
-```py
-class BaseRetrieverConfigModel(BaseModel):
-    """
-    Data Model for the configs
-    """
-    pass
+## Supported Retriever
 
+Currently we have support only for:
 
-class BaseRetrieverConfig(StackComponentConfig):
-    data_model = BaseRetrieverConfigModel
-
-
-class BaseRetriever(StackComponent):
-    config_class = BaseRetrieverConfig
-
-    def get_prompt(self, query:str):
-        """
-        This method returns the prompt template from the prompt engine component
-        """
-        return self.mediator.get_prompt_template(query)
-
-    def retrieve(self, query:str) -> dict:
-        """
-        This method returns the model response for the prompt template.
-        """
-        raise NotImplementedError()
-
-    def get_context(self, query:str):
-        """
-        This method returns the relevant documents returned by the similarity search
-        from a vectordb based on the query
-        """
-        raise NotImplementedError()
-
-    def get_chat_history(self) -> str:
-        """
-        This method returns the chat conversation history
-        """
-        return self.mediator.get_chat_history()
-```
-
-As you can see in the BaseRetriever interface, we have four retrievers and each one has their own responsibilities as mentioned in the start.
+-   LangChain Retriever
