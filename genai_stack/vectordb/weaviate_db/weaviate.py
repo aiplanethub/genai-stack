@@ -20,7 +20,7 @@ class Weaviate(BaseVectorDB):
 
         # Initialize weaviate client
         weaviate_client_init_params = extract_class_init_attrs(weaviate.Client)
-        client_init_params = self.sanitize_params_dict(
+        client_init_params = sanitize_params_dict(
             weaviate_client_init_params,
             dict(db_parameters),
         )
@@ -29,33 +29,36 @@ class Weaviate(BaseVectorDB):
 
         # Initialize Langchain Client
         init_params = extract_class_init_attrs(LangChainWeaviate)
-        lc_init_params = self.sanitize_params_dict(
+        lc_init_params = sanitize_params_dict(
             init_params,
             dict(db_parameters),
         )
 
-        self.lc_client = LangChainWeaviate(
-            client=self.client,
-            **lc_init_params,
-        )
+        self.lc_client = self._create_langchain_client(**lc_init_params)
+
+    def _create_langchain_client(self, **kwargs):
+        return LangChainWeaviate(client=self.client, embedding=self.mediator.get_embedding_function(), **kwargs)
+
+    def add_texts(self, source_docs):
+        return self.lc_client.add_documents(source_docs)
 
     def create_index(self, index_name: str, text_key: Optional[str] = "default_key", **kwargs):
-        """
-        Get or Create a vectordb index
-        """
         try:
             self.client.schema.get(class_name=index_name)
         except UnexpectedStatusCodeException:
             class_schema = {
                 "class": index_name,
             }
+
             if not kwargs.get("properties", None):
                 class_schema["properties"] = [
                     {"name": text_key, "dataType": ["text"]},
                 ]
-            
+
             self.client.schema.create_class(class_schema)
-    
+
+        return self._create_langchain_client(index_name=index_name, text_key=text_key)
+
     @property
     def client(self) -> weaviate.Client:
         return self._client
@@ -79,5 +82,3 @@ class Weaviate(BaseVectorDB):
 
     def search(self, query: str):
         return self.search_method(query)
-
-    
