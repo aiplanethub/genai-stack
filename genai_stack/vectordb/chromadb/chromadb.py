@@ -10,6 +10,12 @@ from genai_stack.utils.sanitize import sanitize_params_dict
 try:
     import chromadb
 except RuntimeError:
+    """
+    Chromadb's main sql engine is sqlite3 but in some distributions and platforms sqlite3 binary is not
+    identified correctly.
+    So incase we cannot import chromadb correctly due to this import issue we install pysqlite3 binary and swap
+    the system path to use the installed binary instead of searching for the default sqlite3 binary
+    """
     from genai_stack.vectordb.utils import use_pysqlite3
 
     use_pysqlite3()
@@ -66,12 +72,26 @@ class ChromaDB(BaseVectorDB):
         return search_results
 
     def similarity_search(self, query: str):
+        """
+        Return docs based on similarity search
+
+        Args:
+            query: Document or string against which you want to do the search
+        """
         return self.lc_chroma.similarity_search(
             query=query,
             **self.search_options,
         )
 
     def mmr(self, query: str):
+        """
+        Return docs selected using the maximal marginal relevance.
+        Maximal marginal relevance optimizes for similarity to query AND diversity
+        among selected documents.
+
+        Args:
+            query: Document or string against which you want to do the search
+        """
         return self.lc_chroma.max_marginal_relevance_search(query=query, **self.search_options)
 
     def search(self, query: Any):
