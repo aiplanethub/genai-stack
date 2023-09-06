@@ -47,7 +47,7 @@ class BaseVectorDB(StackComponent):
         Args:
             query: Document or string against which you want to do the search
         """
-        return self.lc_client.similarity_search_by_text(
+        return self.lc_client.similarity_search(
             query=query,
             **self.config.search_options,
         )

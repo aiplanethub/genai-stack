@@ -47,7 +47,9 @@ class Weaviate(BaseVectorDB):
         return self._create_langchain_client(**lc_init_params)
 
     def _create_langchain_client(self, **kwargs):
-        return LangChainWeaviate(client=self.client, embedding=self.mediator.get_embedding_function(), **kwargs)
+        return LangChainWeaviate(
+            client=self.client, embedding=self.mediator.get_embedding_function(), by_text=False, **kwargs
+        )
 
     def create_index(self, index_name: str, text_key: Optional[str] = "default_key", **kwargs):
         try:
