@@ -70,14 +70,14 @@ class CustomRetrieverConfigModel(BaseRetrieverConfigModel):
     custom_field: str = "default_value"
 ```
 
-**4. Custom Configuration**: If you are creating a custom retriever config model which contains specific configurations for the custom retriever, then you also need a custom configuration class that extends BaseRetrieverConfig to define their own configuration class specific to their custom retriever component. For example:
+**4. Custom Configuration**: If you are creating a custom retriever config model which contains specific configurations for the custom retriever component, then you also need a custom configuration class that extends BaseRetrieverConfig to define their own configuration class specific to their custom retriever component. For example:
 
 ```py
 class CustomRetrieverConfig(BaseRetrieverConfig):
     data_model = CustomRetrieverConfigModel
 ```
 
-**5. Using Custom Configuration**: To use the custom configuration, users can modify their custom retriever class to specify the custom configuration class
+**5. Using Custom Configuration**: To use the custom configuration class, users can modify their custom retriever class to specify the custom configuration class
 
 ```py
 class CustomRetriever(BaseRetriever):

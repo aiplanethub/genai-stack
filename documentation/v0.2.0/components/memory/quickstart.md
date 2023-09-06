@@ -9,7 +9,7 @@ Conversation Buffer Memory doesn't require any specific configuration from the u
 ```py
 from genai_stack.memory import ConversationBufferMemory
 
-memory = ConversationBufferMemory(config={})
+memory = ConversationBufferMemory.from_kwargs()
 
 # Storing few conversation
 memory.add_text(user_text="Hi my name is Jhon",model_text="Hello, Jhon! How can I assist you today?")
