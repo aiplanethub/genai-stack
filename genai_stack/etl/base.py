@@ -19,6 +19,9 @@ class BaseETLConfig(StackComponentConfig):
 class BaseETL(StackComponent):
     config_class = BaseETLConfig
 
+    def _post_init(self, *args, **kwargs):
+        self.run()
+
     def extract(self) -> typing.Union[str, typing.List[str]]:
         """
         This method extracts the data from the data_source specified from the configs

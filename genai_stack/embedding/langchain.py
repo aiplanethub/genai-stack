@@ -20,8 +20,8 @@ class LangchainEmbedding(BaseEmbedding):
         embedding_cls = import_class(
             f"langchain.embeddings.{self.config.name}",
         )
-        embedding = embedding_cls(**self.config.fields)
-        return embedding
+        self.embedding = embedding_cls(**self.config.fields)
+        return self.embedding
 
     def embed_text(self, text: str):
         return self.embedding.embed_query(text)

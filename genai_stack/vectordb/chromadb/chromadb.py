@@ -1,4 +1,7 @@
+import tempfile
+import os
 from typing import Any, Callable
+
 
 from langchain.vectorstores import Chroma as LangChainChroma
 
@@ -27,27 +30,16 @@ class ChromaDB(BaseVectorDB):
     _client: chromadb.Client = None
 
     def _post_init(self, *args, **kwargs):
-        db_parameters: ChromaDBConfigModel = self.config.data_model
+        db_parameters: ChromaDBConfigModel = self.config.config_data
 
         # Create a chromadb client
         if db_parameters.host and db_parameters.port:
             self.client = chromadb.HttpClient(host=db_parameters.host, port=db_parameters.port)
-        elif db_parameters.persist_path:
-            persist_path = db_parameters.persist_path
-            self.client = chromadb.PersistentClient(persist_path)
         else:
-            self.client = chromadb.Client()
+            self.client = chromadb.PersistentClient(db_parameters.persist_path or self._get_default_persistent_path())
 
-        self.search_options = {**self.config.search_options, **kwargs}
-
-        # Get params to be passed for initialization based on the params provided by user
-        init_params = extract_class_init_attrs(LangChainChroma)
-        sanitized_init_params = sanitize_params_dict(
-            init_params,
-            dict(self.config),
-        )
-
-        self.lc_chroma = self._create_langchain_client(**sanitized_init_params)
+    def _get_default_persistent_path(self):
+        return os.path.join(tempfile.gettempdir(), "genai_stack")
 
     @property
     def client(self) -> chromadb.Client:
@@ -57,42 +49,19 @@ class ChromaDB(BaseVectorDB):
     def client(self, db_client: chromadb.Client):
         self._client = db_client
 
+    @property
+    def lc_client(self):
+        # Get params to be passed for initialization based on the params provided by user
+        init_params = extract_class_init_attrs(LangChainChroma)
+        sanitized_init_params = sanitize_params_dict(
+            init_params,
+            dict(self.config.config_data),
+        )
+
+        return self._create_langchain_client(**sanitized_init_params)
+
     def _create_langchain_client(self, **kwargs):
         return LangChainChroma(client=self.client, embedding_function=self.mediator.get_embedding_function(), **kwargs)
 
     def create_index(self, index_name: str, **kwargs):
         return self._create_langchain_client(collection_name=index_name)
-
-    def add_texts(self, documents):
-        return self.lc_chroma.add_documents(documents)
-
-    def search_method(self, query: str):
-        search_methods = {"similarity_search": self.similarity_search, "max_marginal_relevance_search": self.mmr}
-        search_results = search_methods.get(self.config.search_method)(query=query)
-        return search_results
-
-    def similarity_search(self, query: str):
-        """
-        Return docs based on similarity search
-
-        Args:
-            query: Document or string against which you want to do the search
-        """
-        return self.lc_chroma.similarity_search(
-            query=query,
-            **self.search_options,
-        )
-
-    def mmr(self, query: str):
-        """
-        Return docs selected using the maximal marginal relevance.
-        Maximal marginal relevance optimizes for similarity to query AND diversity
-        among selected documents.
-
-        Args:
-            query: Document or string against which you want to do the search
-        """
-        return self.lc_chroma.max_marginal_relevance_search(query=query, **self.search_options)
-
-    def search(self, query: Any):
-        return self.search_method(query)

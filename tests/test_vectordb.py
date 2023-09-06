@@ -21,23 +21,25 @@ class TestVectordb(unittest.TestCase):
             "encode_kwargs": {"normalize_embeddings": False},
         }
         self.embedding = LangchainEmbedding.from_kwargs(name="HuggingFaceEmbeddings", fields=config)
-        self.chromadb = ChromaDB.from_kwargs({})
-        self.weaviatedb = Weaviate.from_kwargs(url="http://localhost:8080/", class_name="Testing", text_key="test")
+        self.chromadb = ChromaDB.from_kwargs()
+        self.weaviatedb = Weaviate.from_kwargs(url="http://localhost:8080/", index_name="Testing", text_key="test")
 
         self.chroma_stack = Stack(model=None, embedding=self.embedding, vectordb=self.chromadb)
         self.weaviate_stack = Stack(model=None, embedding=self.embedding, vectordb=self.weaviatedb)
 
     def test_chromadb(self):
-        self.chroma_stack.vectordb.add_texts(
-            documents=LangDocument(
-                page_content="Some page content explaining something", metadata={"some_metadata": "some_metadata"}
-            )
+        self.chroma_stack.vectordb.add_documents(
+            documents=[
+                LangDocument(
+                    page_content="Some page content explaining something", metadata={"some_metadata": "some_metadata"}
+                )
+            ]
         )
         result = self.chroma_stack.vectordb.search("page")
         print(result)
 
     def test_weaviatedb(self):
-        self.weaviate_stack.vectordb.add_texts(
+        self.weaviate_stack.vectordb.add_documents(
             documents=[
                 LangDocument(
                     page_content="Some page content explaining something", metadata={"some_metadata": "some_metadata"}
@@ -46,3 +48,7 @@ class TestVectordb(unittest.TestCase):
         )
         result = self.weaviate_stack.vectordb.search("page")
         print(result)
+
+
+if __name__ == "__main__":
+    unittest.main()

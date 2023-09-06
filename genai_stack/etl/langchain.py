@@ -46,16 +46,14 @@ class LangchainETL(BaseETL):
         self.documents = loader.load()
         return self.documents
 
-    def transform(self, source_docs: List[LangDocument]) -> List[LangchainETLDocument]:
-        etl_documents = []
-        for doc in source_docs:
-            embedding = self.mediator.get_embedded_text(doc.page_content)
-            etl_documents.append(LangchainETLDocument(document=doc, embedding=embedding))
-        return etl_documents
+    def transform(self, source_docs: List[LangDocument]) -> List[LangDocument]:
+        """
+        There is no transformation step since embedding of the document happens in the vectordb component only.
+        """
+        return source_docs
 
-    def load(self, documents: List[LangchainETLDocument]):
-        for doc in documents:
-            self.mediator.store_to_vectordb(data=doc.document, embedding=doc.embedding)
+    def load(self, documents: List[LangDocument]):
+        self.mediator.store_to_vectordb(documents=documents)
 
     def run(self):
         source_documents = self.extract()

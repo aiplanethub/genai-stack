@@ -12,8 +12,8 @@ class StackComponentConfig(ABC):
                 f"No data model was provided for {self.__class__.__name__}. Every stack component has to specify the data model of its configuration."
             )
 
-        self._data = config_data
-        self.config = self.validate()
+        self._data = config_data  # Raw data
+        self._config = self.validate()  # Validated data
 
     def validate(self):
         try:
@@ -22,5 +22,9 @@ class StackComponentConfig(ABC):
         except ValidationError as e:
             raise (e)
 
+    @property
+    def config_data(self):
+        return self._config
+
     def __getattr__(self, name):
-        return getattr(self.config, name)
+        return getattr(self._config, name)
