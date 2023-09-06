@@ -7,7 +7,7 @@ LangChainRetriever doesn't require any specific configuration from user
 ```py
 from genai_stack.retriever import LangChainRetriever
 
-retriever = LangChainRetriever(config={})
+retriever = LangChainRetriever.from_kwargs()
 
 response = retriever.retrieve(query)
 ```
