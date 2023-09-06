@@ -27,8 +27,8 @@ from genai_stack.retriever import LangChainRetriever
 
 promptengine = PromptEngine.from_kwargs(should_validate = False)
 model = OpenAIGpt35Model.from_kwargs(parameters={"openai_api_key": openai_api_key})
-memory = ConversationBufferMemory(config={})
-retriever = LangChainRetriever(config={})
+memory = ConversationBufferMemory.from_kwargs()
+retriever = LangChainRetriever.from_kwargs()
 Stack(model=model, prompt_engine=promptengine, retriever=retriever, memory=memory)
 
 response = retriever.retrieve("Your query")
