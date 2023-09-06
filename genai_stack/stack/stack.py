@@ -44,23 +44,35 @@ class Stack:
 
         self._mediator = Mediator(stack=self)
 
-        # Connect all components to the mediator
+        """
+        Connect all components to the mediator. Post init of each component is called here. This is done to ensure
+        that the mediator is available to all component's post init method.
+        """
         if self._model:
             self._model.mediator = self._mediator
+            self._model._post_init()
         if self._embedding:
             self._embedding.mediator = self._mediator
-        if self._etl:
-            self._etl.mediator = self._mediator
+            self._embedding._post_init()
         if self._vectordb:
             self._vectordb.mediator = self._mediator
+            self._vectordb._post_init()
+        if self._etl:
+            self._etl.mediator = self._mediator
+            self._etl._post_init()
         if self._retriever:
             self._retriever.mediator = self._mediator
+            self._retriever._post_init()
         if self._prompt_engine:
             self._prompt_engine.mediator = self._mediator
+            self._prompt_engine._post_init()
         if self._response_evaluator:
             self._response_evaluator.mediator = self._mediator
+            self._response_evaluator._post_init()
         if self._memory:
             self._memory.mediator = self._mediator
+            self._memory._post_init()
+
 
     @property
     def model(self):
@@ -131,7 +143,7 @@ class Stack:
             have a ResponseEvaluator.
         """
         return self._response_evaluator
-    
+
     @property
     def memory(self):
         """The Memory of the stack.

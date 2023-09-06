@@ -20,7 +20,6 @@ class StackComponent(ABC):
         """
         self._config = config
         self._mediator: Mediator = mediator
-        self._post_init()
 
     @property
     def mediator(self) -> Mediator:
