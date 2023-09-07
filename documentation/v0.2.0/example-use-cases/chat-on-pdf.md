@@ -2,73 +2,122 @@
 
 ## Python Implementation
 
-Since we have a PDF default data loader we can use it directly from [here](../getting-started/default-data-types.md#pdf).&#x20;
+### Importing Components
 
-```python
-from genai_stack.model import OpenAIGpt35Model
+```py
+from genai_stack.stack.stack import Stack
+from genai_stack.etl.langchain import LangchainETL
+from genai_stack.embedding.langchain import LangchainEmbedding
+from genai_stack.vectordb.chromadb import ChromaDB
+from genai_stack.prompt_engine.engine import PromptEngine
+from genai_stack.model.gpt3_5 import OpenAIGpt35Model
+from genai_stack.retriever.langchain import LangChainRetriever
+from genai_stack.memory.langchain import ConversationBufferMemory
+```
 
-model = OpenAIGpt35Model.from_kwargs(
- fields={"openai_api_key": "Paste your Open AI key"}
+## Initializing Stack Components
+
+### ETL
+
+#### etl.json
+
+```json
+{
+    "name": "PyPDFLoader",
+    "fields": {
+        "file_path": "/path/to/sample.pdf"
+    }
+}
+```
+
+```py
+etl = LangchainETL.from_config_file(config_file_path="/path/to/etl.json")
+```
+
+### Embeddings
+
+#### embeddings.json
+
+```json
+{
+    "name": "HuggingFaceEmbeddings",
+    "fields": {
+        "model_name": "sentence-transformers/all-mpnet-base-v2",
+        "model_kwargs": { "device": "cpu" },
+        "encode_kwargs": { "normalize_embeddings": false }
+    }
+}
+```
+
+```py
+embedding = LangchainEmbedding.from_config_file(config_file_path="/path/to/embeddings.json")
+```
+
+### VectorDB
+
+```py
+chromadb = ChromaDB.from_kwargs()
+```
+
+### Model
+
+```py
+llm = OpenAIGpt35Model.from_kwargs(parameters={"openai_api_key": "your-api-key"})
+```
+
+### Prompt Engine
+
+#### prompt_engine.json
+
+```json
+{
+    "should_validate": false
+}
+```
+
+```py
+prompt_engine = PromptEngine.from_config_file(config_file_path="/path/to/prompt_engine.json")
+```
+
+### Retriever
+
+```py
+retriever = LangChainRetriever.from_kwargs()
+```
+
+### Memory
+
+```py
+memory = ConversationBufferMemory.from_kwargs()
+```
+
+## Initializing Stack
+
+### Stack
+
+```py
+Stack(
+    etl=etl,
+    embedding=embedding,
+    vectordb=chromadb,
+    model=llm,
+    prompt_engine=prompt_engine,
+    retriever=retriever,
+    memory=memory
 )
-model.add_source("pdf", "valid_pdf_path_or_url")
-model.predict("<Any question on top of the pdf>")
 ```
 
-## CLI Implementation
+## Performing ETL operations
 
-etl.json
+`run()` will perform all the steps Extract, Transform and Load.
 
-```
-{
-    "etl": "langchain",
-    "source": {
-        "name": "PyPDFLoader",
-        "fields": {
-            "file_path": "/your/pdf/path"
-        }
-    },
-    "vectordb": {
-        "name": "chromadb",
-        "class_name": "genai_stack"
-    }
-}
+```py
+etl.run()
 ```
 
-Run the ETL command
+## Now you can start asking your queries.
 
-```
-genai-stack etl --config_file etl.json
-```
-
-model.json
-
-```
-{
-    "model": {
-        "name": "gpt4all"
-    },
-    "retriever": {
-        "name": "langchain"
-    },
-    "vectordb": {
-        "name": "chromadb",
-        "class_name": "genai_stack"
-    }
-}
-```
-
-Run the model server
-
-```
-genai-stack start --config_file model.json
-```
-
-You can make predictions on this model server:
-
-```python
-import requests
-
-url = "http://127.0.0.1:8082/predict"
-res = requests.post(url, data={"query": "<Any question on top of the pdf>"})
-print(res.content)
+```py
+response = retriever.retrieve("your query")
+print(response)
 ```
