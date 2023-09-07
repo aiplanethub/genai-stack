@@ -109,7 +109,7 @@ Stack(
 
 ## Performing ETL operations
 
-`run()` will perform all the steps Extract, Transform and Load.
+`run()` will execute Extract, Transform and Load operations.
 
 ```py
 etl.run()
