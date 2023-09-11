@@ -41,4 +41,4 @@ def get_config_from_source_kwargs(source_type: str, source: typing.Union[str, di
     elif isinstance(source, dict):
         fields.update(source)
 
-    return {"source": {"name": source_map["loader"].__name__, "fields": fields}}
+    return {"name": source_map["loader"].__name__, "fields": fields}
