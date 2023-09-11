@@ -78,6 +78,10 @@ class Mediator:
     def search_vectordb(self, query: str):
         if self._check_component("vectordb", raise_error=True):
             return self._stack.vectordb.search(query)
+        
+    def get_vectordb(self, index_name:str):
+        if self._check_component("vectordb", raise_error=True):
+            return self._stack.vectordb.create_index(index_name)
 
     # Prompt Engine
     def get_prompt_template(self, query: str):
