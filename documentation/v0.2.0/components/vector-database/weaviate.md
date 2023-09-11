@@ -1,72 +1,112 @@
 # 📦 Weaviate
 
-### Weaviate
+### Weaviate:
 
-In case of weaviate you would have to install weaviate with docker-compose and then use that component in the GenAI Stack.
+We recommend this database when you have a more large usecase. You would have to deploy weaviate separately and connect it to our stack to use the running weaviate instance.
 
-**Compulsory Arguments:**
+We recommend running weaviate without any vectorizer module so that the embedding component is utilized for creating embeddings from your documents.&#x20;
 
-* class\_name => The name of the index under which documents are stored
-* fields:&#x20;
-  * url => Url of the weaviate node
-  * text\_key => The column against which to do the vector embedding search&#x20;
-  *   auth\_config: (Optional)
-
-      * api\_key => api\_key of the weaviate cluster if you are using [weaviate cloud](https://console.weaviate.cloud) .
-
-
+### Installation
 
 Prerequisites:
 
 * [docker](https://www.docker.com/)
 * [docker-compose](https://docs.docker.com/compose/install/)
 
-Here the docker-compose configurations:&#x20;
+Here the docker-compose configurations:
 
-* This is a sample docker-compose file&#x20;
+* This is a sample docker-compose file for installing weaviate without any vectorizer modules.&#x20;
 
 ```
-version: '3.4'
+version: "3.4"
 services:
   weaviate:
-    image: semitechnologies/weaviate:1.20.5
-    restart: on-failure:0
+    image: semitechnologies/weaviate:1.20.1
     ports:
-     - "8080:8080"
+      - 8080:8080
+    restart: on-failure:0
     environment:
-      QUERY_DEFAULTS_LIMIT: 20
-      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
-      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: text2vec-transformers
-      ENABLE_MODULES: text2vec-transformers
-      TRANSFORMERS_INFERENCE_API: http://t2v-transformers:8080
-      CLUSTER_HOSTNAME: 'node1'
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      DEFAULT_VECTORIZER_MODULE: "none"
+      CLUSTER_HOSTNAME: "node1"
     volumes:
-      - weaviate_data:/var/lib/weaviate
-  t2v-transformers:
-    image: semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
-    environment:
-      ENABLE_CUDA: 0
+      - weaviate_db:/var/lib/weaviate
+
 volumes:
-  weaviate_data:
+  weaviate_db:
 ```
 
-This docker compose file uses sentence transformers for embedding for more embeddings and other options [refer this doc.](https://weaviate.io/developers/weaviate/modules/retriever-vectorizer-modules)&#x20;
+This docker compose file uses sentence transformers for embedding for more embeddings and other options [refer this doc.](https://weaviate.io/developers/weaviate/modules/retriever-vectorizer-modules)
 
-GenAI Stack Configurations for Weaviate:
-
-\=> Sample vectordb configuration for weaviate
+**Supported Arguments:**
 
 ```
-"vectordb": {
-    "name": "weaviate",
-    "class_name": "LegalDocs",
-    "fields": {
-        "url": "http://localhost:9999/",
-        "text_key": "clause_text"
-    }
-}
+url: str
+text_key: str
+index_name: str
+auth_client_secret: Optional[AuthCredentials] = None
+timeout_config: Optional[tuple] = (10, 60)
+additional_headers: Optional[dict] = None
+startup_period: Optional[int] = 5
+search_method: Optional[SearchMethod] = SearchMethod.SIMILARITY_SEARCH
+search_options: Optional[dict] = Field(default_factory=dict)
 ```
 
-**Note:**  Weaviate expects class\_name in PascalCase otherwise it might lead to weird index not found errors.&#x20;
+**Supported Search Methods:**
 
+* similarity\_search
+  * Search Options:
+    * **k** : The top k elements for searching&#x20;
+* max\_marginal\_relevance\_search
+  * Search Options
+    * **k**: Number of Documents to return. Defaults to 4.&#x20;
+    * **fetch\_k**: Number of Documents to fetch to pass to MMR algorithm.&#x20;
+    * **lambda\_mult**: Number between 0 and 1 that determines the degree of diversity among the results with 0 corresponding to maximum diversity and 1 to minimum diversity. Defaults to 0.5.
+
+### Usage
+
+A Vectordb definitely needs a embedding function and you connect these two components through a stack.&#x20;
+
+```python
+from langchain.docstore.document import Document as LangDocument
+
+from genai_stack.vectordb.chromadb import ChromaDB
+from genai_stack.vectordb.weaviate_db import Weaviate
+from genai_stack.embedding.utils import get_default_embedding
+from genai_stack.stack.stack import Stack
+
+
+embedding = get_default_embedding()
+# Will use default persistent settings for a quick start
+weaviatedb = Weaviate.from_kwargs(url="http://localhost:8080/", index_name="Testing", text_key="test")
+chroma_stack = Stack(model=None, embedding=embedding, vectordb=weaviatedb)
+
+# Add your documents
+weaviate_stack.vectordb.add_documents(
+            documents=[
+                LangDocument(
+                    page_content="Some page content explaining something", metadata={"some_metadata": "some_metadata"}
+                )
+            ]
+        )
+        
+# Search for your documents
+result = weaviate_stack.vectordb.search("page")
+print(result)
+```
+
+You can also use different search\_methods and search options when trying out more complicated usecases
+
+```python
+weavaite_db = Weaviate.from_kwargs(
+    url="http://localhost:8080/",
+    index_name="Testing",
+    text_key="test",
+    search_method="max_marginal_relevance_search",
+    search_options={"k": 2, "fetch_k": 10, "lambda_mult": 0.3},
+)
+```
+
+**Note:** Weaviate expects class\_name in PascalCase otherwise it might lead to weird index not found errors.

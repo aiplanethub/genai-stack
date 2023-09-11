@@ -1,32 +1,33 @@
 # 🔥 Quickstart
 
-For quickstart, you can rely on the default embedding option. By default we use "**HuggingFaceEmbedding**" This eliminates the need to configure embeddings, making the process effortless.
+For quickstart, you can rely on the default embedding utils. By default we use "**HuggingFaceEmbedding**" This eliminates the need to configure embeddings, making the process effortless.
 
 To utilize the vectordb configuration with the default embedding:
 
-\=> **Vectordb usage with Retriever**
+**=> Vectordb Usage**
 
-```python
-from genai_stack.vectordb.chroma import ChromaDB
-from genai_stack.retriever.langchain import LangChainRetriever
-vectordb =  ChromaDB.from_kwargs(class_name = "genai-stack")
-retriever = LangChainRetriever.from_kwargs(vectordb = vectordb)
-retriever.retrieve("<My question>")
+<pre class="language-python"><code class="lang-python">from langchain.docstore.document import Document as LangDocument
+
+from genai_stack.vectordb.chromadb import ChromaDB
+from genai_stack.vectordb.weaviate_db import Weaviate
+from genai_stack.embedding.utils import get_default_embedding
+from genai_stack.stack.stack import Stack
+<strong>
+</strong><strong>
+</strong>embedding = get_default_embedding()
+chromadb = ChromaDB.from_kwargs()
+chroma_stack = Stack(model=None, embedding=embedding, vectordb=chromadb)
+
+# Add your documents
+chroma_stack.vectordb.add_documents(
+            documents=[
+                LangDocument(
+                    page_content="Some page content explaining something", metadata={"some_metadata": "some_metadata"}
+                )
+            ]
+        )
+chroma_stack.vectordb.search("page")
 
 # Output 
-# <Source documents nearest to you question>
-```
-
-**=> Vectordb usage with ETL**
-
-```python
-from genai_stack.vectordb.chroma import ChromaDB
-from genai_stack.etl.lang_loader import LangLoaderEtl
-from genai_stack.etl.utils import get_config_from_source_kwargs
-
-vectordb =  ChromaDB.from_kwargs(class_name = "genai-stack")
-etl = LangLoaderEtl.from_kwargs(vectordb = vectordb, get_config_from_source_kwargs("pdf", "/path/to/pdf"))
-etl.run()
-```
-
-**Important Note:** A vector db is never used alone its used along with either ETL or Retrieval which gives a good usecase to use the vectordb.&#x20;
+# Your search results 
+</code></pre>

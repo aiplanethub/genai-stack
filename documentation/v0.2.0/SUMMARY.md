@@ -18,7 +18,7 @@
   * [📦 Chromadb](components/vector-database/chromadb.md)
   * [📦 Weaviate](components/vector-database/weaviate.md)
   * [📖 Advanced Usage](components/vector-database/advanced-usage.md)
-* [📤 Retrieval](getting-started/our-components/retrieval.md)
+* [📤 Retrieval](components/retrieval.md)
 * [🦄 LLMs](getting-started/our-components/models-llms/README.md)
   * [OpenAI](getting-started/our-components/models-llms/openai.md)
   * [GPT4All](getting-started/our-components/models-llms/gpt4all.md)
