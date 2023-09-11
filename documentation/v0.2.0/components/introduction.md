@@ -14,5 +14,7 @@ Check the components for detailed explaination on the components:
 
 -   [ETL](https://genai-stack.aiplanet.com/components/data-extraction-and-loading)
 -   [VectorDB](https://genai-stack.aiplanet.com/components/vector-database)
+-   [Prompt Engine](https://genai-stack.aiplanet.com/components/prompt-engine)
 -   [Retrieval](https://genai-stack.aiplanet.com/components/retrieval)
+-   [Memory](https://genai-stack.aiplanet.com/components/memory)
 -   [Model](https://genai-stack.aiplanet.com/components/llms)
