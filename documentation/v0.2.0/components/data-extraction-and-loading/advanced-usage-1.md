@@ -1,4 +1,4 @@
-# 🦜 Langchain
+# 🦙 LLama Hub
 
 ## General Configuration Structure
 
@@ -10,18 +10,22 @@ The ETL cannot be run alone you have to connect it with the embedding and vector
 
 ```json
 config = {
+  "source": {
     "name": "source_component_name",
     "fields": {
         "parameter_name": "parameter_value",
         ...
     }
+  } 
 }
 ```
 
 In this section:
 
 * `"name"`: Specifies the name of the data extraction component to be used.
-* `"fields"`: Contains key-value pairs representing the specific parameters required by the data extraction component.
+* `"fields"`: Contains key-value pairs representing the specific parameters required by the data extraction component.&#x20;
+
+More details on the configuration can be found at the official llamahub site here: [https://llamahub.ai/](https://llamahub.ai/)
 
 ### Usage
 
@@ -35,7 +39,7 @@ from genai_stack.embedding.utils import get_default_embeddings
 
 ### Using Python Dictionary Configuration
 
-You can represent your configuration as a Python dictionary and pass it directly to the `Langchain.from_kwargs()` method. This provides a more programmatic and dynamic way of configuring your ETL process.
+You can represent your configuration as a Python dictionary and pass it directly to the `LLamaHubEtl.from_kwargs()` method. This provides a more programmatic and dynamic way of configuring your ETL process.
 
 #### Example Python Dictionary Configuration
 
@@ -47,19 +51,19 @@ python
 
 ```python
 config = {
-    "name": "CSVLoader",
+    "name": "PagedCSVReader",
     "fields": {
-        "file_path": "/path/to/data.csv"
+        "file": "/path/to/data.csv"
     }
 }
 ```
 
 #### Using Python Dictionary Configuration
 
-Once you have defined your configuration as a Python dictionary, you can use it with the `LangLoaderEtl.from_kwargs()` method:
+Once you have defined your configuration as a Python dictionary, you can use it with the LLamaHubEtl`.from_kwargs()` method:
 
 ```python
-etl = LangLoaderEtl.from_kwargs(config)
+etl = LLamaHubEtl.from_kwargs(config)
 
 # Connect the ETL, Embedding and Vectordb component using Stack
 stack = Stack(model=None, embedding=get_default_embeddings(), etl=etl, vectordb=ChromaDB.from_kwargs())
@@ -69,11 +73,11 @@ etl.run()
 
 ### Loading Configuration from JSON File
 
-If you have your configuration defined in a JSON file, you can use the `Langchain.from_config()` method to load it. Here's how:
+If you have your configuration defined in a JSON file, you can use the `LLamaHubEtl.from_config()` method to load it. Here's how:
 
 ```python
 json_file_path = "path/to/your/config.json"
-etl = LangchainETL.from_config(json_file_path)
+etl = LLamaHubEtl.from_config(json_file_path)
 
 # Connect the ETL, Embedding and Vectordb component using Stack
 stack = Stack(model=None, embedding=get_default_embeddings(), etl=etl, vectordb=ChromaDB.from_kwargs())
@@ -94,12 +98,13 @@ For specific details on available data extraction components, their parameters, 
 
 And now, here's the example JSON configuration you provided integrated into the documentation:
 
-<pre class="language-json"><code class="lang-json"><strong>{
-</strong>    "name": "CSVLoader",
+```json
+{
+    "name": "PagedCSVReader",
     "fields": {
-        "file_path": "users.csv"
+        "file": "/path/to/data.csv"
     }
 }
-</code></pre>
+```
 
 Please note that the actual details and parameters within the JSON configuration might vary based on the specific components and vector database being used. Adjust the documentation accordingly to match the functionalities and attributes of those components.
