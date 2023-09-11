@@ -1,28 +1,30 @@
 # 📖 Advanced Usage
 
-### Vectordb Configuration Structure
+**Search Options:**
 
-The vectordb configuration consists of several key components:
+You can use different search options for different types of retrieval methods in any vectordb component given by genai stack.&#x20;
 
-<pre class="language-json"><code class="lang-json"><strong>"vectordb": {
-</strong>    "name": "vectordb_name",
-    "class_name": "entity_class",
-    "embedding": {
-        "name": "embedding_component_name",
-        "fields": {
-            "parameter_name": "parameter_value",
-            ...
-        }
-    }
-}
-</code></pre>
+\==> Weaviate db
 
-In this configuration:
+```python
+from genai_stack.vectordb.weaviate_db import Weaviate
 
-* `"name"`: Specifies the name of the vectordb.
-* `"class_name"`: Specifies the class or type associated with the data stored in the vectordb.
-*   `"embedding"` **(Optional):** Contains details about the default embedding component, "HuggingFaceEmbeddings," which is used by default.
+weavaite_db = Weaviate.from_kwargs(
+    url="http://localhost:8080/",
+    index_name="Testing",
+    text_key="test",
+    search_method="max_marginal_relevance_search",
+    search_options={"k": 2, "fetch_k": 10, "lambda_mult": 0.3},
+)
+```
 
-    * `"name"`: Specifies the name of the embedding component.
-    * `"fields"`: Includes default parameters for the embedding component.&#x20;
+\==> Chromadb&#x20;
 
+```python
+from genai_stack.vectordb.chromadb import ChromaDB
+
+chromadb = ChromaDB.from_kwargs(
+    search_method="max_marginal_relevance_search", 
+    search_options={"k": 2, "fetch_k": 10, "lambda_mult": 0.3}
+)
+```
