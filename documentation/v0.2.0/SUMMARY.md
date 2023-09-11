@@ -25,12 +25,12 @@
 -   [📦 Memory](components/memory/README.md)
     -   [🔥 Quickstart](components/memory/quickstart.md)
     -   [📖 Advanced Usage](components/memory/advance-usage.md)
--   [🦄 LLMs](getting-started/our-components/models-llms/README.md)
-    -   [OpenAI](getting-started/our-components/models-llms/openai.md)
-    -   [GPT4All](getting-started/our-components/models-llms/gpt4all.md)
+-   [🦄 LLMs](components/models-llms/README.md)
+    -   [OpenAI](components/models-llms/openai.md)
+    -   [GPT4All](components/models-llms/gpt4all.md)
     -   [Hugging Face ](components/models-llms/hugging-face.md)
-    -   [Custom Model](getting-started/our-components/models-llms/custom-model.md)
-    -   [📖 Advanced Usage](components/llms/advanced-usage.md)
+    -   [Custom Model](components/models-llms/custom-model.md)
+    -   [📖 Advanced Usage](components/models-llms/advanced-usage.md)
 
 ## Example Use Cases
 
