@@ -1,6 +1,6 @@
 # 🔥 Quickstart
 
-We support some 5 loaders out of the box from Langchain ETL they are&#x20;
+We support some 5 loaders out of the box from Langchain ETL they are
 
 LangChain provides a set of default document loaders for extracting data from various sources. This document outlines the available default data source types, how to configure them using the provided code, and example usage for each type.
 
@@ -24,44 +24,77 @@ The function `get_config_from_source_kwargs` is provided to generate a configura
 
 Here's how you can use the provided code to configure and use each default data source type:
 
-```
-from genai_stack.etl.lang_loader import LangLoaderEtl
+```python
+from genai_stack.etl.langchain import LangchainETL
+from genai_stack.stack.stack import Stack
+from genai_stack.vectordb.chromadb import ChromaDB
 from genai_stack.etl.utils import get_config_from_source_kwargs
+from genai_stack.embedding.utils import get_default_embeddings
 ```
 
 1. **CSV Source Example**:
 
 ```python
-etl = LangLoaderEtl.from_kwargs(get_config_from_source_kwargs(FileDataSources.CSV, "/path/to/data.csv"))
+etl = LangchainETL.from_kwargs(
+    **get_config_from_source_kwargs("csv", "/your/path/to/csv")
+)
+
+# Connect the ETL, Embedding and Vectordb component using Stack
+stack = Stack(model=None, embedding=get_default_embeddings(), etl=etl, vectordb=ChromaDB.from_kwargs())
+
 etl.run()
 ```
 
 2. **PDF Source Example**:
 
 ```python
-etl = LangLoaderEtl.from_kwargs(get_config_from_source_kwargs(FileDataSources.PDF, "/path/to/document.pdf"))
+etl = LangchainETL.from_kwargs(
+    **get_config_from_source_kwargs("pdf", "/your/path/to/pdf")
+)
+
+# Connect the ETL, Embedding and Vectordb component using Stack
+stack = Stack(model=None, embedding=get_default_embeddings(), etl=etl, vectordb=ChromaDB.from_kwargs())
+
 etl.run()
 ```
 
 3. **Web Source Example**:
 
 ```python
-etl = LangLoaderEtl.from_kwargs(get_config_from_source_kwargs(FileDataSources.WEB, {"web_path": "https://example.com"}))
+etl = LangchainETL.from_kwargs(
+    **get_config_from_source_kwargs("web", "a valid url")
+)
+
+# Connect the ETL, Embedding and Vectordb component using Stack
+stack = Stack(model=None, embedding=get_default_embeddings(), etl=etl, vectordb=ChromaDB.from_kwargs())
+
 etl.run()
 ```
 
 4. **JSON Source Example**:
 
 ```python
-etl = LangLoaderEtl.from_kwargs(get_config_from_source_kwargs(FileDataSources.JSON, "/path/to/data.json"))
+etl = LangchainETL.from_kwargs(
+    **get_config_from_source_kwargs("json", "/your/path/to/json")
+)
+
+# Connect the ETL, Embedding and Vectordb component using Stack
+stack = Stack(model=None, embedding=get_default_embeddings(), etl=etl, vectordb=ChromaDB.from_kwargs())
+
 etl.run()
 ```
 
 5. **Markdown Source Example**:
 
 ```python
-etl = LangLoaderEtl.from_kwargs(get_config_from_source_kwargs(FileDataSources.MARKDOWN, "/path/to/content.md"))
+etl = LangchainETL.from_kwargs(
+    **get_config_from_source_kwargs("markdown", "/your/path/to/markdown or valid url")
+)
+
+# Connect the ETL, Embedding and Vectordb component using Stack
+stack = Stack(model=None, embedding=get_default_embeddings(), etl=etl, vectordb=ChromaDB.from_kwargs())
+
 etl.run()
 ```
 
-Please note that the examples assume the existence of the `LangLoaderEtl` class and its associated methods, as well as the specific loaders mentioned in the provided code. You may need to adjust the code examples according to your implementation details and the specific functionalities of the loaders.
+Please note that the examples assume the existence of the `LangchainETL` class and its associated methods, as well as the specific loaders mentioned in the provided code. You may need to adjust the code examples according to your implementation details and the specific functionalities of the loaders.
