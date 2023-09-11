@@ -2,17 +2,18 @@
 
 ## Getting Started
 
--   [📚 Introduction](README.md)
--   [🚀 Quickstart with colab](getting-started/quickstart-with-colab.md)
--   [📘 Default Data Types](getting-started/default-data-types.md)
--   [🪛 Installation](getting-started/installation.md)
+* [📚 Introduction](README.md)
+* [🚀 Quickstart with colab](getting-started/quickstart-with-colab.md)
+* [📘 Default Data Types](getting-started/default-data-types.md)
+* [🪛 Installation](getting-started/installation.md)
 
 ## Components
 
 -   [✨ Introduction](components/introduction.md)
--   [🚜 Data Extraction and Loading](components/data-extraction-and-loading/README.md)
+-   [🚜 ETL](components/data-extraction-and-loading/README.md)
     -   [🔥 Quickstart](components/data-extraction-and-loading/quickstart.md)
-    -   [📖 Advanced Usage](components/data-extraction-and-loading/advanced-usage.md)
+    -   [🦜 Langchain](components/data-extraction-and-loading/advanced-usage.md)
+    -   [🦙 LLama Hub](components/data-extraction-and-loading/advanced-usage-1.md)
 -   [🔮 Vector Database](components/vector-database/README.md)
     -   [🔥 Quickstart](components/vector-database/quickstart.md)
     -   [📦 Chromadb](components/vector-database/chromadb.md)
@@ -36,10 +37,10 @@
 
 ## Example Use Cases
 
--   [💬 Chat on PDF](example-use-cases/chat-on-pdf.md)
--   [💬 Chat on CSV](example-use-cases/chat-on-csv.md)
--   [📖 Document Search](example-use-cases/document-search.md)
+* [💬 Chat on PDF](example-use-cases/chat-on-pdf.md)
+* [💬 Chat on CSV](example-use-cases/chat-on-csv.md)
+* [📖 Document Search](example-use-cases/document-search.md)
 
----
+***
 
--   [🧑 CONTRIBUTING.md](contributing.md.md)
+* [🧑 CONTRIBUTING.md](contributing.md.md)
