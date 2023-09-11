@@ -1,2 +1,2 @@
-class LLMStackException(Exception):
+class GenAIStackException(Exception):
     pass
