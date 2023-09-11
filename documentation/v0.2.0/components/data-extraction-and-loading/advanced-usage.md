@@ -71,15 +71,14 @@ etl.run()
 
 If you have your configuration defined in a JSON file, you can use the `Langchain.from_config()` method to load it. Here's how:
 
-```python
-json_file_path = "path/to/your/config.json"
-etl = LangchainETL.from_config(json_file_path)
-
+<pre class="language-python"><code class="lang-python">json_file_path = "path/to/your/config.json"
+<strong>etl = LangchainETL.from_config(json_file_path)
+</strong>
 # Connect the ETL, Embedding and Vectordb component using Stack
 stack = Stack(model=None, embedding=get_default_embeddings(), etl=etl, vectordb=ChromaDB.from_kwargs())
 
 etl.run()
-```
+</code></pre>
 
 ### Benefits of Using Python Dictionary Configuration
 
