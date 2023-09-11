@@ -31,7 +31,7 @@ The prompt engine is responsible for generating prompt templates based on the us
 
 **Retrieval:**&#x20;
 
-LangChain is the default tool used for retrieving the best-suited embeddings based on the query. When a query is made, instead of searching through the raw data, GenAI Stack looks for the closest matching vector embedding. This ensures fast and accurate results. The overall mechanism ensures that the data is utilized in its entirety. When a query is made, the LLMs search through the closest embeddings, ensuring responses are generated without hallucination (i.e., without making things up or providing inaccurate information).
+A Retriever component is responsible for managing various retrieval-related tasks. Its primary purpose is to retrieve the necessary information or resources required, such as querying and retrieving the relevant documents from vectordb component, performing post processing tasks on it, retrieving the prompt template from the prompt engine component and formatting it to ensure it aligns with expected format. retrieving the chat history, and finally querying the llm and storing the query and response in memory.
 
 **Memory:**
 
