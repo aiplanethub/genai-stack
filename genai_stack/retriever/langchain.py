@@ -28,7 +28,7 @@ class LangChainRetriever(BaseRetriever):
             prompt_dict['context'] = self.get_context(query=query)
         
         if "history" in prompt_template.input_variables:
-            prompt_dict['history'] = self.get_chat_history()
+            prompt_dict['history'] = self.get_chat_history(query=query)
 
         final_prompt_template =  prompt_template.template.format(
             **{k:v for k,v in prompt_dict.items()}

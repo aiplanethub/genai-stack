@@ -38,8 +38,20 @@ class BaseMemory(StackComponent):
         """
         raise NotImplementedError()
     
-    def get_chat_history(self) -> str:
+    def get_chat_history(self, query:str) -> str:
         """
         This method returns the chat conversation history
+        """
+        raise NotImplementedError()
+    
+    def _get_all_documents(self) -> list:
+        """
+        This method returns all the chat conversation documents from the vectordb
+        """
+        raise NotImplementedError()
+    
+    def _is_chat_conversation_history_available(self) -> bool:
+        """
+        This method returns True if chat conversation documents in vectordb exists or else False
         """
         raise NotImplementedError()
