@@ -37,7 +37,6 @@
     -   [GPT4All](components/llms/gpt4all.md)
     -   [Hugging Face ](components/llms/hugging-face.md)
     -   [Custom Model](components/llms/custom-model.md)
-    -   [📖 Advanced Usage](components/llms/advanced-usage.md)
 
 ## Example Use Cases
 
