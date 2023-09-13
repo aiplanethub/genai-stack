@@ -2,6 +2,7 @@
 <h1 align="center">GenAI Stack </h1>
 <h2 align="center">End-to-End Secure & Private Generative AI for All <br>(Your data, your LLM, your Control)</h2>
 
+<a href="https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10-3776AB.svg?style=flat&logo=python&logoColor=white"><img src="https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10-3776AB.svg?style=flat&logo=python&logoColor=white" alt="Python Versions"></a>
 <a href="https://discord.gg/4aWV7He2QU"><img src="https://dcbadge.vercel.app/api/server/4aWV7He2QU?style=flat" alt="Discord" /></a>
 <a href="https://twitter.com/aiplanet4all"><img src="https://img.shields.io/twitter/follow/aiplanet4all" alt="Twitter" /></a>
 <a href="https://colab.research.google.com/drive/1R-vnA0X5gTo_era8YChOvhFMVTVu7K-8?usp=sharing"><img src="https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667" alt="Colab" /></a>
