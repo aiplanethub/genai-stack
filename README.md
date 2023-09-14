@@ -28,8 +28,8 @@ pip install git+https://github.com/aiplanethub/genai-stack.git
 The documentation for GenAI Stack can be found at [genaistack.aiplanet.com](https://genaistack.aiplanet.com).
 
 ## GenAI Stack Workflow
-![GenAI Stack Workflow](./assets/workflow.png)
 
+![GenAI Stack Workflow](./assets/workflow.png)
 
 ## What is GenAI Stack all about?
 
@@ -39,19 +39,18 @@ In short, it orchestrates and streamlines your Generative AI development journey
 
 ## How can GenAI Stack be helpful?
 
-
-1. ETL Simplified: GenAI Stack acts as the guiding hand that navigates the complex landscape of data processing. 
+1. ETL Simplified: GenAI Stack acts as the guiding hand that navigates the complex landscape of data processing.
 2. Hallucination-Free Inference: Bid adieu to the common headaches associated with AI-generated content filled with hallucinations. Our orchestrator’s unique architecture ensures that the LLM inference stage produces outputs rooted in reality and domain expertise. This means you can trust the information generated and confidently utilize it for decision-making, research, and communication purposes.
 3. Seamless Integration: Integrating the GenAI Stack into your existing workflow is straight forward whether you’re a seasoned AI developer or just starting out.
 4. Customization and Control: Tailor the ETL processes, vector databases, fine-tune inference parameters, and calibrate the system to meet your project’s unique requirements.
 
 ## Use Cases:
 
-- AI-Powered Search Engine: Enhance search with context-aware results, moving beyond simple keyword matching.
-- Knowledge Base Q&A: Provide direct, dynamic answers from databases, making data access swift and user-friendly.
-- Sentiment Analysis: Analyze text sources to gauge public sentiment, offering businesses real-time feedback.
-- Customer Support Chatbots: Enhance the operational efficiency of customer support teams with near accurate responses to support queries.
-- Information Retrieval on Large Volumes of Documents: Quickly extract specific information or related documents from vast repositories, streamlining data management.
+-   AI-Powered Search Engine: Enhance search with context-aware results, moving beyond simple keyword matching.
+-   Knowledge Base Q&A: Provide direct, dynamic answers from databases, making data access swift and user-friendly.
+-   Sentiment Analysis: Analyze text sources to gauge public sentiment, offering businesses real-time feedback.
+-   Customer Support Chatbots: Enhance the operational efficiency of customer support teams with near accurate responses to support queries.
+-   Information Retrieval on Large Volumes of Documents: Quickly extract specific information or related documents from vast repositories, streamlining data management.
 
 ## Contribution guidelines
 
@@ -61,9 +60,11 @@ For a comprehensive guide on the contribution process, please click [here](https
 
 ## Acknowledgements
 
-* [LangChain](https://github.com/langchain-ai/langchain)
-* [LlamaIndex](https://github.com/jerryjliu/llama_index)
-* [Weaviate](https://github.com/weaviate/weaviate)
-* [ChromaDB](https://github.com/chroma-core/chroma)
-  
+-   [LangChain](https://github.com/langchain-ai/langchain)
+-   [LlamaIndex](https://github.com/jerryjliu/llama_index)
+-   [Weaviate](https://github.com/weaviate/weaviate)
+-   [ChromaDB](https://github.com/chroma-core/chroma)
+
 and the entire OpenSource community.
+
+<!-- Update readme for testing -->
