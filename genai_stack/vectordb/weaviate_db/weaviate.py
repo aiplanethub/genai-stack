@@ -1,6 +1,8 @@
 from typing import Optional
 
+import numpy as np
 import weaviate
+from langchain.schema import Document
 from langchain.vectorstores.weaviate import Weaviate as LangChainWeaviate
 from weaviate.exceptions import UnexpectedStatusCodeException
 
@@ -57,10 +59,16 @@ class Weaviate(BaseVectorDB):
         k=1,
         **kwargs,
     ):
+        if kwargs.get("attributes", None):
+            kwargs['attributes'] += self.config.config_data.attributes
         where_filter = {
             "operator": "And",
             "operands": [
                 {
+                    "path": [key],
+                    "operator": "Equal",
+                    "valueNumber": value,
+                } if type(value) == int else {
                     "path": [key],
                     "operator": "Equal",
                     "valueString": value,
@@ -70,8 +78,8 @@ class Weaviate(BaseVectorDB):
         lc_client = self._create_langchain_client(**kwargs)
         documents = lc_client.similarity_search_with_score(
             query=query,
-            where_filter=where_filter,
             k=k,
+            where_filter=where_filter,
         )
         return [{
             "query": document[0].page_content,
