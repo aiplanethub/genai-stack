@@ -29,7 +29,7 @@ class TestLLLMCache(unittest.TestCase):
     llm_cache = LLMCache.from_kwargs()
 
     def test_llm_cache_with_chromadb(self):
-        Stack(
+        stack = Stack(
             model=None,
             embedding=self.embedding,
             vectordb=self.chromadb,
@@ -38,30 +38,30 @@ class TestLLLMCache(unittest.TestCase):
 
         query = "How many countries are there in the world?"
         response = "There are 195 countries in the world."
-        self.llm_cache.set_cache(
+        stack.llm_cache.set_cache(
             query=query,
             response=response
         )
-        assert self.llm_cache.get_cache(query=query) == response
+        assert stack.llm_cache.get_cache(query=query) == response
 
         query = "How many states are there in the USA?"
         response = "There are 50 states in the USA."
-        self.llm_cache.set_cache(
+        stack.llm_cache.set_cache(
             query=query,
             response=response,
             metadata={"source": "Wikipedia", "page": 1}
         )
-        assert response == self.llm_cache.get_cache(
+        assert response == stack.llm_cache.get_cache(
             query=query,
             metadata={"source": "Wikipedia", "page": 1}
         )
-        assert response != self.llm_cache.get_cache(
+        assert response != stack.llm_cache.get_cache(
             query=query,
             metadata={"source": "Wikipdfedia", "page": 1}
         )
 
     def test_llm_cache_with_weaviatedb(self):
-        Stack(
+        stack = Stack(
             model=None,
             embedding=self.embedding,
             vectordb=self.weaviatedb,
@@ -70,25 +70,30 @@ class TestLLLMCache(unittest.TestCase):
 
         query = "How many countries are there in the world?"
         response = "There are 195 countries in the world."
-        self.llm_cache.set_cache(
+        stack.llm_cache.set_cache(
             query=query,
             response=response
         )
-        assert self.llm_cache.get_cache(query=query) == response
+        assert stack.llm_cache.get_cache(query=query) == response
 
         query = "How many states are there in the USA?"
         response = "There are 50 states in the USA."
-        self.llm_cache.set_cache(
+        stack.llm_cache.set_cache(
             query=query,
             response=response,
             metadata={"source": "Wikipedia", "page": 1}
         )
-        assert response == self.llm_cache.get_cache(
+        assert response == stack.llm_cache.get_cache(
             query=query,
             metadata={"source": "Wikipedia", "page": 1}
         )
-        assert response != self.llm_cache.get_cache(
+        assert response != stack.llm_cache.get_cache(
             query=query,
             metadata={"source": "Wikipedia", "page": 3}
         )
+        assert response != stack.llm_cache.get_cache(
+            query=query,
+            metadata={"source": "Wikipdfedia", "page": 1}
+        )
+
 
