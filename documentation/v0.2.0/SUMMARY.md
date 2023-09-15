@@ -43,7 +43,7 @@
 * [💬 Chat on PDF](example-use-cases/chat-on-pdf.md)
 * [💬 Chat on CSV](example-use-cases/chat-on-csv.md)
 * [📖 Document Search](example-use-cases/document-search.md)
-* [🚀 Notebooks](examples-use-cases/notebooks.md)
+* [🚀 Notebooks](example-use-cases/notebooks.md)
 
 ***
 
