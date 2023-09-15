@@ -14,6 +14,7 @@ class Stack:
         embedding=None,
         etl=None,
         vectordb=None,
+        llm_cache=None,
         retriever=None,
         prompt_engine=None,
         response_evaluator=None,
@@ -34,6 +35,7 @@ class Stack:
         self._embedding = embedding
         self._etl = etl
         self._vectordb = vectordb
+        self._llm_cache = llm_cache
         self._retriever = retriever
         self._prompt_engine = prompt_engine
         self._response_evaluator = response_evaluator
@@ -60,6 +62,9 @@ class Stack:
         if self._etl:
             self._etl.mediator = self._mediator
             self._etl._post_init()
+        if self._llm_cache:
+            self._llm_cache.mediator = self._mediator
+            self._llm_cache._post_init()
         if self._retriever:
             self._retriever.mediator = self._mediator
             self._retriever._post_init()
@@ -113,6 +118,16 @@ class Stack:
             have a Vectordb.
         """
         return self._vectordb
+
+    @property
+    def llm_cache(self):
+        """The LLMCache of the stack.
+
+        Returns:
+            The LLMCache of the stack or None if the stack does not
+            have a LLMCache.
+        """
+        return self._llm_cache
 
     @property
     def retriever(self):

@@ -1,6 +1,7 @@
 from typing import List
 from langchain.docstore.document import Document
 
+
 def parse_search_results(search_results: List[Document]):
     """
     This method returns a content extracted from the documents list.
