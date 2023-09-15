@@ -16,35 +16,35 @@ class LangChainRetrieverConfig(BaseRetrieverConfig):
 class LangChainRetriever(BaseRetriever):
     config_class = LangChainRetrieverConfig
 
-    def retrieve(self, query:str): 
-
+    def retrieve(self, query:str):
         prompt_template = self.get_prompt(query=query)
 
         prompt_dict = {
             "query": query
         }
-
+        cache = {"query": query}
         if "context" in prompt_template.input_variables:
-            prompt_dict['context'] = self.get_context(query=query)
-        
+            context = self.mediator.search_vectordb(query=query)
+            cache = self.mediator.get_cache(
+                query=query,
+                metadata=context[0].metadata
+            )
+            if cache:
+                self.mediator.add_text(user_text=query, model_text=cache['response'])
+            cache["metadata"] = context[0].metadata
+            prompt_dict['context'] = parse_search_results(context)
         if "history" in prompt_template.input_variables:
             prompt_dict['history'] = self.get_chat_history()
 
         final_prompt_template =  prompt_template.template.format(
             **{k:v for k,v in prompt_dict.items()}
         )
-
         response = self.mediator.get_model_response(prompt=final_prompt_template)
-
         self.mediator.add_text(user_text=query, model_text=response['output'])
+        cache["response"] = response['output']
+        self.mediator.set_cache(**cache)
 
         return response
-
-    def get_context(self, query: str):
-        context = self.mediator.search_vectordb(query=query)
-         
-        return parse_search_results(context)
-    
 
 # from typing import List
 # from langchain.docstore.document import Document
