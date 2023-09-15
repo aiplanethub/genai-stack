@@ -33,6 +33,7 @@ class Mediator:
             "vectordb": self._stack.vectordb,
             "prompt_engine": self._stack.prompt_engine,
             "model": self._stack.model,
+            "llm_cache": self._stack.llm_cache,
             "retriever": self._stack.retriever,
             "memory": self._stack.memory,
         }
@@ -78,6 +79,25 @@ class Mediator:
     def search_vectordb(self, query: str):
         if self._check_component("vectordb", raise_error=True):
             return self._stack.vectordb.search(query)
+
+    def create_index(self, kwarg_map):
+        if self._check_component("vectordb", raise_error=True):
+            kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
+            return self._stack.vectordb.create_index(**kwargs)
+
+    def hybrid_search(self, query: str, metadata: dict, kwarg_map):
+        if self._check_component("vectordb", raise_error=True):
+            kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
+            return self._stack.vectordb.hybrid_search(query, metadata, **kwargs)
+
+    # LLM Cache
+    def get_cache(self, query: str, metadata: dict):
+        if self._check_component("llm_cache", raise_error=True):
+            return self._stack.llm_cache.get_cache(query, metadata)
+
+    def set_cache(self, metadata: dict, query: str, response: str):
+        if self._check_component("llm_cache", raise_error=True):
+            return self._stack.llm_cache.set_cache(metadata, query, response)
 
     # Prompt Engine
     def get_prompt_template(self, query: str):
