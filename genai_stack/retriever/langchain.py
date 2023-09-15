@@ -25,11 +25,11 @@ class LangChainRetriever(BaseRetriever):
         metadata = None
         if "context" in prompt_template.input_variables:
             context = self.mediator.search_vectordb(query=query)
+            metadata = context[0].metadata
             cache = self.mediator.get_cache(
                 query=query,
-                metadata=context[0].metadata
+                metadata=metadata
             )
-            metadata = context[0].metadata
             if cache:
                 self.mediator.add_text(user_text=query, model_text=cache)
                 return {'output': cache}
@@ -42,11 +42,7 @@ class LangChainRetriever(BaseRetriever):
         )
         response = self.mediator.get_model_response(prompt=final_prompt_template)
         self.mediator.add_text(user_text=query, model_text=response['output'])
-        self.mediator.set_cache(
-            response=response['output'],
-            query=query,
-            metadata=metadata
-        )
+        self.mediator.set_cache(response=response['output'], query=query, metadata=metadata)
         return response
 
 # from typing import List
