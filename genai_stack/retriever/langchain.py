@@ -22,16 +22,17 @@ class LangChainRetriever(BaseRetriever):
         prompt_dict = {
             "query": query
         }
-        cache = {"query": query}
+        metadata = None
         if "context" in prompt_template.input_variables:
             context = self.mediator.search_vectordb(query=query)
             cache = self.mediator.get_cache(
                 query=query,
                 metadata=context[0].metadata
             )
+            metadata = context[0].metadata
             if cache:
-                self.mediator.add_text(user_text=query, model_text=cache['response'])
-            cache["metadata"] = context[0].metadata
+                self.mediator.add_text(user_text=query, model_text=cache)
+                return {'output': cache}
             prompt_dict['context'] = parse_search_results(context)
         if "history" in prompt_template.input_variables:
             prompt_dict['history'] = self.get_chat_history()
@@ -41,9 +42,11 @@ class LangChainRetriever(BaseRetriever):
         )
         response = self.mediator.get_model_response(prompt=final_prompt_template)
         self.mediator.add_text(user_text=query, model_text=response['output'])
-        cache["response"] = response['output']
-        self.mediator.set_cache(**cache)
-
+        self.mediator.set_cache(
+            response=response['output'],
+            query=query,
+            metadata=metadata
+        )
         return response
 
 # from typing import List
