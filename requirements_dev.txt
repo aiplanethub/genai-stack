@@ -14,3 +14,4 @@ pypdf==3.14.0
 torch
 sentence-transformers==2.2.2
 chromadb==0.4.5
+SQLAlchemy==2.0.20
