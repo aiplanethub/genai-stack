@@ -25,7 +25,7 @@ class StackCompositionSchema(TimeStampedSchema):
     
     component_id = Column(
         Integer,
-        ForeignKey('components.id', ondelete='CASCADE'),
+        ForeignKey('stack_components.id', ondelete='CASCADE'),
         nullable=False,
         primary_key=True
     )
