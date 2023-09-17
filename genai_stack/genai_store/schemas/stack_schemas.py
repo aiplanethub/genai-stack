@@ -22,7 +22,7 @@ class StackSchema(TimeStampedSchema):
     name = Column(String(STR_FIELD_MAX_LENGTH), nullable=False)
     description = Column(String(STR_FIELD_MAX_LENGTH), nullable=False)
 
-    components:List["StackComponentSchema"] = Relationship(
+    components = Relationship(
         "StackComponentSchema", 
         secondary="stack_compositions",
     )
