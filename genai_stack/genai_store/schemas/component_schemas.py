@@ -4,9 +4,9 @@ from genai_stack.genai_store.schemas.base_schemas import TimeStampedSchema
 from genai_stack.enums import StackComponentType
 
 
-class StackComponent(TimeStampedSchema):
+class StackComponentSchema(TimeStampedSchema):
     """
-    SQL Schema for Stack Component.
+    SQL Schema for Stack Components.
 
     Args: 
         type : StackComponentType

@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, ForeignKey
+
 from genai_stack.genai_store.schemas.base_schemas import TimeStampedSchema
+
 
 class StackCompositionSchema(TimeStampedSchema):
     """
