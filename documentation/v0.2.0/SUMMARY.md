@@ -29,6 +29,8 @@
 -   [📤 Retrieval](components/retriever/README.md)
     -   [🔥 Quickstart](components/retriever/quickstart.md)
     -   [📖 Advanced Usage](components/retriever/advance-usage.md)
+-   [️️️🗃️ LLM Cache](components/llm-cache/README.md)
+    -   [🔥 Quickstart](components/llm-cache/quickstart.md)
 -   [📦 Memory](components/memory/README.md)
     -   [🔥 Quickstart](components/memory/quickstart.md)
     -   [📖 Advanced Usage](components/memory/advance-usage.md)
