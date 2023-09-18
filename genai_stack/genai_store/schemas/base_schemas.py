@@ -1,9 +1,11 @@
 from sqlalchemy import Column, DateTime
 from sqlalchemy.orm import declarative_base
 from datetime import datetime
+from genai_stack.genai_store.app import session
 
 BaseSchema = declarative_base()
 
+BaseSchema.query = session.query_property()
 
 class TimeStampedSchema(BaseSchema):
     """
