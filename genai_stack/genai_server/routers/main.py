@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from typing import Dict, List
 
 from genai_stack.genai_store.sql_store import  SQLStore
 from genai_stack.genai_server.services.stack_service import StackService
@@ -19,3 +20,7 @@ app = FastAPI()
 @app.post('/api/stack')
 def create_stack(stack:StackRequestModel) -> StackResponseModel:
     return service.create_stack(stack=stack)
+
+@app.get("/api/stack")
+def list_stack() -> Dict[str, List[StackResponseModel]]:
+    return service.list_stack()
