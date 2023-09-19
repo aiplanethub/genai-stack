@@ -5,6 +5,7 @@ from genai_stack.genai_store.schemas.base_schemas import TimeStampedSchema
 from genai_stack.genai_server.models.constants import STR_FIELD_MAX_LENGTH
 
 from genai_stack.genai_store.schemas.stack_composition_schemas import StackCompositionSchema
+from genai_stack.genai_store.schemas.component_schemas import StackComponentSchema
 
 
 class StackSchema(TimeStampedSchema):

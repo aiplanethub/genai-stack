@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 
 from genai_stack.genai_server.models.component_models import StackComponentResponseModel
@@ -26,7 +26,7 @@ class StackResponseModel(BaseModel):
     description:str
     components: List[StackComponentResponseModel]
     created_at: datetime
-    modified_at: datetime
+    modified_at: Optional[datetime] 
 
 
 class StackFilterModel(BaseModel):

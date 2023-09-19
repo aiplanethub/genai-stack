@@ -17,5 +17,5 @@ service = StackService(store=store)
 app = FastAPI()
 
 @app.post('/api/stack')
-def create_stack(stack:StackRequestModel):
+def create_stack(stack:StackRequestModel) -> StackResponseModel:
     return service.create_stack(stack=stack)
