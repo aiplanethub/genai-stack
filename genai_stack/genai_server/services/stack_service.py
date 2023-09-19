@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 from sqlalchemy.orm import Session
 
 from genai_stack.genai_server.services.base_service import BaseService
@@ -26,9 +26,26 @@ class StackService(BaseService):
             return response
     
 
-    def list_stack(self, filters:StackFilterModel) -> List[StackResponseModel]:
+    def list_stack(self) -> Dict[str,List[StackResponseModel]]:
         """This method returns the list of stack."""
-        pass
+
+        with Session(self.engine) as session:
+            stacks = session.query(StackSchema).all()
+
+            response = {
+                "stacks":[]
+            }
+
+            for stack in stacks:
+                response['stacks'].append(StackResponseModel(
+                    id=stack.id,
+                    name=stack.name,
+                    description=stack.description,
+                    components=stack.components,
+                    created_at=stack.created_at,
+                    modified_at=stack.modified_at
+                ))
+            return response
 
     def get_stack(self, filters:StackFilterModel) -> StackResponseModel:
         """This method returns the existing stack."""
