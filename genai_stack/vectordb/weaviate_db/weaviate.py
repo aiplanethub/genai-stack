@@ -1,11 +1,10 @@
-from typing import Optional
+from typing import Optional, List
 
-import numpy as np
 import weaviate
-from langchain.schema import Document
 from langchain.vectorstores.weaviate import Weaviate as LangChainWeaviate
 from weaviate.exceptions import UnexpectedStatusCodeException
 
+from genai_stack.vectordb.utils import HybridSearchResponse
 from genai_stack.vectordb.weaviate_db import WeaviateDBConfig
 from genai_stack.vectordb.base import BaseVectorDB
 from genai_stack.utils.extraction import extract_class_init_attrs
@@ -58,7 +57,7 @@ class Weaviate(BaseVectorDB):
         metadata: dict,
         k=1,
         **kwargs,
-    ):
+    ) -> List[HybridSearchResponse]:
         if kwargs.get("attributes", None):
             kwargs['attributes'] += self.config.config_data.attributes
         args = {
@@ -83,13 +82,13 @@ class Weaviate(BaseVectorDB):
             args["where_filter"] = where_filter
         lc_client = self._create_langchain_client(**kwargs)
         documents = lc_client.similarity_search_with_score(**args)
-        return [{
-            "query": document[0].page_content,
-            "response": document[0].metadata.get("response"),
-            "score": document[1],
-            "isSimilar": document[1] > 0.75,
-            "document": document[0],
-        } for document in documents]
+        return [HybridSearchResponse(
+            query=document[0].page_content,
+            response=document[0].metadata.get("response"),
+            score=document[1],
+            isSimilar=document[1] > 0.75,
+            document=document[0],
+        ) for document in documents]
 
     def create_index(self, index_name: str, text_key: Optional[str] = "default_key", **kwargs):
         try:
@@ -98,13 +97,9 @@ class Weaviate(BaseVectorDB):
             class_schema = {
                 "class": index_name,
             }
-
             if not kwargs.get("properties", None):
                 class_schema["properties"] = [
                     {"name": text_key, "dataType": ["text"]},
                 ]
-            if kwargs.get("attributes", None):
-                class_schema["properties"][0]["attributes"] = self.config.config_data.attributes + kwargs["attributes"]
             self.client.schema.create_class(class_schema)
-
         return self._create_langchain_client(index_name=index_name, text_key=text_key)
