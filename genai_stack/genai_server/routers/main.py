@@ -5,6 +5,7 @@ from genai_stack.genai_store.sql_store import  SQLStore
 from genai_stack.genai_server.services.stack_service import StackService
 from genai_stack.genai_store.sql_store import SQLDatabaseDriver
 from genai_stack.genai_server.models.stack_models import StackRequestModel, StackResponseModel, StackFilterModel
+from genai_stack.genai_server.models.delete_model import DeleteResponseModel
 
 
 store = SQLStore(
@@ -29,3 +30,12 @@ def list_stack() -> Dict[str, List[StackResponseModel]]:
 def get_stack(stack_id:int) -> StackResponseModel:
     filter = StackFilterModel(id=stack_id)
     return service.get_stack(filter)
+
+@app.delete("/api/stack/{stack_id}")
+def get_stack(stack_id:int) -> DeleteResponseModel:
+    filter = StackFilterModel(id=stack_id)
+    return service.delete_stack(filter)
+
+# @app.patch("/api/stack/{stack_id}")
+# def update_stack(stack:StackPatchModel,stack_id:int):
+#     print(stack,stack_id)

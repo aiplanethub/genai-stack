@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from genai_stack.genai_server.services.base_service import BaseService
 from genai_stack.genai_server.models.stack_models import StackRequestModel, StackResponseModel, StackFilterModel
+from genai_stack.genai_server.models.delete_model import DeleteResponseModel
 from genai_stack.genai_store.schemas.stack_schemas import StackSchema
 
 class StackService(BaseService):
@@ -68,6 +69,12 @@ class StackService(BaseService):
         """This method updates the existing stack."""
         pass
 
-    def delete_stack(self):
+    def delete_stack(self, filter:StackFilterModel) -> DeleteResponseModel:
         """This method deletes the existing stack."""
-        pass
+    
+        with Session(self.engine) as session:
+            stack = session.get(StackSchema, filter.id)
+            session.delete(stack)
+            session.commit()
+        
+        return DeleteResponseModel(details=f"Successfully deleted {stack.name} stack.")
