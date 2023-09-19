@@ -14,7 +14,16 @@ class StackService(BaseService):
             new_stack = StackSchema(name=stack.name, description=stack.description)
             session.add(new_stack)
             session.commit()
-            return new_stack
+
+            response = StackResponseModel(
+                id=new_stack.id,
+                name=new_stack.name,
+                description=new_stack.description,
+                components=new_stack.components,
+                created_at=new_stack.created_at,
+                modified_at=new_stack.modified_at
+            )
+            return response
     
 
     def list_stack(self, filters:StackFilterModel) -> List[StackResponseModel]:
