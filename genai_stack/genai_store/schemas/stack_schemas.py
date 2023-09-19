@@ -1,8 +1,10 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import Relationship
+from sqlalchemy.orm import relationship
 
 from genai_stack.genai_store.schemas.base_schemas import TimeStampedSchema
 from genai_stack.genai_server.models.constants import STR_FIELD_MAX_LENGTH
+
+from genai_stack.genai_store.schemas.stack_composition_schemas import StackCompositionSchema
 
 
 class StackSchema(TimeStampedSchema):
@@ -20,9 +22,8 @@ class StackSchema(TimeStampedSchema):
     name = Column(String(STR_FIELD_MAX_LENGTH), nullable=False)
     description = Column(String(STR_FIELD_MAX_LENGTH), nullable=False)
 
-    components = Relationship(
-        "StackComponentSchema", 
-        secondary="stack_compositions",
+    components = relationship(
+        StackCompositionSchema,
         back_populates="stack",
         uselist=True,
         passive_deletes=True
