@@ -16,3 +16,4 @@ sentence-transformers==2.2.2
 chromadb==0.4.5
 SQLAlchemy==2.0.20
 pymysql==1.1.0
+alembic==1.12.0
