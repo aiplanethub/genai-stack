@@ -47,9 +47,22 @@ class StackService(BaseService):
                 ))
             return response
 
-    def get_stack(self, filters:StackFilterModel) -> StackResponseModel:
+    def get_stack(self, filter:StackFilterModel) -> StackResponseModel:
         """This method returns the existing stack."""
-        pass
+        with Session(self.engine) as session:
+            stack = session.query(StackSchema)\
+            .filter(StackSchema.id == filter.id)\
+            .first()
+
+            response = StackResponseModel(
+                id=stack.id,
+                name=stack.name,
+                description=stack.description,
+                components=stack.components,
+                created_at=stack.created_at,
+                modified_at=stack.modified_at
+            )
+            return response
 
     def update_stack(self) -> StackResponseModel:
         """This method updates the existing stack."""
