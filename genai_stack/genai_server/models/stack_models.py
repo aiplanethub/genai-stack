@@ -1,38 +1,35 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict
+from typing import List
 from datetime import datetime
 
 from genai_stack.genai_server.models.component_models import StackComponentResponseModel
 from genai_stack.genai_server.models.constants import STR_FIELD_MAX_LENGTH
 
-class StackBaseModel(BaseModel):
-    """Base Model for the Stack."""
+
+class StackRequestModel(BaseModel):
+    """Data Model for Stack Request."""
 
     name:str = Field(
         title="The name of the stack.", max_length=STR_FIELD_MAX_LENGTH
     )
     description:str = Field(
-        default="",
         title="The description of the stack",
         max_length=STR_FIELD_MAX_LENGTH,
     )
 
 
-class StackRequestModel(StackBaseModel):
-    """Stack Request Model."""
-    pass
+class StackResponseModel(BaseModel):
+    """Data Model for Stack Response."""
 
-
-class StackResponseModel(StackBaseModel):
-    """Stack Response Model."""
     id:int
-    stack_components: List[StackComponentResponseModel]
+    name:str
+    description:str
+    components: List[StackComponentResponseModel]
     created_at: datetime
     modified_at: datetime
-    metadata:Dict
 
 
 class StackFilterModel(BaseModel):
-    """Stack Filter Model."""
+    """Data Model for Stack Filter."""
+
     id:int
-    name:str
