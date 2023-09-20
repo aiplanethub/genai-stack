@@ -34,7 +34,7 @@ class LLMCache(BaseLLMCache):
     def get_cache(
         self,
         query: str,
-        metadata: dict = None,
+        metadata: dict,
     ):
         """
         This method is for getting the cached response from the cache vectordb. This method performs similarity search on the
@@ -49,14 +49,12 @@ class LLMCache(BaseLLMCache):
         self,
         query: str,
         response: str,
-        metadata: dict = None,
+        metadata: dict,
     ):
         """
         This method is for setting the cached response in the cache vectordb. This method adds the response to the cache
         vectordb.
         """
-        if not metadata:
-            metadata = {}
         self.client.add_documents(
             [Document(
                 metadata={

@@ -18,8 +18,8 @@ class BaseLLMCacheConfig(StackComponentConfig):
 
 class BaseLLMCache(StackComponent):
 
-    def get_cache(self, query: str, metadata: dict):
+    def get_cache(self, metadata: dict, query: str):
         raise NotImplementedError
 
-    def set_cache(self, query: str, response: str, metadata: dict):
+    def set_cache(self, metadata: dict, query: str, response: str):
         raise NotImplementedError

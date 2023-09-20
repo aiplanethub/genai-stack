@@ -66,19 +66,16 @@ class ChromaDB(BaseVectorDB):
     def hybrid_search(
         self,
         query: str,
+        index_name: str,
+        k=1,
         metadata: dict = None,
-        k: int = 1,
-        **kwargs,
     ):
-        client = self._create_langchain_client(collection_name=kwargs.get("index_name"))
-        args = {
-            "query": query,
-            "k": k,
-        }
-        if metadata:
-            metadata = {next(iter(metadata)): metadata[next(iter(metadata))]}
-            args["filter"] = metadata
-        documents = client.similarity_search_with_score(**args)
+        client = self._create_langchain_client(collection_name=index_name)
+        documents = client.similarity_search_with_score(
+            query=query,
+            filter=metadata,
+            k=k,
+        )
         return [{
             "query": document[0].page_content,
             "response": document[0].metadata.get("response"),
