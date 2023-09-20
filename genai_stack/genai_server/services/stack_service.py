@@ -3,9 +3,10 @@ from typing import List, Dict, Union
 from sqlalchemy.orm import Session
 
 from genai_stack.genai_server.services.base_service import BaseService
-from genai_stack.genai_server.models.stack_models import StackRequestModel, StackResponseModel, StackFilterModel
+from genai_stack.genai_server.models.stack_models import StackRequestModel, StackResponseModel, StackFilterModel, StackUpdateRequestModel
 from genai_stack.genai_server.models.delete_model import DeleteResponseModel
 from genai_stack.genai_server.models.not_found_model import NotFoundResponseModel
+from genai_stack.genai_server.models.bad_request_model import BadRequestResponseModel
 from genai_stack.genai_store.schemas.stack_schemas import StackSchema
 
 class StackService(BaseService):
@@ -72,9 +73,39 @@ class StackService(BaseService):
             )
             return response
 
-    def update_stack(self) -> StackResponseModel:
+    def update_stack(self, filter:StackFilterModel, stack:StackUpdateRequestModel, response:Response) -> Union[
+            StackResponseModel, BadRequestResponseModel, NotFoundResponseModel]:
         """This method updates the existing stack."""
-        pass
+        
+        with Session(self.engine) as session:
+            old_stack = session.get(StackSchema, filter.id)
+
+            if old_stack is None:
+                response.status_code = status.HTTP_404_NOT_FOUND
+                return NotFoundResponseModel(detail=f"Stack with id {filter.id} does not exist.")
+            
+            if stack.name == None and stack.description == None:    
+                response.status_code = status.HTTP_400_BAD_REQUEST
+                return BadRequestResponseModel(detail="Please provide data to update the stack.")
+
+            if stack.name is not None:
+                old_stack.name = stack.name
+
+            if stack.description is not None:
+                old_stack.description = stack.description
+
+            session.commit()
+
+            response_dict = StackResponseModel(
+                id=old_stack.id,
+                name=old_stack.name,
+                description=old_stack.description,
+                components=old_stack.components,
+                created_at=old_stack.created_at,
+                modified_at=old_stack.modified_at
+            )
+
+            return response_dict
 
     def delete_stack(self, filter:StackFilterModel, response:Response) -> Union[DeleteResponseModel, NotFoundResponseModel]:
         """This method deletes the existing stack."""

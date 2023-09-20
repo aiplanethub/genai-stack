@@ -33,3 +33,9 @@ class StackFilterModel(BaseModel):
     """Data Model for Stack Filter."""
 
     id:int
+
+class StackUpdateRequestModel(BaseModel):
+    """Data Model for updating Stack."""
+
+    name:Optional[str] = None
+    description:Optional[str] = None
