@@ -14,8 +14,7 @@ stack = Stack(llm_cache=llm_cache)
 ```
 
 The llm cache component depends on other stack components and cannot be used alone in a stack. Here is a small example of
-llm cache along with its dependent components. Memory and cache cannot co-exist. Memory is given more priority incase both
-components are there in the stack.
+llm cache along with its dependent components.
 
 ```py
 from genai_stack.stack.stack import Stack
@@ -24,6 +23,7 @@ from genai_stack.embedding.langchain import LangchainEmbedding
 from genai_stack.prompt_engine.engine import PromptEngine
 from genai_stack.model.gpt3_5 import OpenAIGpt35Model
 from genai_stack.retriever.langchain import LangChainRetriever
+from genai_stack.memory.langchain import ConversationBufferMemory
 from genai_stack.vectordb import Weaviate
 from genai_stack.llm_cache import LLMCache
 
@@ -43,7 +43,6 @@ weaviatedb = Weaviate.from_kwargs(
     url="http://localhost:8080/",
     index_name="Testing",
     text_key="test",
-    # attributes are used by weaviate as the metadata
     attributes=["source", "page"]
 )
 llm = OpenAIGpt35Model.from_kwargs(
@@ -55,6 +54,7 @@ llm = OpenAIGpt35Model.from_kwargs(
 prompt_engine = PromptEngine.from_kwargs(should_validate=False)
 llm_cache = LLMCache.from_kwargs()
 retriever = LangChainRetriever.from_kwargs()
+memory = ConversationBufferMemory.from_kwargs()
 
 Stack(
     etl=etl,
@@ -64,7 +64,7 @@ Stack(
     llm_cache=llm_cache,
     prompt_engine=prompt_engine,
     retriever=retriever,
-    memory=None
+    memory=memory
 )
 
 # This will be cached and if the same query is asked again, it will be retrieved from the cache.

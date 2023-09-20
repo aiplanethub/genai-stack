@@ -1,7 +1,3 @@
-from langchain.schema import Document
-from pydantic import BaseModel
-
-
 def use_pysqlite3():
     """
     Swap std-lib sqlite3 with pysqlite3.
@@ -39,11 +35,3 @@ def use_pysqlite3():
                 "Error:",
                 e,
             )
-
-
-class HybridSearchResponse(BaseModel):
-    query: str
-    response: str
-    score: float
-    isSimilar: bool
-    document: Document

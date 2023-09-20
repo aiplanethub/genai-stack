@@ -41,8 +41,8 @@ class LLMCache(BaseLLMCache):
         query and scalar search using the metadata.
         """
         response = self.mediator.hybrid_search(query, metadata, self.kwarg_map)
-        if response and response[0].isSimilar:
-            return response[0].response
+        if response and response[0]["isSimilar"]:
+            return response[0]["response"]
         return None
 
     def set_cache(
@@ -63,6 +63,7 @@ class LLMCache(BaseLLMCache):
                     **metadata,
                     "response": response
                 },
-                page_content=query
+                page_content=query,
+                vector=self.mediator.get_embedded_text(query),
             )]
         )

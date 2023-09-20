@@ -1,7 +1,7 @@
 import tempfile
 import os
-import warnings
-from typing import List
+from typing import Any, Callable
+
 
 from langchain.vectorstores import Chroma as LangChainChroma
 
@@ -9,7 +9,6 @@ from genai_stack.utils.extraction import extract_class_init_attrs
 from genai_stack.vectordb.base import BaseVectorDB
 from genai_stack.vectordb.chromadb import ChromaDBConfig, ChromaDBConfigModel
 from genai_stack.utils.sanitize import sanitize_params_dict
-from genai_stack.vectordb.utils import HybridSearchResponse
 
 try:
     import chromadb
@@ -70,26 +69,23 @@ class ChromaDB(BaseVectorDB):
         metadata: dict = None,
         k: int = 1,
         **kwargs,
-    ) -> List[HybridSearchResponse]:
+    ):
         client = self._create_langchain_client(collection_name=kwargs.get("index_name"))
         args = {
             "query": query,
-            "k": k
+            "k": k,
         }
         if metadata:
+            metadata = {next(iter(metadata)): metadata[next(iter(metadata))]}
             args["filter"] = metadata
-            if len(metadata.keys()) > 1:
-                warnings.warn("Multiple metadata keys are not supported in ChromaDB. Only the first metadata key will be used.")
-                first_most_metadata = list(metadata.keys())[0]
-                args["filter"] = {first_most_metadata: metadata[first_most_metadata]}
         documents = client.similarity_search_with_score(**args)
-        return [HybridSearchResponse(
-            query=document[0].page_content,
-            response=document[0].metadata.get("response"),
-            score=document[1],
-            isSimilar=document[1] < 0.75,
-            document=document[0]
-        ) for document in documents]
+        return [{
+            "query": document[0].page_content,
+            "response": document[0].metadata.get("response"),
+            "score": document[1],
+            "isSimilar": document[1] < 0.75,
+            "document": document[0],
+        } for document in documents]
 
     def create_index(self, index_name: str, **kwargs):
         return self._create_langchain_client(collection_name=index_name)
