@@ -1,5 +1,5 @@
-from fastapi import FastAPI
-from typing import Dict, List
+from fastapi import FastAPI, Response, status
+from typing import Dict, List, Union
 
 from genai_stack.genai_store.sql_store import  SQLStore
 from genai_stack.genai_server.services.stack_service import StackService
@@ -26,10 +26,16 @@ def create_stack(stack:StackRequestModel) -> StackResponseModel:
 def list_stack() -> Dict[str, List[StackResponseModel]]:
     return service.list_stack()
 
-@app.get("/api/stack/{stack_id}")
-def get_stack(stack_id:int) -> StackResponseModel:
+@app.get("/api/stack/{stack_id}") 
+def get_stack(stack_id:int, response:Response) -> Union[StackResponseModel, Dict[str, str]]:
     filter = StackFilterModel(id=stack_id)
-    return service.get_stack(filter)
+    stack = service.get_stack(filter)
+
+    if stack is None:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"detail":"Stack not found."}
+    
+    return stack
 
 @app.delete("/api/stack/{stack_id}")
 def get_stack(stack_id:int) -> DeleteResponseModel:

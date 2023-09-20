@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Union
 from sqlalchemy.orm import Session
 
 from genai_stack.genai_server.services.base_service import BaseService
@@ -48,12 +48,16 @@ class StackService(BaseService):
                 ))
             return response
 
-    def get_stack(self, filter:StackFilterModel) -> StackResponseModel:
+    def get_stack(self, filter:StackFilterModel) -> Union[StackResponseModel, None]:
         """This method returns the existing stack."""
+        
         with Session(self.engine) as session:
             stack = session.query(StackSchema)\
             .filter(StackSchema.id == filter.id)\
             .first()
+
+            if stack is None:
+                return
 
             response = StackResponseModel(
                 id=stack.id,
