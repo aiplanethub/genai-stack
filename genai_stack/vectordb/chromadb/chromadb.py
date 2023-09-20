@@ -66,9 +66,9 @@ class ChromaDB(BaseVectorDB):
     def hybrid_search(
         self,
         query: str,
+        metadata: dict,
         index_name: str,
         k=1,
-        metadata: dict = None,
     ):
         client = self._create_langchain_client(collection_name=index_name)
         documents = client.similarity_search_with_score(
