@@ -1,6 +1,7 @@
 from typing import Optional
 
 import weaviate
+from langchain.docstore.document import Document
 from langchain.vectorstores.weaviate import Weaviate as LangChainWeaviate
 from weaviate.exceptions import UnexpectedStatusCodeException
 
@@ -50,37 +51,6 @@ class Weaviate(BaseVectorDB):
             client=self.client, embedding=self.mediator.get_embedding_function(), by_text=False, **kwargs
         )
 
-    def hybrid_search(
-        self,
-        query: str,
-        metadata: dict,
-        k=1,
-        **kwargs,
-    ):
-        where_filter = {
-            "operator": "And",
-            "operands": [
-                {
-                    "path": [key],
-                    "operator": "Equal",
-                    "valueString": value,
-                } for key, value in metadata.items()
-            ]
-        }
-        lc_client = self._create_langchain_client(**kwargs)
-        documents = lc_client.similarity_search_with_score(
-            query=query,
-            where_filter=where_filter,
-            k=k,
-        )
-        return [{
-            "query": document[0].page_content,
-            "response": document[0].metadata.get("response"),
-            "score": document[1],
-            "isSimilar": document[1] > 0.75,
-            "document": document[0],
-        } for document in documents]
-
     def create_index(self, index_name: str, text_key: Optional[str] = "default_key", **kwargs):
         try:
             self.client.schema.get(class_name=index_name)
@@ -93,8 +63,7 @@ class Weaviate(BaseVectorDB):
                 class_schema["properties"] = [
                     {"name": text_key, "dataType": ["text"]},
                 ]
-            if kwargs.get("attributes", None):
-                class_schema["properties"][0]["attributes"] = self.config.config_data.attributes + kwargs["attributes"]
+
             self.client.schema.create_class(class_schema)
 
         return self._create_langchain_client(index_name=index_name, text_key=text_key)

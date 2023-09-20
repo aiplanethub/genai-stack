@@ -63,26 +63,5 @@ class ChromaDB(BaseVectorDB):
     def _create_langchain_client(self, **kwargs):
         return LangChainChroma(client=self.client, embedding_function=self.mediator.get_embedding_function(), **kwargs)
 
-    def hybrid_search(
-        self,
-        query: str,
-        metadata: dict,
-        index_name: str,
-        k=1,
-    ):
-        client = self._create_langchain_client(collection_name=index_name)
-        documents = client.similarity_search_with_score(
-            query=query,
-            filter=metadata,
-            k=k,
-        )
-        return [{
-            "query": document[0].page_content,
-            "response": document[0].metadata.get("response"),
-            "score": document[1],
-            "isSimilar": document[1] < 0.75,
-            "document": document[0],
-        } for document in documents]
-
     def create_index(self, index_name: str, **kwargs):
         return self._create_langchain_client(collection_name=index_name)

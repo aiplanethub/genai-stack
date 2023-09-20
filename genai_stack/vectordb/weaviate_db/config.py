@@ -1,4 +1,4 @@
-from typing import Optional, Union, List
+from typing import Optional, Union
 from pydantic import Field
 
 from weaviate.auth import AuthCredentials
@@ -13,7 +13,6 @@ class WeaviateDBConfigModel(BaseModel):
     url: str
     text_key: str
     index_name: str
-    attributes: Optional[List[str]] = []
     auth_client_secret: Optional[AuthCredentials] = None
     timeout_config: Optional[tuple] = (10, 60)
     additional_headers: Optional[dict] = None
