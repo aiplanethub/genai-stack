@@ -72,11 +72,11 @@ class Weaviate(BaseVectorDB):
                     {
                         "path": [key],
                         "operator": "Equal",
-                        "valueString": value,
-                    } if type(value) == str else {
+                        "valueNumber": value,
+                    } if type(value) == int else {
                         "path": [key],
                         "operator": "Equal",
-                        "valueNumber": value,
+                        "valueString": value,
                     } for key, value in metadata.items()
                 ]
             }
