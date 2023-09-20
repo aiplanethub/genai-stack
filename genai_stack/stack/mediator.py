@@ -92,11 +92,11 @@ class Mediator:
 
     # LLM Cache
     def get_cache(self, query: str, metadata: dict = None):
-        if self._check_component("llm_cache", raise_error=True):
+        if self._is_component_available("llm_cache"):
             return self._stack.llm_cache.get_cache(query=query, metadata=metadata)
 
     def set_cache(self, query: str, response: str, metadata: dict = None):
-        if self._check_component("llm_cache", raise_error=True):
+        if self._is_component_available("llm_cache"):
             return self._stack.llm_cache.set_cache(metadata=metadata, query=query, response=response)
 
     # Prompt Engine
