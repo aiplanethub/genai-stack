@@ -63,7 +63,7 @@ class StackService(BaseService):
                 response.status_code = status.HTTP_404_NOT_FOUND
                 return NotFoundResponseModel(detail=f"Stack with id {filter.id} does not exist.")
 
-            response = StackResponseModel(
+            response_dict = StackResponseModel(
                 id=stack.id,
                 name=stack.name,
                 description=stack.description,
@@ -71,7 +71,7 @@ class StackService(BaseService):
                 created_at=stack.created_at,
                 modified_at=stack.modified_at
             )
-            return response
+            return response_dict
 
     def update_stack(self, filter:StackFilterModel, stack:StackUpdateRequestModel, response:Response) -> Union[
             StackResponseModel, BadRequestResponseModel, NotFoundResponseModel]:
