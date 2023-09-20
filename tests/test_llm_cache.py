@@ -49,15 +49,15 @@ class TestLLLMCache(unittest.TestCase):
         stack.llm_cache.set_cache(
             query=query,
             response=response,
-            metadata={"source": "Wikipedia", "page": 1}
+            metadata={"source": "Wikipedia"}
         )
         assert response == stack.llm_cache.get_cache(
             query=query,
-            metadata={"source": "Wikipedia", "page": 1}
+            metadata={"source": "Wikipedia"}
         )
         assert response != stack.llm_cache.get_cache(
             query=query,
-            metadata={"source": "Wikipdfedia", "page": 1}
+            metadata={"source": "Wikipdfedia"}
         )
 
     def test_llm_cache_with_weaviatedb(self):
@@ -95,5 +95,3 @@ class TestLLLMCache(unittest.TestCase):
             query=query,
             metadata={"source": "Wikipdfedia", "page": 1}
         )
-
-
