@@ -2,7 +2,7 @@
 
 __author__ = """AIM by DPhi"""
 __email__ = "support@aiplanet.com"
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 import os
 
