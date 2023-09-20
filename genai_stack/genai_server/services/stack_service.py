@@ -1,9 +1,11 @@
+from fastapi import Response, status
 from typing import List, Dict, Union
 from sqlalchemy.orm import Session
 
 from genai_stack.genai_server.services.base_service import BaseService
 from genai_stack.genai_server.models.stack_models import StackRequestModel, StackResponseModel, StackFilterModel
 from genai_stack.genai_server.models.delete_model import DeleteResponseModel
+from genai_stack.genai_server.models.not_found_model import NotFoundResponseModel
 from genai_stack.genai_store.schemas.stack_schemas import StackSchema
 
 class StackService(BaseService):
@@ -48,16 +50,17 @@ class StackService(BaseService):
                 ))
             return response
 
-    def get_stack(self, filter:StackFilterModel) -> Union[StackResponseModel, None]:
+    def get_stack(self, filter:StackFilterModel, response:Response) -> Union[StackResponseModel, NotFoundResponseModel]:
         """This method returns the existing stack."""
-        
+
         with Session(self.engine) as session:
             stack = session.query(StackSchema)\
             .filter(StackSchema.id == filter.id)\
             .first()
 
             if stack is None:
-                return
+                response.status_code = status.HTTP_404_NOT_FOUND
+                return NotFoundResponseModel(detail=f"Stack with id {filter.id} does not exist.")
 
             response = StackResponseModel(
                 id=stack.id,
@@ -73,12 +76,17 @@ class StackService(BaseService):
         """This method updates the existing stack."""
         pass
 
-    def delete_stack(self, filter:StackFilterModel) -> DeleteResponseModel:
+    def delete_stack(self, filter:StackFilterModel, response:Response) -> Union[DeleteResponseModel, NotFoundResponseModel]:
         """This method deletes the existing stack."""
     
         with Session(self.engine) as session:
             stack = session.get(StackSchema, filter.id)
+        
+            if stack is None:
+                response.status_code = status.HTTP_404_NOT_FOUND
+                return NotFoundResponseModel(detail=f"Stack with id {filter.id} does not exist.")
+        
             session.delete(stack)
             session.commit()
-        
-        return DeleteResponseModel(details=f"Successfully deleted {stack.name} stack.")
+
+            return DeleteResponseModel(detail=f"Successfully deleted {stack.name} stack.")
