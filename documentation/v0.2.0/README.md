@@ -6,20 +6,25 @@ GenAI Stack is an end-to-end framework designed to integrate large language mode
 
 ### How does it work?
 
-There are 4 main components involved in GenAI Stack.
+There are 7 main components involved in GenAI Stack.
 
 1. Data extraction & loading
-2. Vector databases
-3. Prompt engine
-4. Retrieval
-5. Memory
-6. Model
+2. Embeddings
+3. Vector databases
+4. Prompt engine
+5. Retrieval
+6. Memory
+7. Model
 
 The operation of GenAI Stack can be understood through its various components:
 
 **Data extraction & loading:**
 
 Supports data extraction from various sources including structured (sql, postgress etc), unstructured (pdf, webpages etc) and semi-structured (mongoDB, documentDB etc) data sources. GenAI Stack supports airbyte and llamahub for this purpose.
+
+**Embeddings:**
+
+Embeddings are numerical representations of data, typically used to represent words, sentences, or other objects in a vector space. In natural language processing (NLP), word embeddings are widely used to convert words into dense vectors. Each word is represented by a unique vector in such a way that semantically similar words have similar vectors. Popular word embedding methods include Word2Vec, GloVe, and FastText. Word embeddings are essential in various NLP tasks such as sentiment analysis, machine translation, and named entity recognition. They capture semantic relationships between words, allowing models to understand context and meaning. In addition to words, entire sentences or paragraphs can be embedded into fixed-length vectors, preserving the semantic information of the text. Sentence embeddings are useful for tasks like text classification, document clustering, and information retrieval.
 
 **Vector databases:**
 
