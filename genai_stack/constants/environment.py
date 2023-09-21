@@ -1,0 +1,4 @@
+import os
+
+
+GENAISTACK_LOGGING_VERBOSITY = os.getenv("GENAISTACK_LOGGING_VERBOSITY", default="DEBUG").upper()
