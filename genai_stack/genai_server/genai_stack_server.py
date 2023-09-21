@@ -1,25 +1,26 @@
 from fastapi import FastAPI
 
-from genai_stack.genai_store.sql_store import  SQLStore
-from genai_stack.genai_store.sql_store import SQLDatabaseDriver
-from genai_stack.genai_server.routers import stack_routes
+from genai_stack.genai_server.routers import stack_routes, component_routes
 
-store = SQLStore(
-    url=f"sqlite:////Users/sunil/Documents/aiplanet/genai/genai-stack/db", 
-    driver=SQLDatabaseDriver.SQLITE, 
-    database="db"
+
+app = FastAPI(
+    title="GenAI Stack",
+    version="0.2.0"
 )
 
-app = FastAPI()
 
 """Add middleware if required."""
 # app.middleware()
 
+
+"""Run Server"""
 # to run this file locally, execute:
 # uvicorn genai_stack.genai_server.genai_stack_server:app --reload
 
+
 """Connecting all the routers to app."""
 app.include_router(stack_routes.router)
+app.include_router(component_routes.router)
 
     
 
