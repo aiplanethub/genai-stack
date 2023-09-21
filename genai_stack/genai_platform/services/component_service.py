@@ -2,16 +2,16 @@ from fastapi import Response, status
 from typing import List, Dict, Union
 from sqlalchemy.orm import Session
 
-from genai_stack.genai_server.services.base_service import BaseService
-from genai_stack.genai_server.models.component_models import (
+from genai_stack.genai_platform.services.base_service import BaseService
+from genai_stack.genai_platform.models.component_models import (
     StackComponentRequestModel, 
     StackComponentResponseModel, 
     StackComponentFilterModel, 
     StackComponentUpdateRequestModel
 )
-from genai_stack.genai_server.models.delete_model import DeleteResponseModel
-from genai_stack.genai_server.models.not_found_model import NotFoundResponseModel
-from genai_stack.genai_server.models.bad_request_model import BadRequestResponseModel
+from genai_stack.genai_platform.models.delete_model import DeleteResponseModel
+from genai_stack.genai_platform.models.not_found_model import NotFoundResponseModel
+from genai_stack.genai_platform.models.bad_request_model import BadRequestResponseModel
 from genai_stack.genai_store.schemas.component_schemas import StackComponentSchema
 
 class ComponentService(BaseService):
