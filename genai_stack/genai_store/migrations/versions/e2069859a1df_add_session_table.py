@@ -1,8 +1,8 @@
-"""Add stack session table
+"""Add session table
 
-Revision ID: 4a8457341b4e
+Revision ID: e2069859a1df
 Revises: 86588cd8155b
-Create Date: 2023-09-21 14:00:07.134543
+Create Date: 2023-09-21 19:48:54.194307
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '4a8457341b4e'
+revision: str = 'e2069859a1df'
 down_revision: Union[str, None] = '86588cd8155b'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -23,7 +23,7 @@ def upgrade() -> None:
     op.create_table('stack_sessions',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('stack_id', sa.Integer(), nullable=False),
-    sa.Column('session_metadata', sa.JSON(), nullable=False),
+    sa.Column('meta_data', sa.JSON(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('modified_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['stack_id'], ['stacks.id'], ondelete='CASCADE'),
