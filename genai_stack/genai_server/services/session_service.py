@@ -3,7 +3,7 @@ from typing import List, Dict, Union
 from sqlalchemy.orm import Session
 
 from genai_stack.genai_platform.services.base_service import BaseService
-from genai_stack.genai_platform.models.session_models import (
+from genai_stack.genai_server.models.session_models import (
     StackSessionRequestModel,
     StackSessionResponseModel
 )
