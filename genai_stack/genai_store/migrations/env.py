@@ -22,6 +22,7 @@ from genai_stack.genai_store.schemas.base_schemas import BaseSchema
 from genai_stack.genai_store.schemas.stack_schemas import StackSchema
 from genai_stack.genai_store.schemas.component_schemas import StackComponentSchema
 from genai_stack.genai_store.schemas.stack_composition_schemas import StackCompositionSchema
+from genai_stack.genai_store.schemas.session_schemas import StackSessionSchema
 target_metadata = BaseSchema.metadata
 
 # other values from the config, defined by the needs of env.py,
