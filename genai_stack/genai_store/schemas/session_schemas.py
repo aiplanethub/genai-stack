@@ -8,7 +8,7 @@ class StackSessionSchema(TimeStampedSchema):
 
     Args:
         stack_id : Integer
-        session_metadata : JSON 
+        meta_data : JSON 
     """
 
     __tablename__ = "stack_sessions"
@@ -21,5 +21,5 @@ class StackSessionSchema(TimeStampedSchema):
         nullable=False
     )
 
-    session_metadata = Column(JSON, nullable=False)
+    meta_data = Column(JSON, nullable=False)
 

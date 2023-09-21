@@ -7,7 +7,7 @@ class StackSessionBaseModel(BaseModel):
     """Stack Session Base Data Model."""
 
     stack_id:int
-    session_metadata:Dict
+    meta_data:Dict
 
 class StackSessionRequestModel(StackSessionBaseModel):
     """
@@ -15,7 +15,7 @@ class StackSessionRequestModel(StackSessionBaseModel):
 
     Args:
         stack_id : int
-        session_metadata : dict
+        meta_data : dict
     """
 
 class StackSessionResponseModel(StackSessionBaseModel, TimeStampsModel):
@@ -25,7 +25,7 @@ class StackSessionResponseModel(StackSessionBaseModel, TimeStampsModel):
     Args:
         id : int
         stack_id : int
-        session_metadata : dict
+        meta_data : dict
         created_at : datetime
         modified_at : datetime
     """
