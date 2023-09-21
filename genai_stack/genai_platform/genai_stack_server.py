@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from genai_stack.genai_server.routers import stack_routes, component_routes
+from genai_stack.genai_platform.routers import stack_routes, component_routes
 
 
 app = FastAPI(
@@ -15,7 +15,7 @@ app = FastAPI(
 
 """Run Server"""
 # to run this file locally, execute:
-# uvicorn genai_stack.genai_server.genai_stack_server:app --reload
+# uvicorn genai_stack.genai_platform.genai_stack_server:app --reload
 
 
 """Connecting all the routers to app."""

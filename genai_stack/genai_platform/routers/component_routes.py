@@ -1,17 +1,17 @@
 from typing import Dict, List, Union
 from fastapi import APIRouter, Response
 
-from genai_stack.genai_server.services.component_service import ComponentService
-from genai_stack.genai_server.models.component_models import (
+from genai_stack.genai_platform.services.component_service import ComponentService
+from genai_stack.genai_platform.models.component_models import (
     StackComponentRequestModel, 
     StackComponentResponseModel, 
     StackComponentFilterModel, 
     StackComponentUpdateRequestModel
 )
-from genai_stack.genai_server.models.not_found_model import NotFoundResponseModel
-from genai_stack.genai_server.models.delete_model import DeleteResponseModel
-from genai_stack.genai_server.models.bad_request_model import BadRequestResponseModel
-from genai_stack.genai_server.database import initialize_store
+from genai_stack.genai_platform.models.not_found_model import NotFoundResponseModel
+from genai_stack.genai_platform.models.delete_model import DeleteResponseModel
+from genai_stack.genai_platform.models.bad_request_model import BadRequestResponseModel
+from genai_stack.genai_platform.database import initialize_store
 from genai_stack.constant import API, COMPONENT
 
 

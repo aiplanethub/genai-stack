@@ -2,8 +2,8 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
 
-from genai_stack.genai_server.models.component_models import StackComponentResponseModel
-from genai_stack.genai_server.models.constants import STR_FIELD_MAX_LENGTH
+from genai_stack.genai_platform.models.component_models import StackComponentResponseModel
+from genai_stack.genai_platform.models.constants import STR_FIELD_MAX_LENGTH
 
 
 class StackRequestModel(BaseModel):

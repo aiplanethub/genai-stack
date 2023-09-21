@@ -2,11 +2,11 @@ from fastapi import Response, status
 from typing import List, Dict, Union
 from sqlalchemy.orm import Session
 
-from genai_stack.genai_server.services.base_service import BaseService
-from genai_stack.genai_server.models.stack_models import StackRequestModel, StackResponseModel, StackFilterModel, StackUpdateRequestModel
-from genai_stack.genai_server.models.delete_model import DeleteResponseModel
-from genai_stack.genai_server.models.not_found_model import NotFoundResponseModel
-from genai_stack.genai_server.models.bad_request_model import BadRequestResponseModel
+from genai_stack.genai_platform.services.base_service import BaseService
+from genai_stack.genai_platform.models.stack_models import StackRequestModel, StackResponseModel, StackFilterModel, StackUpdateRequestModel
+from genai_stack.genai_platform.models.delete_model import DeleteResponseModel
+from genai_stack.genai_platform.models.not_found_model import NotFoundResponseModel
+from genai_stack.genai_platform.models.bad_request_model import BadRequestResponseModel
 from genai_stack.genai_store.schemas.stack_schemas import StackSchema
 
 class StackService(BaseService):

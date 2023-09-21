@@ -1,5 +1,5 @@
 from pydantic import BaseSettings
-from genai_stack.genai_server.settings.config import genai_stack_config
+from genai_stack.genai_platform.settings.config import genai_stack_config
 
 class Settings(BaseSettings):
     CONNECTION_STRING:str = genai_stack_config.get("sqlite", "connection_string")
