@@ -2,17 +2,18 @@ from fastapi import Response, status
 from typing import List, Dict, Union
 from sqlalchemy.orm import Session
 
-from genai_stack.genai_platform.services.base_service import BaseService
-from genai_stack.genai_platform.models.component_models import (
+from genai_stack.genai_platform.services import BaseService
+from genai_stack.genai_platform.models import (
     StackComponentRequestModel, 
     StackComponentResponseModel, 
     StackComponentFilterModel, 
-    StackComponentUpdateRequestModel
+    StackComponentUpdateRequestModel,
+    NotFoundResponseModel,
+    BadRequestResponseModel,
+    DeleteResponseModel
 )
-from genai_stack.genai_platform.models.delete_model import DeleteResponseModel
-from genai_stack.genai_platform.models.not_found_model import NotFoundResponseModel
-from genai_stack.genai_platform.models.bad_request_model import BadRequestResponseModel
-from genai_stack.genai_store.schemas.component_schemas import StackComponentSchema
+from genai_stack.genai_store.schemas import StackComponentSchema
+
 
 class ComponentService(BaseService):
 
@@ -20,11 +21,7 @@ class ComponentService(BaseService):
         """This method create a new component."""
         
         with Session(self.engine) as session:
-            new_component = StackComponentSchema(
-                type=component.type, 
-                config=component.config,
-                meta_data=component.meta_data    
-            )
+            new_component = StackComponentSchema(**{k:v for k,v in component})
             session.add(new_component)
             session.commit()
 
