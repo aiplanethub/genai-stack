@@ -1,0 +1,16 @@
+{
+    "components":{
+        "vectordb":{
+            "name":"chromadb",
+            "config":{
+            } 
+        },
+        "memory":{
+            "name":"conversation_buffer",
+            "config":{}
+        },
+        "cache":{
+
+        }
+    }
+}
