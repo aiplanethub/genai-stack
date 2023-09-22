@@ -1,16 +1,16 @@
 from typing import Dict, List, Union
-from fastapi import APIRouter, Response
+from fastapi import APIRouter
 
-from genai_stack.genai_platform.services.component_service import ComponentService
-from genai_stack.genai_platform.models.component_models import (
+from genai_stack.genai_platform.services import ComponentService
+from genai_stack.genai_platform.models import (
     StackComponentRequestModel, 
     StackComponentResponseModel, 
     StackComponentFilterModel, 
-    StackComponentUpdateRequestModel
+    StackComponentUpdateRequestModel,
+    NotFoundResponseModel,
+    DeleteResponseModel,
+    BadRequestResponseModel
 )
-from genai_stack.genai_platform.models.not_found_model import NotFoundResponseModel
-from genai_stack.genai_platform.models.delete_model import DeleteResponseModel
-from genai_stack.genai_platform.models.bad_request_model import BadRequestResponseModel
 from genai_stack.genai_platform.database import initialize_store
 from genai_stack.constant import API, COMPONENT
 
@@ -33,23 +33,23 @@ def list_components() -> Dict[str, List[StackComponentResponseModel]]:
     return service.list_components()
 
 @router.get("/{component_id}") 
-def get_component(component_id:int, response:Response) -> Union[StackComponentResponseModel, NotFoundResponseModel]:
+def get_component(component_id:int) -> Union[StackComponentResponseModel, NotFoundResponseModel]:
     filter = StackComponentFilterModel(id=component_id)
-    return service.get_component(filter, response)  
+    return service.get_component(filter)  
 
 @router.patch("/{component_id}")
-def patch_component(component_id:int, component:StackComponentUpdateRequestModel, response:Response) -> Union[
+def patch_component(component_id:int, component:StackComponentUpdateRequestModel) -> Union[
     StackComponentResponseModel, BadRequestResponseModel, NotFoundResponseModel]:
     filter = StackComponentFilterModel(id=component_id)
-    return service.update_component(filter, component, response)
+    return service.update_component(filter, component)
 
 @router.put("/{component_id}")
-def put_component(component_id:int, component:StackComponentUpdateRequestModel, response:Response) -> Union[
+def put_component(component_id:int, component:StackComponentUpdateRequestModel) -> Union[
     StackComponentResponseModel, BadRequestResponseModel, NotFoundResponseModel]:
     filter = StackComponentFilterModel(id=component_id)
-    return service.update_component(filter, component, response)
+    return service.update_component(filter, component)
 
 @router.delete("/{component_id}")
-def delete_component(component_id:int, response:Response) -> Union[DeleteResponseModel, NotFoundResponseModel]:
+def delete_component(component_id:int) -> Union[DeleteResponseModel, NotFoundResponseModel]:
     filter = StackComponentFilterModel(id=component_id)
-    return service.delete_component(filter, response)
+    return service.delete_component(filter)

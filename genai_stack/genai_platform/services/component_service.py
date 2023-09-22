@@ -1,4 +1,4 @@
-from fastapi import Response, status
+from fastapi import HTTPException
 from typing import List, Dict, Union
 from sqlalchemy.orm import Session
 
@@ -57,7 +57,7 @@ class ComponentService(BaseService):
                 ))
             return response
 
-    def get_component(self, filter:StackComponentFilterModel, response:Response) -> Union[StackComponentResponseModel, NotFoundResponseModel]:
+    def get_component(self, filter:StackComponentFilterModel) -> Union[StackComponentResponseModel, NotFoundResponseModel]:
         """This method returns the existing component."""
 
         with Session(self.engine) as session:
@@ -66,10 +66,9 @@ class ComponentService(BaseService):
             .first()
 
             if component is None:
-                response.status_code = status.HTTP_404_NOT_FOUND
-                return NotFoundResponseModel(detail=f"Component with id {filter.id} does not exist.")
+                raise HTTPException(status_code=404, detail=f"Component with id {filter.id} doest not exist.")
 
-            response_dict = StackComponentResponseModel(
+            response = StackComponentResponseModel(
                 id=component.id,
                 type=component.type,
                 config=component.config,
@@ -77,9 +76,9 @@ class ComponentService(BaseService):
                 created_at=component.created_at,
                 modified_at=component.modified_at
             )
-            return response_dict
+            return response
 
-    def update_component(self, filter:StackComponentFilterModel, component:StackComponentUpdateRequestModel, response:Response) -> Union[
+    def update_component(self, filter:StackComponentFilterModel, component:StackComponentUpdateRequestModel) -> Union[
             StackComponentResponseModel, BadRequestResponseModel, NotFoundResponseModel]:
         """This method updates the existing component."""
         
@@ -87,12 +86,10 @@ class ComponentService(BaseService):
             old_component = session.get(StackComponentSchema, filter.id)
 
             if old_component is None:
-                response.status_code = status.HTTP_404_NOT_FOUND
-                return NotFoundResponseModel(detail=f"Component with id {filter.id} does not exist.")
+                raise HTTPException(status_code=404, detail=f"Component with id {filter.id} does not exist.")
             
             if component.type == None and component.config == None and component.meta_data == None:    
-                response.status_code = status.HTTP_400_BAD_REQUEST
-                return BadRequestResponseModel(detail="Please provide data to update the component.")
+                raise HTTPException(status_code=400, detail="Please provide data to update the component.")
 
             if component.type is not None:
                 old_component.type = component.type
@@ -105,7 +102,7 @@ class ComponentService(BaseService):
 
             session.commit()
 
-            response_dict = StackComponentResponseModel(
+            response = StackComponentResponseModel(
                 id=old_component.id,
                 type=old_component.type,
                 config=old_component.config,
@@ -114,17 +111,16 @@ class ComponentService(BaseService):
                 modified_at=old_component.modified_at
             )
 
-            return response_dict
+            return response
 
-    def delete_component(self, filter:StackComponentFilterModel, response:Response) -> Union[DeleteResponseModel, NotFoundResponseModel]:
+    def delete_component(self, filter:StackComponentFilterModel) -> Union[DeleteResponseModel, NotFoundResponseModel]:
         """This method deletes the existing component."""
     
         with Session(self.engine) as session:
             component = session.get(StackComponentSchema, filter.id)
         
             if component is None:
-                response.status_code = status.HTTP_404_NOT_FOUND
-                return NotFoundResponseModel(detail=f"Component with id {filter.id} does not exist.")
+                raise HTTPException(status_code=404, detail=f"Component with id {filter.id} does not exist.")
         
             session.delete(component)
             session.commit()
