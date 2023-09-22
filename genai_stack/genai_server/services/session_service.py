@@ -15,6 +15,7 @@ from genai_stack.stack.stack import Stack
 from genai_stack.constants import vectordb, memory
 from genai_stack.genai_server.settings.config import stack_config
 from genai_stack.model.gpt3_5 import OpenAIGpt35Model
+from genai_stack.llm_cache.cache import LLMCache
 
 
 def get_class_path(module:str, maps:str, class_name:str):
@@ -101,8 +102,8 @@ class SessionService(BaseService):
             created_session = session.get(StackSessionSchema, _session.id)
 
             normal_index = stack.vectordb.create_index(index_name = f"{created_session.stack_id}-{created_session.id}")
-            memory_index = None
-            cache_index = None
+            memory_index = stack.vectordb.create_index(index_name = f"{created_session.stack_id}-{created_session.id}-memory")
+            cache_index = stack.vectordb.create_index(index_name = f"{created_session.stack_id}-{created_session.id}-cache")
 
             created_session.meta_data={
                 "indexstore":f"{created_session.stack_id}-{created_session.id}",
