@@ -21,5 +21,5 @@ class StackSessionSchema(TimeStampedSchema):
         nullable=False
     )
 
-    meta_data = Column(JSON, nullable=False)
+    meta_data = Column(JSON)
 

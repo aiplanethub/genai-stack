@@ -17,8 +17,8 @@ router = APIRouter(
 )
 
 @router.post("")
-def create_session(session:StackSessionRequestModel) -> StackSessionResponseModel:
-    return service.create_session(_session=session)
+def create_session() -> StackSessionResponseModel:
+    return service.create_session()
 
 @router.get("")
 def sessions_list() -> Union[List[StackSessionResponseModel], List]:
