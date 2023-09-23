@@ -9,3 +9,7 @@ class StackComponentType(Enum):
     PROMPT_ENGINE = "prompt_engine"
     RETRIEVER = "retriever"
     MEMORY = "memory"
+
+class Actions(str, Enum):
+    GET = "get",
+    CREATE = "create"

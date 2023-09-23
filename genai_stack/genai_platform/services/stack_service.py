@@ -1,13 +1,23 @@
-from fastapi import Response, status
+from fastapi import HTTPException, Response, status
 from typing import List, Dict, Union
 from sqlalchemy.orm import Session
+from genai_stack.enums import Actions
 
-from genai_stack.genai_platform.services.base_service import BaseService
-from genai_stack.genai_platform.models.stack_models import StackRequestModel, StackResponseModel, StackFilterModel, StackUpdateRequestModel
-from genai_stack.genai_platform.models.delete_model import DeleteResponseModel
-from genai_stack.genai_platform.models.not_found_model import NotFoundResponseModel
-from genai_stack.genai_platform.models.bad_request_model import BadRequestResponseModel
-from genai_stack.genai_store.schemas.stack_schemas import StackSchema
+from genai_stack.genai_platform.services import BaseService
+from genai_stack.genai_platform.services.component_service import ComponentService
+from genai_stack.genai_platform.models import (
+    StackRequestModel,
+    StackResponseModel,
+    StackUpdateRequestModel,
+    StackFilterModel,
+    StackComponentResponseModel,
+    StackComponentFilterModel,
+    NotFoundResponseModel,
+    BadRequestResponseModel,
+    DeleteResponseModel
+)
+from genai_stack.genai_store.schemas import StackSchema, StackCompositionSchema
+from genai_stack.genai_platform.utils import check_components_list_type, get_stack_response
 
 class StackService(BaseService):
 
@@ -15,19 +25,49 @@ class StackService(BaseService):
         """This method create a new stack."""
         
         with Session(self.engine) as session:
+
+            # Checking whether components list contains the elements or not.
+            if len(stack.components) == 0:
+                raise HTTPException(
+                    status_code=400, 
+                    detail="""List of Components primary keys or objects containing the required fields to create a component 
+                        are required to create a stack."""
+                    )
+            
+            # Checking whether List containing a integers(Primary keys of already created components) or 
+            # Objects(To create new components).
+            list_type = check_components_list_type(stack.components)
+            
+            # Initializing the component service to create or get the components.
+            component_service = ComponentService(store=self.store)
+
+            components:List[StackComponentResponseModel] = []
+
+            # Retrieving Components
+            if list_type == Actions.GET:
+                for component_id in stack.components:
+                    filter = StackComponentFilterModel(id=component_id)
+                    component = component_service.get_component(filter)
+                    components.append(component)
+
+            # Creating Components
+            else:
+                for component_dict in stack.components:
+                    component = component_service.create_component(component_dict)
+                    components.append(component)
+            
+            # Creating a stack
             new_stack = StackSchema(name=stack.name, description=stack.description)
             session.add(new_stack)
             session.commit()
 
-            response = StackResponseModel(
-                id=new_stack.id,
-                name=new_stack.name,
-                description=new_stack.description,
-                components=new_stack.components,
-                created_at=new_stack.created_at,
-                modified_at=new_stack.modified_at
-            )
-            return response
+            # Creating a composition between stack and component.
+            for component in components:
+                composition = StackCompositionSchema(stack_id=new_stack.id, component_id=component.id)
+                session.add(composition)
+                session.commit()
+            
+            return get_stack_response(new_stack, components)
     
 
     def list_stack(self) -> Dict[str,List[StackResponseModel]]:

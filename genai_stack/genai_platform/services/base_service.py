@@ -7,6 +7,10 @@ class BaseService:
         self._store = store
 
     @property
+    def store(self):
+        return self._store
+
+    @property
     def engine(self):
         return self._store.engine
 
