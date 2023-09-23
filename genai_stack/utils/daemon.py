@@ -272,7 +272,8 @@ class Daemon:
         sys.stderr.write(f"Handling signal {signum}...\n")
         self.cleanup()
 
-    def stop_daemon(self, pid_file: str) -> None:
+    @classmethod
+    def stop_daemon(cls, pid_file: str) -> None:
         """Stops a daemon process.
 
         Args:
