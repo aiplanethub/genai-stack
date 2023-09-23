@@ -91,27 +91,29 @@ class StackService(BaseService):
                 ))
             return response
 
-    def get_stack(self, filter:StackFilterModel, response:Response) -> Union[StackResponseModel, NotFoundResponseModel]:
+    def get_stack(self, filter:StackFilterModel) -> Union[StackResponseModel, NotFoundResponseModel]:
         """This method returns the existing stack."""
 
         with Session(self.engine) as session:
-            stack = session.query(StackSchema)\
-            .filter(StackSchema.id == filter.id)\
-            .first()
+            stack = session.get(StackSchema, filter.id)
 
             if stack is None:
-                response.status_code = status.HTTP_404_NOT_FOUND
-                return NotFoundResponseModel(detail=f"Stack with id {filter.id} does not exist.")
+                raise HTTPException(status_code=404, detail=f"Stack with id {filter.id} does not exist.")
+            
+            # Populating components related to stack will be improved.
+            compositions = session.query(StackCompositionSchema).filter(StackCompositionSchema.stack_id == stack.id)
 
-            response_dict = StackResponseModel(
-                id=stack.id,
-                name=stack.name,
-                description=stack.description,
-                components=stack.components,
-                created_at=stack.created_at,
-                modified_at=stack.modified_at
-            )
-            return response_dict
+            # Initializing the component service to get the components.
+            component_service = ComponentService(store=self.store)
+
+            components:List[StackComponentResponseModel] = []
+
+            for composition in compositions:
+                filter = StackComponentFilterModel(id=composition.component_id)
+                component = component_service.get_component(filter)
+                components.append(component)
+
+            return get_stack_response(stack, components)
 
     def update_stack(self, filter:StackFilterModel, stack:StackUpdateRequestModel, response:Response) -> Union[
             StackResponseModel, BadRequestResponseModel, NotFoundResponseModel]:
@@ -147,15 +149,14 @@ class StackService(BaseService):
 
             return response_dict
 
-    def delete_stack(self, filter:StackFilterModel, response:Response) -> Union[DeleteResponseModel, NotFoundResponseModel]:
+    def delete_stack(self, filter:StackFilterModel) -> Union[DeleteResponseModel, NotFoundResponseModel]:
         """This method deletes the existing stack."""
     
         with Session(self.engine) as session:
             stack = session.get(StackSchema, filter.id)
         
             if stack is None:
-                response.status_code = status.HTTP_404_NOT_FOUND
-                return NotFoundResponseModel(detail=f"Stack with id {filter.id} does not exist.")
+                raise HTTPException(status_code=404, detail=f"Stack with id {filter.id} does not exist.")
         
             session.delete(stack)
             session.commit()
