@@ -1,4 +1,4 @@
-from fastapi import HTTPException, Response, status
+from fastapi import HTTPException
 from typing import List, Dict, Union
 from sqlalchemy.orm import Session
 from genai_stack.enums import Actions
@@ -115,7 +115,7 @@ class StackService(BaseService):
 
             return get_stack_response(stack, components)
 
-    def update_stack(self, filter:StackFilterModel, stack:StackUpdateRequestModel, response:Response) -> Union[
+    def update_stack(self, filter:StackFilterModel, stack:StackUpdateRequestModel) -> Union[
             StackResponseModel, BadRequestResponseModel, NotFoundResponseModel]:
         """This method updates the existing stack."""
         
@@ -123,13 +123,59 @@ class StackService(BaseService):
             old_stack = session.get(StackSchema, filter.id)
 
             if old_stack is None:
-                response.status_code = status.HTTP_404_NOT_FOUND
-                return NotFoundResponseModel(detail=f"Stack with id {filter.id} does not exist.")
+                raise HTTPException(status_code=404, detail=f"Stack with id {filter.id} does not exist.")
             
-            if stack.name == None and stack.description == None:    
-                response.status_code = status.HTTP_400_BAD_REQUEST
-                return BadRequestResponseModel(detail="Please provide data to update the stack.")
+            if stack.name == None and stack.description == None and stack.components == None:    
+                raise HTTPException(status_code=400, detail="Please provide data to update the stack.")
 
+            components:List[StackComponentResponseModel] = []
+
+            # Initializing the component service to create or get the components.
+            component_service = ComponentService(store=self.store)
+
+            if stack.components is not None:
+                if len(stack.components) == 0:
+                    raise HTTPException(
+                        status_code=400, 
+                        detail="""Please provide list of Components primary keys or objects containing the required fields to 
+                        create new components and to update the stack."""
+                    )
+                else:
+                    # Checking whether List containing a integers(Primary keys of already created components) or 
+                    # Objects(To create new components).
+                    list_type = check_components_list_type(stack.components)
+
+                    # Retrieving Components
+                    if list_type == Actions.GET:
+                        for component_id in stack.components:
+                            filter = StackComponentFilterModel(id=component_id)
+                            component = component_service.get_component(filter)
+                            components.append(component)
+
+                    # Creating Components
+                    else:
+                        for component_dict in stack.components:
+                            component = component_service.create_component(component_dict)
+                            components.append(component)
+
+                    # Deleting old compositions this current stack has.
+                    compositions = session.query(StackCompositionSchema).filter(StackCompositionSchema.stack_id == old_stack.id)
+                    for composition in compositions:
+                        session.delete(composition)
+                        session.commit()
+
+                    # Creating new composition between stack and the newly retrieved or created components
+                    for component in components:
+                        composition = StackCompositionSchema(stack_id=old_stack.id, component_id=component.id)
+                        session.add(composition)
+                        session.commit()
+            else:
+                compositions = session.query(StackCompositionSchema).filter(StackCompositionSchema.stack_id == old_stack.id)
+                for composition in compositions:
+                    filter = StackComponentFilterModel(id=composition.component_id)
+                    component = component_service.get_component(filter)
+                    components.append(component)
+            
             if stack.name is not None:
                 old_stack.name = stack.name
 
@@ -138,16 +184,7 @@ class StackService(BaseService):
 
             session.commit()
 
-            response_dict = StackResponseModel(
-                id=old_stack.id,
-                name=old_stack.name,
-                description=old_stack.description,
-                components=old_stack.components,
-                created_at=old_stack.created_at,
-                modified_at=old_stack.modified_at
-            )
-
-            return response_dict
+            return get_stack_response(old_stack, components)
 
     def delete_stack(self, filter:StackFilterModel) -> Union[DeleteResponseModel, NotFoundResponseModel]:
         """This method deletes the existing stack."""
@@ -157,6 +194,13 @@ class StackService(BaseService):
         
             if stack is None:
                 raise HTTPException(status_code=404, detail=f"Stack with id {filter.id} does not exist.")
+            
+            # Deleting old compositions this current stack has.
+            # CASCADE is not working, this step will be removed once we find out the solution.
+            compositions = session.query(StackCompositionSchema).filter(StackCompositionSchema.stack_id == stack.id)
+            for composition in compositions:
+                session.delete(composition)
+                session.commit()
         
             session.delete(stack)
             session.commit()
