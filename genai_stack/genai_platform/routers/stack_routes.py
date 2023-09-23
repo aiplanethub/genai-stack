@@ -33,14 +33,14 @@ def list_stack() -> Dict[str, List[StackResponseModel]]:
     return service.list_stack()
 
 @router.get("/{stack_id}") 
-def get_stack(stack_id:int, response:Response) -> Union[StackResponseModel, NotFoundResponseModel]:
+def get_stack(stack_id:int) -> Union[StackResponseModel, NotFoundResponseModel]:
     filter = StackFilterModel(id=stack_id)
-    return service.get_stack(filter, response)  
+    return service.get_stack(filter)  
 
 @router.delete("/{stack_id}")
-def delete_stack(stack_id:int, response:Response) -> Union[DeleteResponseModel, NotFoundResponseModel]:
+def delete_stack(stack_id:int) -> Union[DeleteResponseModel, NotFoundResponseModel]:
     filter = StackFilterModel(id=stack_id)
-    return service.delete_stack(filter, response)   
+    return service.delete_stack(filter)   
 
 @router.patch("/{stack_id}")
 def update_stack(stack_id:int, stack:StackUpdateRequestModel, response:Response) -> Union[
