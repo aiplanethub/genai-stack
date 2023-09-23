@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter
 from typing import Dict, List, Union
 
 from genai_stack.constant import API, STACK
@@ -43,7 +43,7 @@ def delete_stack(stack_id:int) -> Union[DeleteResponseModel, NotFoundResponseMod
     return service.delete_stack(filter)   
 
 @router.patch("/{stack_id}")
-def update_stack(stack_id:int, stack:StackUpdateRequestModel, response:Response) -> Union[
+def update_stack(stack_id:int, stack:StackUpdateRequestModel) -> Union[
     StackResponseModel, BadRequestResponseModel, NotFoundResponseModel]:
     filter = StackFilterModel(id=stack_id)
-    return service.update_stack(filter, stack, response)
+    return service.update_stack(filter, stack)

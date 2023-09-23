@@ -79,7 +79,7 @@ class StackUpdateRequestModel(BaseModel):
     Args:
         name : Optional[str]
         description : Optional[str]
-        components : Optional[List[int]]
+        components : Optional[ List[int] | List[StackComponentRequestModel] ]
     
     For updating the exisiting stack.
     """
