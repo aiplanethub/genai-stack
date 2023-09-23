@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 
-from genai_stack.genai_platform.routers import stack_routes, component_routes
-from genai_stack.genai_server.routers import session_routes
+from genai_stack.genai_server.routers import session_routes, retriver_routes, vectordb_routes
 
 
 app = FastAPI(
@@ -20,11 +19,6 @@ app = FastAPI(
 
 
 """Connecting all the routers to app."""
-app.include_router(stack_routes.router)
-app.include_router(component_routes.router)
-
 app.include_router(session_routes.router)
-
-    
-
-
+app.include_router(retriver_routes.router)
+app.include_router(vectordb_routes.router)

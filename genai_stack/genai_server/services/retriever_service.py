@@ -1,6 +1,6 @@
 from genai_stack.genai_platform.services.base_service import BaseService
 from genai_stack.genai_server.models.retriver_models import RetrieverResponseModel
-from genai_stack.retriever import LangChainRetriever
+from genai_stack.genai_server.utils import get_current_stack
 
 
 class RetrieverService(BaseService):
@@ -16,9 +16,8 @@ class RetrieverService(BaseService):
             Returns
                 documents : List[DocumentType]
         """
-        config = {}  # logic for configuration
-        retriever = LangChainRetriever.from_kwargs(**config)
-        response = retriever.retrieve(query)
+        stack = get_current_stack()
+        response = stack.retriever.retrieve(query)
         return RetrieverResponseModel(
             output=response['output']
         )
