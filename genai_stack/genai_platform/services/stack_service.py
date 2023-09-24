@@ -14,7 +14,9 @@ from genai_stack.genai_platform.models import (
     StackComponentFilterModel,
     NotFoundResponseModel,
     BadRequestResponseModel,
-    DeleteResponseModel
+    DeleteResponseModel,
+    # PaginationRequestModel,
+    # PaginationResponseModel
 )
 from genai_stack.genai_store.schemas import StackSchema, StackCompositionSchema
 from genai_stack.genai_platform.utils import check_components_list_type, get_stack_response
@@ -70,26 +72,35 @@ class StackService(BaseService):
             return get_stack_response(new_stack, components)
     
 
-    def list_stack(self) -> Dict[str,List[StackResponseModel]]:
+    def list_stack(self, pagination_params:dict) -> dict:
         """This method returns the list of stack."""
 
         with Session(self.engine) as session:
             stacks = session.query(StackSchema).all()
 
-            response = {
-                "stacks":[]
-            }
+            results:List[StackResponseModel] = []
+
+            # Initializing the component service to create or get the components.
+            component_service = ComponentService(store=self.store)
 
             for stack in stacks:
-                response['stacks'].append(StackResponseModel(
-                    id=stack.id,
-                    name=stack.name,
-                    description=stack.description,
-                    components=stack.components,
-                    created_at=stack.created_at,
-                    modified_at=stack.modified_at
-                ))
-            return response
+                compositions = session.query(StackCompositionSchema)\
+                    .filter(StackCompositionSchema.stack_id == stack.id).all()
+                
+                components:List[StackComponentResponseModel] = []
+
+                for composition in compositions:
+                    filter = StackComponentFilterModel(id=composition.component_id)
+                    component = component_service.get_component(filter)
+                    components.append(component)
+                
+                result = get_stack_response(stack, components)
+                results.append(result)
+
+            pagination_params["results"] = results
+            pagination_params["endpoint"] = "stack"
+
+            return self.pagination(pagination_params)
 
     def get_stack(self, filter:StackFilterModel) -> Union[StackResponseModel, NotFoundResponseModel]:
         """This method returns the existing stack."""

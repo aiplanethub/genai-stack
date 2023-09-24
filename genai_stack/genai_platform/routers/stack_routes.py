@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from typing import Dict, List, Union
+from typing import Dict, Union
 
 from genai_stack.constant import API, STACK
 from genai_stack.genai_platform.services import StackService
@@ -29,8 +29,9 @@ def create_stack(stack:StackRequestModel) -> StackResponseModel:
     return service.create_stack(stack=stack)
 
 @router.get("")
-def list_stack() -> Dict[str, List[StackResponseModel]]:
-    return service.list_stack()
+def list_stack(page:int = 1, limit:int = 10) -> Dict:
+    pagination_params = {"page":page,"limit":limit}
+    return service.list_stack(pagination_params)
 
 @router.get("/{stack_id}") 
 def get_stack(stack_id:int) -> Union[StackResponseModel, NotFoundResponseModel]:
