@@ -14,6 +14,13 @@ class BaseService:
 
     def __init__(self, **kwargs) -> None:
         self.config = self.config_class(**kwargs)
+        self.setup()
+
+    def setup(self):
+        """
+        Setup steps that has to be executed after the init function for the service
+        """
+        pass
 
     def provision(self):
         """
