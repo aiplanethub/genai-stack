@@ -19,7 +19,7 @@ class LocalServiceConfig(BaseModel):
     config_output_path: Path on where to store the config of the service to reload from it.
     """
 
-    id: Optional[str] = uuid.uuid4()
+    id: Optional[str] = str(uuid.uuid4())[:6]
     runtime_path: str
     log_file_name: Optional[str] = f"{id}.log"
     pid_file_name: Optional[str] = f"{id}.pid"
@@ -37,13 +37,14 @@ class LocalService(BaseService):
 
     def setup(self):
         self.runtime_dir = os.path.abspath(self.config.runtime_path)
-        self.config_file_path = os.path.join(self.config.config_output_path, f"{self.config.id}.json")
+        self.config_file_path = os.path.join(self.config.config_output_path, f"{self.config.id[:6]}.json")
         self.log_file_path = os.path.join(self.runtime_dir, self.config.log_file_name)
         self.pid_file_path = os.path.join(self.runtime_dir, self.config.pid_file_name)
-        self.daemon = Daemon(self.run)
+        self.daemon = Daemon(self.run, log_file=self.log_file_path, pid_file=self.pid_file_path)
 
     def provision(self):
         self.daemon.run_as_daemon()
+        self.store_to_registry()
 
     def deprovision(self):
         self.daemon.stop_daemon(self.pid_file_path)
@@ -60,7 +61,7 @@ class LocalService(BaseService):
         """
         raise NotImplementedError()
 
-    def store_to_registry(self):
+    def store_to_registry(self, exclude={"config_output_path"}):
         """
         Currently we store the service related configurations to a json file to the config_output_path location
         """
@@ -69,7 +70,7 @@ class LocalService(BaseService):
             os.makedirs(config_path_dir, exist_ok=True)
 
         with open(self.config_file_path, "w+") as f:
-            json_data = self.config.dict(exclude=["config_output_path"])
+            json_data = self.config.dict(exclude=exclude)
             json_data.update(self._get_service_metadata())
             json.dump(json_data, f)
 
