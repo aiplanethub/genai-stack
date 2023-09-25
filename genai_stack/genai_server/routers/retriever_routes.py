@@ -15,7 +15,6 @@ router = APIRouter(
 )
 
 
-@router.get("/retrieve/{session_id}")
-def retrieve(session_id: int, retriever: RetrieverRequestModel) -> RetrieverResponseModel:
-    return service.retrieve(session_id=session_id, query=retriever.query)
-
+@router.get("/retrieve")
+def retrieve(session_id: int, query: str) -> RetrieverResponseModel:
+    return service.retrieve(data=RetrieverRequestModel(session_id=session_id, query=query))
