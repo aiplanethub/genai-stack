@@ -9,8 +9,9 @@ class LLMCacheConfigModel(BaseLLMCacheConfigModel):
     """
     Data Model for the configs
     """
-
-    pass
+    index_name: str = "Cache"
+    text_key: str = "cache"
+    attributes: List[str] = ["response"]
 
 
 class LLMCacheConfig(BaseLLMCacheConfig):
@@ -19,17 +20,19 @@ class LLMCacheConfig(BaseLLMCacheConfig):
 
 class LLMCache(BaseLLMCache):
     config_class = LLMCacheConfig
-    kwarg_map = {
-        "ChromaDB": {"index_name": "Cache"},
-        "Weaviate": {
-            "index_name": "Cache",
-            "text_key": "cache",
-            "attributes": ["response"],
-        },
-    }
+
+    def _get_kwargs_map(self):
+        return {
+            "ChromaDB": {"index_name": self.config.config_data.index_name},
+            "Weaviate": {
+                "index_name": self.config.config_data.index_name,
+                "text_key": self.config.config_data.text_key,
+                "attributes": self.config.config_data.attributes,
+            },
+        }
 
     def _post_init(self, *args, **kwargs):
-        self.client = self.mediator.create_index(self.kwarg_map)
+        self.client = self.mediator.create_index(self._get_kwargs_map())
 
     def get_cache(
         self,
@@ -40,7 +43,7 @@ class LLMCache(BaseLLMCache):
         This method is for getting the cached response from the cache vectordb. This method performs similarity search on the
         query and scalar search using the metadata.
         """
-        response = self.mediator.hybrid_search(query, metadata, self.kwarg_map)
+        response = self.mediator.hybrid_search(query, metadata, self._get_kwargs_map())
         if response and response[0].isSimilar:
             return response[0].response
         return None
