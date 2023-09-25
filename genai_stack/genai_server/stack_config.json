@@ -3,14 +3,37 @@
         "vectordb":{
             "name":"chromadb",
             "config":{
+                
             } 
         },
         "memory":{
-            "name":"conversation_buffer",
-            "config":{}
-        },
-        "cache":{
+            "name":"langchain",
+            "config":{
 
+            }
+        },
+        "llm_cache":{
+            "name":"cache",
+            "config":{
+
+            }
+        },
+        "model":{
+            "name":"gpt3.5",
+            "config":{
+                "parameters":{"openai_api_key": "kcskcmnscjkncksnklncksncskcnscnsclslcn"}
+            }
+        },
+        "embedding":{
+            "name":"langchain",
+            "config":{
+                "name":"HuggingFaceEmbeddings",
+                "fields":{
+                    "model_name": "sentence-transformers/all-mpnet-base-v2",
+                    "model_kwargs": {"device": "cpu"},
+                    "encode_kwargs": {"normalize_embeddings": false}
+                }
+            }
         }
     }
 }
