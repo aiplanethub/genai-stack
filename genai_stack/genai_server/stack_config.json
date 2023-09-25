@@ -3,8 +3,8 @@
         "vectordb":{
             "name":"chromadb",
             "config":{
-                
-            } 
+
+            }
         },
         "memory":{
             "name":"langchain",
