@@ -6,7 +6,7 @@ from genai_stack.genai_server.settings.config import stack_config
 
 class RetrieverService(BaseService):
 
-    def retrieve(self, request: RetrieverRequestModel) -> RetrieverResponseModel:
+    def retrieve(self, data: RetrieverRequestModel) -> RetrieverResponseModel:
         """
         This method retrieves the documents from the vector database.
 
@@ -18,7 +18,7 @@ class RetrieverService(BaseService):
                 documents : List[DocumentType]
         """
         stack = get_current_stack(config=stack_config)
-        response = stack.retriever.retrieve(request.query)
+        response = stack.retriever.retrieve(data.query)
         return RetrieverResponseModel(
             output=response['output']
         )
