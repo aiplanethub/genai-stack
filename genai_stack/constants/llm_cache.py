@@ -3,9 +3,9 @@ LLM_CACHE_CONFIG_KEY = "llm_cache"
 
 
 class LLM_Cache:
-    LANGCHAIN = "cache"
+    CACHE = "cache"
 
 
 AVAILABLE_LLM_CACHE_MAPS = {
-    LLM_Cache.LANGCHAIN:"cache/LLMCache",
+    LLM_Cache.CACHE: "cache/LLMCache",
 }
