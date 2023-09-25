@@ -9,7 +9,7 @@ from genai_stack.genai_server.settings.config import stack_config
 
 class VectorDBService(BaseService):
 
-    def add_documents(self, request: RetrieverAddDocumentsRequestModel) -> RetrieverAddDocumentsResponseModel:
+    def add_documents(self, data: RetrieverAddDocumentsRequestModel) -> RetrieverAddDocumentsResponseModel:
         """
         This method adds the documents to the vector database.
 
@@ -21,15 +21,15 @@ class VectorDBService(BaseService):
                 bool
         """
         stack = get_current_stack(config=stack_config)
-        stack.vector_db.add_documents(request.documents)
+        stack.vector_db.add_documents(data.documents)
         return RetrieverAddDocumentsResponseModel(documents=[
             DocumentType(
                 page_content=document['page_content'],
                 metadata=document['metadata']
-            ) for document in request.documents
+            ) for document in data.documents
         ])
 
-    def search(self, request: RetrieverSearchRequestModel) -> RetrieverSearchResponseModel:
+    def search(self, data: RetrieverSearchRequestModel) -> RetrieverSearchResponseModel:
         """
         This method searches the documents from the vector database.
 
@@ -41,7 +41,7 @@ class VectorDBService(BaseService):
                 documents : List[DocumentType]
         """
         stack = get_current_stack(config=stack_config)
-        documents = stack.vector_db.search(request.query)
+        documents = stack.vector_db.search(data.query)
         return RetrieverSearchResponseModel(documents=[
             DocumentType(
                 page_content=document['page_content'],
