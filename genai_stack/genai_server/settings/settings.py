@@ -1,15 +1,22 @@
-from pydantic import BaseSettings
-from configparser import ConfigParser
+from pydantic import BaseSettings, validator
+from typing import Optional, Dict, Any
 
-genai_stack_config = ConfigParser()
-
+from genai_stack.genai_server.settings.config import path, stack_config
 
 class Settings(BaseSettings):
-    CONNECTION_STRING: str = genai_stack_config.get("sqlite", "connection_string")
-    DATABASE_NAME: str = genai_stack_config.get("sqlite", "db_name")
+    RUNTIME_PATH:str = path
+    DATABASE_NAME:str = "db"
+    DATABASE_DRIVER:str = "sqlite"
+    DATABASE_URI:Optional[str] = None
+    STACK_CONFIG:dict = stack_config
+
+    @validator('DATABASE_URI', pre=True)
+    def create_database_uri(cls, values: Dict[str, Any]):
+            return f"{values.get('DATABASE_DRIVER')}:////{values.get('RUNTIME_PATH')}/{values.get('DATABASE_NAME')}"
 
     class Config:
-        pass
+        case_sensitive = True
+        # env_file = ".env"
 
 
 settings = Settings()

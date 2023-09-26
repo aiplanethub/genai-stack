@@ -1,11 +1,20 @@
-import os
 import json
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STACK_CONFIG = os.path.join(BASE_DIR, "stack_config.json")
+# Storing the runtime path
+path:str = ""
 
+
+# For reading stack config
 stack_config = {}
 
-with open(STACK_CONFIG, 'r') as file:
-    stack_config = json.load(file)
+def read_stack_config(run_time_path:str):
+    """This method for reading stack configs."""
+
+    path = run_time_path
+
+    STACK_CONFIG_PATH = f"{run_time_path}/stack_config.json"
+    with open(STACK_CONFIG_PATH, 'r') as file:
+        stack_config = json.load(file)
+        return stack_config
+

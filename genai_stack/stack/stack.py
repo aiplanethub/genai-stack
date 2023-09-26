@@ -1,3 +1,9 @@
+import uvicorn
+
+from genai_stack.stack.utils import is_dir_exists, create_dir
+from genai_stack.genai_server.server import get_genai_server_app
+from genai_stack.genai_server.settings.config import read_configurations
+
 class Stack:
     """GenAI Stack class
 
@@ -168,3 +174,17 @@ class Stack:
             have a Memory.
         """
         return self._memory
+    
+    @staticmethod
+    def run_server(run_time_path:str, host:str = "localhost", port:int = 8000):
+        """This method runs the Genai Server."""
+        
+        if not is_dir_exists(run_time_path):
+            create_dir(run_time_path)
+            # create a stack_config.json with default configurations
+
+        read_configurations(run_time_path)
+
+        app = get_genai_server_app()
+
+        uvicorn.run(app, host, port)
