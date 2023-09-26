@@ -9,7 +9,11 @@ from genai_stack.constants import (
     MODELS_MODULE,
     AVAILABLE_MODEL_MAPS,
     EMBEDDING_MODULE,
-    AVAILABLE_EMBEDDING_MAPS
+    AVAILABLE_EMBEDDING_MAPS,
+    RETRIEVER_MODULE,
+    AVAILABLE_RETRIEVER_MAPS,
+    PROMPT_ENGINE_MODULE,
+    AVAILABLE_PROMPT_ENGINE_MAPS
 )
 
 
@@ -33,6 +37,14 @@ components_mappers = {
     "embedding": {
         "module_name": EMBEDDING_MODULE,
         "available_maps": AVAILABLE_EMBEDDING_MAPS
+    },
+    "prompt_engine": {
+        "module_name": PROMPT_ENGINE_MODULE,
+        "available_maps": AVAILABLE_PROMPT_ENGINE_MAPS
+    },
+    "retriever": {
+        "module_name": RETRIEVER_MODULE,
+        "available_maps": AVAILABLE_RETRIEVER_MAPS
     }
 }
 
@@ -40,13 +52,10 @@ components_mappers = {
 # Getting Component Class
 def get_component_class(component_name: str, class_name: str):
     component_mapper = components_mappers.get(component_name)
-
     module_name = component_mapper['module_name']
     # ex: genai_stack.vectordb
-
     cls_name = component_mapper['available_maps'].get(class_name)
     # ex: weaviate/Weaviate
-
     cls_path = f"{module_name}.{cls_name.replace('/', '.')}"
     # genai_stack.vectordb.weaviate.Weaviate
 
