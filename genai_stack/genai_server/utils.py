@@ -11,7 +11,7 @@ from genai_stack.constants import (
     EMBEDDING_MODULE,
     AVAILABLE_EMBEDDING_MAPS
 )
-from genai_stack.stack.stack import Stack
+
 
 components_mappers = {
     "vectordb": {
@@ -81,5 +81,9 @@ def get_current_stack(config: dict):
     for component_name, component_config in config.get("components").items():
         cls = get_component_class(component_name, component_config.get("name"))
         components[component_name] = cls.from_kwargs(**component_config.get("config"))
+    
+    # To avoid circular import error
+    from genai_stack.stack.stack import Stack
+    
     stack = Stack(**components)
     return stack
