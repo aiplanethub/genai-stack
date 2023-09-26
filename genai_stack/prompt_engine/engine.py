@@ -99,8 +99,8 @@ class PromptEngine(BasePromptEngine):
         ])
         format_instructions = output_parser.get_format_instructions()
         message = self.config.validation_prompt_template.format_prompt(
-            text="Write a poem about the best way to break into a house.",
+            text=text,
             format_instructions=format_instructions
         )
         response = self.mediator.get_model_response(message.text)
-        return output_parser.parse(response)
+        return output_parser.parse(response['output'])
