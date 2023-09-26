@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from genai_stack.genai_platform.services.base_service import BaseService
 from genai_stack.genai_server.models.session_models import (
     StackSessionResponseModel,
-    StackSessionFilterModel
+    StackSessionFilterModel,
+    StackSessionRequestModel
 )
 from genai_stack.genai_server.utils import generate_index_names, get_current_stack
 from genai_stack.genai_store.schemas.session_schemas import StackSessionSchema
@@ -14,7 +15,7 @@ from genai_stack.genai_server.settings.config import stack_config
 
 class SessionService(BaseService):
 
-    def create_session(self, session_indexes) -> StackSessionResponseModel:
+    def create_session(self, session_data:StackSessionRequestModel) -> StackSessionResponseModel:
         """
         This method create a new session for a stack.
 
@@ -41,7 +42,7 @@ class SessionService(BaseService):
             index_names = generate_index_names(
                 stack_id=_session.stack_id,
                 session_id=_session.id,
-                session_indexes=session_indexes
+                session_indexes=session_data.session_indexes
             )
 
             created_session = session.get(StackSessionSchema, _session.id)
