@@ -176,15 +176,15 @@ class Stack:
         return self._memory
     
     @staticmethod
-    def run_server(run_time_path:str, host:str = "localhost", port:int = 8000):
+    def run_server(host:str = "127.0.0.1", port:int = 8000):
         """This method runs the Genai Server."""
         
-        if not is_dir_exists(run_time_path):
-            create_dir(run_time_path)
-            # create a stack_config.json with default configurations
+        # if not is_dir_exists(run_time_path):
+        #     create_dir(run_time_path)
+        #     # create a stack_config.json with default configurations
 
-        read_configurations(run_time_path)
+        # read_configurations(run_time_path)
 
         app = get_genai_server_app()
 
-        uvicorn.run(app, host, port)
+        uvicorn.run(app=app, host=host, port=port)
