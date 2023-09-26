@@ -21,7 +21,7 @@
         "model":{
             "name":"gpt3.5",
             "config":{
-                "parameters":{"openai_api_key": "kcskcmnscjkncksnklncksncskcnscnsclslcn"}
+                "parameters":{"openai_api_key": "sk-"}
             }
         },
         "embedding":{
@@ -34,6 +34,14 @@
                     "encode_kwargs": {"normalize_embeddings": false}
                 }
             }
+        },
+        "prompt_engine":{
+            "name": "engine",
+            "config": {}
+        },
+        "retriever": {
+            "name": "langchain",
+            "config": {}
         }
     }
 }

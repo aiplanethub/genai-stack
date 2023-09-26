@@ -30,7 +30,7 @@ class LangChainRetriever(BaseRetriever):
         if "context" in prompt_template.input_variables:
             if not context:
                 context = self.mediator.search_vectordb(query=query)
-            metadata = context[0].metadata
+            metadata = context[0].metadata if context else None
             prompt_dict['context'] = parse_search_results(context)
         if "history" in prompt_template.input_variables:
             prompt_dict['history'] = self.get_chat_history()

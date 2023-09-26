@@ -21,11 +21,11 @@ class VectorDBService(BaseService):
                 bool
         """
         stack = get_current_stack(config=stack_config)
-        stack.vector_db.add_documents(data.documents)
+        stack.vectordb.add_documents(data.documents)
         return RetrieverAddDocumentsResponseModel(documents=[
             DocumentType(
-                page_content=document['page_content'],
-                metadata=document['metadata']
+                page_content=document.page_content,
+                metadata=document.metadata
             ) for document in data.documents
         ])
 
@@ -41,10 +41,10 @@ class VectorDBService(BaseService):
                 documents : List[DocumentType]
         """
         stack = get_current_stack(config=stack_config)
-        documents = stack.vector_db.search(data.query)
+        documents = stack.vectordb.search(data.query)
         return RetrieverSearchResponseModel(documents=[
             DocumentType(
-                page_content=document['page_content'],
-                metadata=document['metadata']
+                page_content=document.page_content,
+                metadata=document.metadata
             ) for document in documents
         ])
