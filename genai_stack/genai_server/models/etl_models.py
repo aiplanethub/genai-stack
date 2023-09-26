@@ -1,27 +1,24 @@
-from typing import List
-
+import enum
 from pydantic import BaseModel
 
-from genai_stack.genai_server.models.vectordb_models import DocumentType
+
+class StatusEnum(enum.Enum):
+    Pending = "Pending"
+    Processing = "Processing"
+    Completed = "Completed"
 
 
-class BaseRequestType(BaseModel):
+class BaseETLJobType(BaseModel):
+    uuid: str
     session_id: int
-    stack_id: int
+    status: StatusEnum
+    metadata: dict
 
 
-class BaseTransformRequestType(BaseRequestType):
-    source_docs: List[DocumentType]
+class ETLJobRequestType(BaseModel):
+    data: dict
 
 
-class BaseTransformResponseType(BaseTransformRequestType):
-    pass
-
-
-class BaseLoadRequestType(BaseRequestType):
-    documents: List[DocumentType]
-
-
-class BaseLoadResponseType(BaseLoadRequestType):
+class ETLJobResponseType(BaseModel):
     pass
 
