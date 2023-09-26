@@ -7,7 +7,7 @@ from genai_stack.genai_server.models.session_models import (
     StackSessionResponseModel,
     StackSessionFilterModel
 )
-from genai_stack.genai_server.utils import generate_index_names
+from genai_stack.genai_server.utils import generate_index_names, get_current_stack
 from genai_stack.genai_store.schemas.session_schemas import StackSessionSchema
 from genai_stack.genai_server.settings.config import stack_config
 
@@ -29,7 +29,7 @@ class SessionService(BaseService):
                 create_at : datetime
                 modified_at : None
         """
-        stack = self.get_current_stack(stack_config)
+        stack = get_current_stack(stack_config)
 
         with Session(self.engine) as session:
 
