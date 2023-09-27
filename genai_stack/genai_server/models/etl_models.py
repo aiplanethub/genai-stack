@@ -1,4 +1,5 @@
 import enum
+from typing import Any, Dict
 from pydantic import BaseModel
 
 
@@ -16,9 +17,8 @@ class BaseETLJobType(BaseModel):
 
 
 class ETLJobRequestType(BaseModel):
-    data: dict
+    __root__: Dict[str, Any]
 
 
 class ETLJobResponseType(BaseModel):
     pass
-
