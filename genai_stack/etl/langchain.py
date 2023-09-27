@@ -38,10 +38,12 @@ class LangchainETLConfig(BaseETLConfig):
 class LangchainETL(BaseETL):
     config_class = LangchainETLConfig
 
-    def extract(self):
+    def extract(self, **kwargs):
         LoaderCls = import_class(
             f"langchain.document_loaders.{self.config.name}",
         )
+        # Update fields with kwargs if any provided during runtime
+        self.config.fields.update(kwargs)
         loader = LoaderCls(**self.config.fields)
         self.documents = loader.load()
         return self.documents
@@ -55,7 +57,7 @@ class LangchainETL(BaseETL):
     def load(self, documents: List[LangDocument]):
         self.mediator.store_to_vectordb(documents=documents)
 
-    def run(self):
-        source_documents = self.extract()
+    def run(self, **kwargs):
+        source_documents = self.extract(**kwargs)
         transformed_documents = self.transform(source_documents)
         self.load(transformed_documents)
