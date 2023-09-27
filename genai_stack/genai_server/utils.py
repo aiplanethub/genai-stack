@@ -51,13 +51,13 @@ def get_component_class(component_name: str, class_name: str):
 def create_indexes(stack, stack_id: int, session_id: int) -> dict:
     components = [StackComponentType.VECTOR_DB, StackComponentType.MEMORY]
 
-    metadata = {}
+    meta_data = {}
     for component in components:
         index_name = f"{stack_id}_{session_id}_{component}"
         stack.vectordb.create_index(index_name=index_name)
-        metadata[component] = {"index_name": index_name}
+        meta_data[component] = {"index_name": index_name}
 
-    return metadata
+    return meta_data
 
 
 def get_current_stack(config: dict, session = None):
@@ -69,7 +69,7 @@ def get_current_stack(config: dict, session = None):
 
         # Override config based on session
         if session:
-            config.update(session.metadata.get(component_name))
+            config.update(session.meta_data.get(component_name))
 
         components[component_name] = cls.from_kwargs(**config)
 
