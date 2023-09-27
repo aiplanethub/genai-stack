@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter
 
 from genai_stack.constant import API, VECTORDB
-from genai_stack.genai_platform.database import initialize_store
+from genai_stack.genai_server.database import initialize_store
 from genai_stack.genai_server.models.vectordb_models import DocumentType, RetrieverAddDocumentsRequestModel, \
     RetrieverAddDocumentsResponseModel, RetrieverSearchRequestModel, RetrieverSearchResponseModel
 from genai_stack.genai_server.services.vectordb_service import VectorDBService
