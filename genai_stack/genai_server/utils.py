@@ -19,13 +19,16 @@ from genai_stack.constants import (
 
 
 components_mappers = {
-    "vectordb": {"module_name": VECTORDB_MODULE, "available_maps": AVAILABLE_VECTORDB_MAPS},
-    "memory": {"module_name": MEMORY_MODULE, "available_maps": AVAILABLE_MEMORY_MAPS},
-    "llm_cache": {"module_name": LLM_CACHE_MODULE, "available_maps": AVAILABLE_LLM_CACHE_MAPS},
-    "model": {"module_name": MODELS_MODULE, "available_maps": AVAILABLE_MODEL_MAPS},
-    "embedding": {"module_name": EMBEDDING_MODULE, "available_maps": AVAILABLE_EMBEDDING_MAPS},
-    "prompt_engine": {"module_name": PROMPT_ENGINE_MODULE, "available_maps": AVAILABLE_PROMPT_ENGINE_MAPS},
-    "retriever": {"module_name": RETRIEVER_MODULE, "available_maps": AVAILABLE_RETRIEVER_MAPS},
+    StackComponentType.VECTOR_DB: {"module_name": VECTORDB_MODULE, "available_maps": AVAILABLE_VECTORDB_MAPS},
+    StackComponentType.MEMORY: {"module_name": MEMORY_MODULE, "available_maps": AVAILABLE_MEMORY_MAPS},
+    StackComponentType.CACHE: {"module_name": LLM_CACHE_MODULE, "available_maps": AVAILABLE_LLM_CACHE_MAPS},
+    StackComponentType.MODEL: {"module_name": MODELS_MODULE, "available_maps": AVAILABLE_MODEL_MAPS},
+    StackComponentType.EMBEDDING: {"module_name": EMBEDDING_MODULE, "available_maps": AVAILABLE_EMBEDDING_MAPS},
+    StackComponentType.PROMPT_ENGINE: {
+        "module_name": PROMPT_ENGINE_MODULE,
+        "available_maps": AVAILABLE_PROMPT_ENGINE_MAPS,
+    },
+    StackComponentType.RETRIEVER: {"module_name": RETRIEVER_MODULE, "available_maps": AVAILABLE_RETRIEVER_MAPS},
 }
 
 
@@ -57,12 +60,18 @@ def create_indexes(stack, stack_id: int, session_id: int) -> dict:
     return metadata
 
 
-def get_current_stack(config: dict, session):
+def get_current_stack(config: dict, session = None):
     components = {}
 
     for component_name, component_config in config.get("components").items():
         cls = get_component_class(component_name, component_config.get("name"))
-        components[component_name] = cls.from_kwargs(**component_config.get("config"))
+        config = component_config.get("config")
+
+        # Override config based on session
+        if session:
+            config.update(session.metadata.get(component_name))
+
+        components[component_name] = cls.from_kwargs(**config)
 
     # To avoid circular import error
     from genai_stack.stack.stack import Stack
