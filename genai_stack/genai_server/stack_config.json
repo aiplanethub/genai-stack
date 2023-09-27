@@ -1,41 +1,40 @@
 {
-    "components":{
-        "vectordb":{
-            "name":"chromadb",
-            "config":{
-
+    "etl_platform": {
+        "prefect": {
+            "prefect_api_server": "http://localhost:4200/api"
+        }
+    },
+    "components": {
+        "vectordb": {
+            "name": "chromadb",
+            "config": {}
+        },
+        "memory": {
+            "name": "langchain",
+            "config": {}
+        },
+        "llm_cache": {
+            "name": "cache",
+            "config": {}
+        },
+        "model": {
+            "name": "gpt3.5",
+            "config": {
+                "parameters": { "openai_api_key": "sk-" }
             }
         },
-        "memory":{
-            "name":"langchain",
-            "config":{
-
-            }
-        },
-        "llm_cache":{
-            "name":"cache",
-            "config":{
-
-            }
-        },
-        "model":{
-            "name":"gpt3.5",
-            "config":{
-                "parameters":{"openai_api_key": "sk-"}
-            }
-        },
-        "embedding":{
-            "name":"langchain",
-            "config":{
-                "name":"HuggingFaceEmbeddings",
-                "fields":{
+        "embedding": {
+            "name": "langchain",
+            "config": {
+                "name": "HuggingFaceEmbeddings",
+                "fields": {
                     "model_name": "sentence-transformers/all-mpnet-base-v2",
-                    "model_kwargs": {"device": "cpu"},
-                    "encode_kwargs": {"normalize_embeddings": false}
+                    "model_kwargs": { "device": "cpu" },
+                    "encode_kwargs": { "normalize_embeddings": false }
                 }
             }
         },
-        "prompt_engine":{
+        "prompt_engine": {
             "name": "engine",
             "config": {}
         },
