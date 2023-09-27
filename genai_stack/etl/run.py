@@ -1,4 +1,4 @@
-from genai_stack.constants.etl import PREBUILT_ETL_LOADERS, ETL_MODULE
+from genai_stack.constants.etl.etl import PREBUILT_ETL_LOADERS, ETL_MODULE
 from genai_stack.utils.importing import import_class
 
 from genai_stack.core import ConfigLoader
