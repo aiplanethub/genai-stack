@@ -62,7 +62,12 @@ class ChromaDB(BaseVectorDB):
         return self._create_langchain_client(**sanitized_init_params)
 
     def _create_langchain_client(self, **kwargs):
-        return LangChainChroma(client=self.client, embedding_function=self.mediator.get_embedding_function(), **kwargs)
+        return LangChainChroma(
+            client=self.client,
+            embedding_function=self.mediator.get_embedding_function(),
+            collection_name=self.config.config_data.index_name,
+            **kwargs
+        )
 
     def hybrid_search(
         self,
