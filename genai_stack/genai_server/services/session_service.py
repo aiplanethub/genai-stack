@@ -6,27 +6,22 @@ from genai_stack.genai_platform.services.base_service import BaseService
 from genai_stack.genai_server.models.session_models import (
     StackSessionResponseModel,
     StackSessionFilterModel,
-    StackSessionRequestModel,
 )
 from genai_stack.genai_server.utils import create_indexes, get_current_stack
-from genai_stack.genai_store.schemas.session_schemas import StackSessionSchema
+from genai_stack.genai_server.schemas.session_schemas import StackSessionSchema
 from genai_stack.genai_server.settings.config import stack_config
 
 
 class SessionService(BaseService):
-    def create_session(self, session_data: StackSessionRequestModel) -> StackSessionResponseModel:
+    def create_session(self) -> StackSessionResponseModel:
         """
         This method create a new session for a stack.
-
-            Args
-                stack_id : int
-                meta_data : dict
 
             Returns
                 id : int
                 stack_id : int
                 meta_data : dict
-                create_at : datetime
+                created_at : datetime
                 modified_at : None
         """
         stack = get_current_stack(stack_config)
@@ -37,14 +32,14 @@ class SessionService(BaseService):
             session.add(stack_session)
             session.commit()
 
-            metadata = create_indexes(stack=stack, stack_id=1, session_id=stack_session.id)
-            stack_session.metadata = metadata
+            meta_data = create_indexes(stack=stack, stack_id=1, session_id=stack_session.id)
+            stack_session.meta_data = meta_data
             session.commit()
 
             return StackSessionResponseModel(
                 id=stack_session.id,
                 stack_id=stack_session.stack_id,
-                meta_data=stack_session.metadata,
+                meta_data=stack_session.meta_data,
                 created_at=stack_session.created_at,
                 modified_at=stack_session.modified_at,
             )

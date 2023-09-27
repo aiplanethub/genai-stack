@@ -65,7 +65,6 @@ class ChromaDB(BaseVectorDB):
         return LangChainChroma(
             client=self.client,
             embedding_function=self.mediator.get_embedding_function(),
-            collection_name=self.config.config_data.index_name,
             **kwargs
         )
 

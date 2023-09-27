@@ -16,4 +16,4 @@ class StackSessionSchema(TimeStampedSchema):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     stack_id = Column(Integer, ForeignKey("stacks.id", ondelete="CASCADE"), nullable=False)
-    metadata = Column(JSON)
+    meta_data = Column(JSON)

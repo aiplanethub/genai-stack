@@ -3,7 +3,7 @@ from typing import List, Union
 
 from genai_stack.constant import API, SESSION
 from genai_stack.genai_server.services.session_service import SessionService
-from genai_stack.genai_server.models.session_models import StackSessionRequestModel, StackSessionResponseModel, \
+from genai_stack.genai_server.models.session_models import StackSessionResponseModel, \
     StackSessionFilterModel
 from genai_stack.genai_server.database import initialize_store
 
@@ -18,8 +18,8 @@ router = APIRouter(
 
 
 @router.post("")
-def create_session(session:StackSessionRequestModel) -> StackSessionResponseModel:
-    return service.create_session(session)
+def create_session() -> StackSessionResponseModel:
+    return service.create_session()
 
 
 @router.get("")
