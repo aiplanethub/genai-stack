@@ -2,6 +2,8 @@ from genai_stack.utils import import_class
 from genai_stack.enums import StackComponentType
 from genai_stack.genai_server.models.session_models import StackSessionResponseModel
 from genai_stack.constants import (
+    ETL_MODULE,
+    AVAILABLE_ETL_LOADERS,
     VECTORDB_MODULE,
     AVAILABLE_VECTORDB_MAPS,
     MEMORY_MODULE,
@@ -20,6 +22,7 @@ from genai_stack.constants import (
 
 
 components_mappers = {
+    StackComponentType.ETL: {"module_name": ETL_MODULE, "available_maps": AVAILABLE_ETL_LOADERS},
     StackComponentType.VECTOR_DB: {"module_name": VECTORDB_MODULE, "available_maps": AVAILABLE_VECTORDB_MAPS},
     StackComponentType.MEMORY: {"module_name": MEMORY_MODULE, "available_maps": AVAILABLE_MEMORY_MAPS},
     StackComponentType.CACHE: {"module_name": LLM_CACHE_MODULE, "available_maps": AVAILABLE_LLM_CACHE_MAPS},
@@ -61,22 +64,22 @@ def create_indexes(stack, stack_id: int, session_id: int) -> dict:
     return meta_data
 
 
-def get_current_stack(config: dict, session:StackSessionResponseModel = None):
+def get_current_stack(config: dict, session: StackSessionResponseModel = None):
     components = {}
 
     for component_name, component_config in config.get("components").items():
         cls = get_component_class(component_name, component_config.get("name"))
-        configurations:dict = component_config.get("config")
-       
+        configurations: dict = component_config.get("config")
+
         # Override config based on session
         if session:
-            if  component_name == StackComponentType.VECTOR_DB or component_name == StackComponentType.MEMORY :  
-                configurations['index_name'] = session.meta_data[component_name]['index_name']
-            
+            if component_name == StackComponentType.VECTOR_DB or component_name == StackComponentType.MEMORY:
+                configurations["index_name"] = session.meta_data[component_name]["index_name"]
+
         components[component_name] = cls.from_kwargs(**configurations)
 
     # To avoid circular import error
     from genai_stack.stack.stack import Stack
 
-    stack = Stack(**components)
+    stack = Stack(**components, run_etl=False)
     return stack

@@ -6,7 +6,7 @@ class LOADERS:
     LLAMA_HUB = "llama_hub"
 
 
-PREBUILT_ETL_LOADERS = {
+AVAILABLE_ETL_LOADERS = {
     # loader : class name
     LOADERS.LANGCHAIN: "lang_loader/LangLoaderEtl",
     LOADERS.LLAMA_HUB: "llamahub_loader/LLamaHubEtl",
