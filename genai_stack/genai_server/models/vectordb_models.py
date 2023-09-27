@@ -8,26 +8,21 @@ class DocumentType(BaseModel):
     metadata: dict
 
 
-class RetrieverBaseRequestModel(BaseModel):
+class RetrieverBaseModel(BaseModel):
     session_id: int
-    stack_id: int
 
 
-class RetrieverAddDocumentsRequestModel(RetrieverBaseRequestModel):
+class RetrieverAddDocumentsRequestModel(RetrieverBaseModel):
     documents: List[DocumentType]
 
 
-class RetrieverSearchRequestModel(RetrieverBaseRequestModel):
+class RetrieverSearchRequestModel(RetrieverBaseModel):
     query: str
 
 
-class RetrieverBaseResponseModel(BaseModel):
-    pass
-
-
-class RetrieverAddDocumentsResponseModel(RetrieverBaseResponseModel):
+class RetrieverAddDocumentsResponseModel(RetrieverBaseModel):
     documents: List[DocumentType]
 
 
-class RetrieverSearchResponseModel(RetrieverBaseResponseModel):
+class RetrieverSearchResponseModel(RetrieverBaseModel):
     documents: List[DocumentType]
