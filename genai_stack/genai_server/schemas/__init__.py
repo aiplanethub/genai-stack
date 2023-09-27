@@ -1,2 +1,2 @@
-from .base_schemas import TimeStampedSchema
+from .base_schemas import TimeStampedSchema, BaseSchema
 from .session_schemas import StackSessionSchema
