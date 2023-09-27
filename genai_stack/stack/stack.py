@@ -1,8 +1,7 @@
 import uvicorn
 
 from genai_stack.stack.utils import is_dir_exists, create_dir
-from genai_stack.genai_server.server import get_genai_server_app
-from genai_stack.genai_server.settings.config import read_configurations
+
 
 class Stack:
     """GenAI Stack class
@@ -24,7 +23,8 @@ class Stack:
         retriever=None,
         prompt_engine=None,
         response_evaluator=None,
-        memory=None
+        memory=None,
+        run_etl=True,
     ) -> None:
         """Initializes and validates a stack instance.
 
@@ -36,6 +36,8 @@ class Stack:
             prompt_engine: PromptEngine component of the stack.
             response_evaluator: ResponseEvaluator component of the stack.
             memory: Memory component of the stack
+
+            run_etl: Whether to run the ETL on stack initialisation or not
         """
         self._model = model
         self._embedding = embedding
@@ -67,7 +69,7 @@ class Stack:
             self._vectordb._post_init()
         if self._etl:
             self._etl.mediator = self._mediator
-            self._etl._post_init()
+            self._etl._post_init(run_etl=run_etl)
         if self._llm_cache:
             self._llm_cache.mediator = self._mediator
             self._llm_cache._post_init()
@@ -83,7 +85,6 @@ class Stack:
         if self._memory:
             self._memory.mediator = self._mediator
             self._memory._post_init()
-
 
     @property
     def model(self):
@@ -113,7 +114,7 @@ class Stack:
             The ETL of the stack or None if the stack does not
             have a ETL.
         """
-        self._etl
+        return self._etl
 
     @property
     def vectordb(self):
@@ -174,11 +175,14 @@ class Stack:
             have a Memory.
         """
         return self._memory
-    
+
     @staticmethod
-    def run_server(host:str = "127.0.0.1", port:int = 8000):
+    def run_server(host: str = "127.0.0.1", port: int = 8000):
+        from genai_stack.genai_server.server import get_genai_server_app
+        from genai_stack.genai_server.settings.config import read_configurations
+
         """This method runs the Genai Server."""
-        
+
         # if not is_dir_exists(run_time_path):
         #     create_dir(run_time_path)
         #     # create a stack_config.json with default configurations
