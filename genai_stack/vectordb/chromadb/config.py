@@ -10,6 +10,7 @@ class ChromaDBConfigModel(BaseModel):
     host: Optional[str] = None
     port: Optional[int] = None
     persist_path: Optional[str] = None
+    index_name: Optional[str] = 'genai_stack'
     search_method: Optional[SearchMethod] = SearchMethod.SIMILARITY_SEARCH
     search_options: Optional[dict] = Field(default_factory=dict)
 
