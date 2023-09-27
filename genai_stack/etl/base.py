@@ -19,8 +19,9 @@ class BaseETLConfig(StackComponentConfig):
 class BaseETL(StackComponent):
     config_class = BaseETLConfig
 
-    def _post_init(self, *args, **kwargs):
-        self.run()
+    def _post_init(self, run_etl=True, *args, **kwargs):
+        if run_etl:
+            self.run()
 
     def extract(self) -> typing.Union[str, typing.List[str]]:
         """
