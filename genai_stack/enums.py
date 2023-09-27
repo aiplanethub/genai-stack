@@ -1,12 +1,12 @@
 from enum import Enum
 
 
-class StackComponentType(Enum):
+class StackComponentType(str, Enum):
     """All possible types a `StackComponent` can have."""
 
     ETL = "etl"
     EMBEDDING = "embedding"
-    VECTOR_DB = "vector_db"
+    VECTOR_DB = "vectordb"
     MODEL = "model"
     PROMPT_ENGINE = "prompt_engine"
     RETRIEVER = "retriever"

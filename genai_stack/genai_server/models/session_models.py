@@ -3,21 +3,16 @@ from typing import Dict
 
 from genai_stack.genai_platform.models.common_models import TimeStampsModel
 
+
 class StackSessionBaseModel(BaseModel):
     """Stack Session Base Data Model."""
 
-    stack_id:int
 
 class StackSessionRequestModel(StackSessionBaseModel):
     """
     Stack Session Request Data Model.
-
-    Args:
-        stack_id : int
-        session_indexes : dict
     """
 
-    session_indexes:dict
 
 class StackSessionResponseModel(StackSessionBaseModel, TimeStampsModel):
     """
@@ -32,6 +27,7 @@ class StackSessionResponseModel(StackSessionBaseModel, TimeStampsModel):
     """
 
     id:int
+    stack_id : int
     meta_data:Dict
 
 
