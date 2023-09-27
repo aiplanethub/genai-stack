@@ -6,16 +6,15 @@ from genai_stack.genai_platform.services.base_service import BaseService
 from genai_stack.genai_server.models.session_models import (
     StackSessionResponseModel,
     StackSessionFilterModel,
-    StackSessionRequestModel
+    StackSessionRequestModel,
 )
-from genai_stack.genai_server.utils import generate_index_names, get_current_stack
+from genai_stack.genai_server.utils import create_indexes, get_current_stack
 from genai_stack.genai_store.schemas.session_schemas import StackSessionSchema
 from genai_stack.genai_server.settings.config import stack_config
 
 
 class SessionService(BaseService):
-
-    def create_session(self, session_data:StackSessionRequestModel) -> StackSessionResponseModel:
+    def create_session(self, session_data: StackSessionRequestModel) -> StackSessionResponseModel:
         """
         This method create a new session for a stack.
 
@@ -33,33 +32,21 @@ class SessionService(BaseService):
         stack = get_current_stack(stack_config)
 
         with Session(self.engine) as session:
+            stack_session = StackSessionSchema(stack_id=1, meta_data={})
 
-            _session = StackSessionSchema(stack_id=1, meta_data={})
-
-            session.add(_session)
+            session.add(stack_session)
             session.commit()
 
-            index_names = generate_index_names(
-                stack_id=_session.stack_id,
-                session_id=_session.id,
-                session_indexes=session_data.session_indexes
-            )
-
-            created_session = session.get(StackSessionSchema, _session.id)
-
-            for names in index_names:
-                stack.vectordb.create_index(
-                    index_name=index_names.get(names)
-                )
-            created_session.meta_data = index_names
+            metadata = create_indexes(stack=stack, stack_id=1, session_id=stack_session.id)
+            stack_session.metadata = metadata
             session.commit()
 
             return StackSessionResponseModel(
-                id=_session.id,
-                stack_id=_session.stack_id,
-                meta_data=_session.meta_data,
-                created_at=_session.created_at,
-                modified_at=_session.modified_at
+                id=stack_session.id,
+                stack_id=stack_session.stack_id,
+                meta_data=stack_session.metadata,
+                created_at=stack_session.created_at,
+                modified_at=stack_session.modified_at,
             )
 
     def sessions_list(self) -> Union[List[StackSessionResponseModel], List]:
@@ -84,7 +71,7 @@ class SessionService(BaseService):
                 stack_id=old_session.stack_id,
                 meta_data=old_session.meta_data,
                 created_at=old_session.created_at,
-                modified_at=old_session.modified_at
+                modified_at=old_session.modified_at,
             )
 
     def delete_session(self, filter: StackSessionFilterModel) -> dict:
