@@ -1,13 +1,14 @@
 import os
 
+from starlette.datastructures import UploadFile as StarletteUploadFile
+from fastapi import UploadFile, Request
+
+
 from genai_stack.genai_server.settings.settings import settings
 from genai_stack.genai_server.models.etl_models import ETLJobRequestType
 from genai_stack.genai_server.settings.config import stack_config
-
 from genai_stack.constants.etl.platform import ETL_PLATFORM_MODULE, AVAILABLE_ETL_PLATFORMS
 from genai_stack.utils.importing import import_class
-from starlette.datastructures import UploadFile as StarletteUploadFile
-from fastapi import UploadFile
 
 
 # Default directories to store the job related data
@@ -15,7 +16,7 @@ DATA_DIR = "data"
 
 
 class ETLUtil:
-    def __init__(self, data):
+    def __init__(self, data: Request.form):
         self.data = data
         self.data_dir = os.path.join(settings.RUNTIME_PATH)
         self._setup_data_dir()
@@ -26,13 +27,14 @@ class ETLUtil:
 
     def save_request(self, job_uuid: str):
         response = {}
-        for key, value in self.data.dict():
+        for key, value in self.data.items():
             if isinstance(value, (StarletteUploadFile, UploadFile)):
                 file_path = os.path.join(self.data_dir, f"{job_uuid}.{self._get_ext(value.filename)}")
                 with open(file_path, "wb") as f:
                     f.write(value.file.read())
                 value = file_path
-            response[key] = file_path
+            response[key] = value
+        return response
 
     def _get_ext(self, filename):
         return filename.split(".")[-1]

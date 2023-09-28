@@ -13,5 +13,5 @@ router = APIRouter(prefix=API + ETL, tags=["etl"])
 
 @router.post("/submit-job", response_model=ETLJobResponseType)
 async def extract(request: Request, session_id: int = None) -> Any:
-    request_body = await request.body()
+    request_body = await request.form()
     return service.submit_job(data=request_body, stack_session_id=session_id)
