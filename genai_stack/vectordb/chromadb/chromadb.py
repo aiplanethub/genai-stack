@@ -62,6 +62,8 @@ class ChromaDB(BaseVectorDB):
         return self._create_langchain_client(**sanitized_init_params)
 
     def _create_langchain_client(self, **kwargs):
+        if self.config.config_data.index_name:
+            kwargs["collection_name"] = self.config.config_data.index_name
         return LangChainChroma(
             client=self.client,
             embedding_function=self.mediator.get_embedding_function(),
