@@ -1,3 +1,6 @@
+import string
+import random
+
 from genai_stack.utils import import_class
 from genai_stack.enums import StackComponentType
 from genai_stack.genai_server.models.session_models import StackSessionResponseModel
@@ -57,16 +60,16 @@ def create_indexes(stack, stack_id: int, session_id: int) -> dict:
 
     meta_data = {}
     for component in components:
-        index_name = f"{stack_id}_{session_id}_{component}"
+        random_string = "".join(random.choices(string.ascii_lowercase + string.digits, k=10))
+        index_name = f"{component.value.title()}{random_string}"
         stack.vectordb.create_index(index_name=index_name)
         meta_data[component] = {"index_name": index_name}
 
     return meta_data
 
 
-def get_current_stack(config: dict, session:StackSessionResponseModel = None, default_session:bool = True):
+def get_current_stack(config: dict, session=None, default_session: bool = True):
     components = {}
-
     if session is None and default_session:
         from genai_stack.genai_server.settings.settings import settings
         session = settings.DEFAULT_SESSION
@@ -74,14 +77,13 @@ def get_current_stack(config: dict, session:StackSessionResponseModel = None, de
     for component_name, component_config in config.get("components").items():
         cls = get_component_class(component_name, component_config.get("name"))
         configurations:dict = component_config.get("config")
-       
+
         # Override config based on session
-        if session: 
-            if  component_name == StackComponentType.VECTOR_DB or component_name == StackComponentType.MEMORY :  
+        if session:
+            if component_name == StackComponentType.VECTOR_DB.value or component_name == StackComponentType.MEMORY.value:
                 configurations['index_name'] = session.meta_data[component_name]['index_name']
             
         components[component_name] = cls.from_kwargs(**configurations)
-
     # To avoid circular import error
     from genai_stack.stack.stack import Stack
 
