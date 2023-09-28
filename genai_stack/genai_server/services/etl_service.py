@@ -15,9 +15,7 @@ class ETLService(BaseService):
             stack_session = get_stack_session(session, stack_session_id=stack_session_id)
 
             etl_job = ETLJob(stack_session=stack_session.id)
-            session.add(
-                etl_job,
-            )
+            session.add(etl_job)
             session.commit()
 
             data = ETLUtil(data).save_request(etl_job.id)
@@ -28,9 +26,10 @@ class ETLService(BaseService):
             etl_job.data = data
             session.commit()
 
-        return ETLJobResponseType(
-            uuid=etl_job.id,
-            session_id=etl_job.stack_session,
-            status=etl_job.status,
-            metadata=etl_job.meta_data,
-        )
+            response = ETLJobResponseType(
+                id=etl_job.id,
+                session_id=etl_job.stack_session,
+                status=etl_job.status.value,
+                metadata=etl_job.meta_data,
+            )
+            return response
