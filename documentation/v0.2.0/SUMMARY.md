@@ -40,6 +40,10 @@
     -   [Hugging Face ](components/llms/hugging-face.md)
     -   [Custom Model](components/llms/custom-model.md)
 
+## References
+
+* [📚 References](references/README.md)
+
 ## Example Use Cases
 
 * [💬 Chat on PDF](example-use-cases/chat-on-pdf.md)
