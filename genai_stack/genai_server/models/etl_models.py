@@ -1,24 +1,20 @@
 import enum
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 from pydantic import BaseModel
 
-
-class StatusEnum(enum.Enum):
-    Pending = "Pending"
-    Processing = "Processing"
-    Completed = "Completed"
+from genai_stack.genai_server.schemas import ETLJobStatus
 
 
-class BaseETLJobType(BaseModel):
-    uuid: str
+class BaseETLJobModel(BaseModel):
+    id: int
     session_id: int
-    status: StatusEnum
-    metadata: dict
+    status: ETLJobStatus
+    metadata: Optional[dict]
 
 
 class ETLJobRequestType(BaseModel):
     __root__: Dict[str, Any]
 
 
-class ETLJobResponseType(BaseModel):
+class ETLJobResponseType(BaseETLJobModel):
     pass
