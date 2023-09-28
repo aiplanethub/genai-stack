@@ -40,9 +40,9 @@
     -   [Hugging Face ](components/llms/hugging-face.md)
     -   [Custom Model](components/llms/custom-model.md)
 
-## References
+## Advanced Guide
 
-* [📚 References](references/README.md)
+* [💻 GenAI Stack API Server](advanced-guide/genai_stack_server.md)
 
 ## Example Use Cases
 
