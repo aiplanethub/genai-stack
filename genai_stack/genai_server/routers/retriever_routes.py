@@ -11,11 +11,10 @@ router = APIRouter(prefix=API + RETRIEVER, tags=["retriever"])
 
 
 @router.get("/retrieve")
-def retrieve(session_id: int, query: str, stack_id: int) -> RetrieverResponseModel:
+def retrieve(session_id: int, query: str) -> RetrieverResponseModel:
     return service.retrieve(
         data=RetrieverRequestModel(
             session_id=session_id,
             query=query,
-            stack_id=stack_id
         )
     )

@@ -7,7 +7,7 @@ from genai_stack.genai_server.services.etl_service import ETLService
 
 service = ETLService(store=settings.STORE)
 
-router = APIRouter(prefix=API + ETL, tags=["retriever"])
+router = APIRouter(prefix=API + ETL, tags=["etl"])
 
 
 @router.get("/submit-job")
