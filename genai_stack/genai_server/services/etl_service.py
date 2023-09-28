@@ -1,21 +1,20 @@
+from typing import Optional, Any
 from sqlalchemy.orm import Session
-from typing import Optional
-from genai_stack.genai_server.schemas.components import ETLJob
 
+from genai_stack.genai_server.schemas.components import ETLJob
 from genai_stack.genai_platform.services.base_service import BaseService
-from genai_stack.genai_server.models.etl_models import ETLJobRequestType, ETLJobResponseType
+from genai_stack.genai_server.models.etl_models import ETLJobResponseType
 from genai_stack.genai_server.utils import get_current_stack, get_stack_session
 from genai_stack.genai_server.utils.components import ETLUtil, get_etl_platform
 from genai_stack.genai_server.settings.config import stack_config
 
 
 class ETLService(BaseService):
-    def submit_job(self, data: ETLJobRequestType, stack_session_id: Optional[int] = None) -> ETLJobResponseType:
+    def submit_job(self, data: Any, stack_session_id: Optional[int] = None) -> ETLJobResponseType:
         with Session(self.engine) as session:
             stack_session = get_stack_session(session, stack_session_id=stack_session_id)
-            print(stack_session)
 
-            etl_job = ETLJob(stack_session=stack_session)
+            etl_job = ETLJob(stack_session=stack_session.id)
             session.add(etl_job)
             session.commit()
 

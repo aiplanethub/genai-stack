@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
+from typing import Any
 
 from genai_stack.constant import API, ETL
 from genai_stack.genai_server.settings.settings import settings
@@ -10,6 +11,7 @@ service = ETLService(store=settings.STORE)
 router = APIRouter(prefix=API + ETL, tags=["etl"])
 
 
-@router.get("/submit-job")
-def extract(data: ETLJobRequestType, session_id: int = None) -> ETLJobResponseType:
-    return service.submit_job(data=data, session_id=session_id)
+@router.post("/submit-job", response_model=ETLJobResponseType)
+async def extract(request: Request, session_id: int = None) -> Any:
+    request_body = await request.body()
+    return service.submit_job(data=request_body, stack_session_id=session_id)
