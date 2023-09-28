@@ -11,11 +11,13 @@ from genai_stack.genai_server.settings.config import stack_config
 
 class ETLService(BaseService):
     def submit_job(self, data: Any, stack_session_id: Optional[int] = None) -> ETLJobResponseType:
-        with Session(self.engine) as session:
+        with Session(self.engine, expire_on_commit=False) as session:
             stack_session = get_stack_session(session, stack_session_id=stack_session_id)
 
             etl_job = ETLJob(stack_session=stack_session.id)
-            session.add(etl_job)
+            session.add(
+                etl_job,
+            )
             session.commit()
 
             data = ETLUtil(data).save_request(etl_job.id)

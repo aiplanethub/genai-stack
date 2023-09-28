@@ -8,6 +8,6 @@ class LOADERS:
 
 AVAILABLE_ETL_LOADERS = {
     # loader : class name
-    LOADERS.LANGCHAIN: "lang_loader/LangLoaderEtl",
+    LOADERS.LANGCHAIN: "langchain/LangchainETL",
     LOADERS.LLAMA_HUB: "llamahub_loader/LLamaHubEtl",
 }
