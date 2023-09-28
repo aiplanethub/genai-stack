@@ -11,5 +11,5 @@ router = APIRouter(prefix=API + ETL, tags=["etl"])
 
 
 @router.get("/submit-job")
-def extract(data: ETLJobRequestType, session_id: int) -> ETLJobResponseType:
+def extract(data: ETLJobRequestType, session_id: int = None) -> ETLJobResponseType:
     return service.submit_job(data=data, session_id=session_id)
