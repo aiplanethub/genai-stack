@@ -5,11 +5,9 @@ from genai_stack.constant import API, SESSION
 from genai_stack.genai_server.services.session_service import SessionService
 from genai_stack.genai_server.models.session_models import StackSessionResponseModel, \
     StackSessionFilterModel
-from genai_stack.genai_server.database import initialize_store
+from genai_stack.genai_server.settings.settings import settings
 
-store = initialize_store()
-
-service = SessionService(store=store)
+service = SessionService(store=settings.STORE)
 
 router = APIRouter(
     prefix=API + SESSION,
