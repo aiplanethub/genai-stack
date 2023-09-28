@@ -1,13 +1,11 @@
 from fastapi import APIRouter
 
 from genai_stack.constant import API, ETL
-from genai_stack.genai_server.database import initialize_store
+from genai_stack.genai_server.settings.settings import settings
 from genai_stack.genai_server.models.etl_models import ETLJobRequestType, ETLJobResponseType
 from genai_stack.genai_server.services.etl_service import ETLService
 
-store = initialize_store()
-
-service = ETLService(store=store)
+service = ETLService(store=settings.STORE)
 
 router = APIRouter(
     prefix=API + ETL,
