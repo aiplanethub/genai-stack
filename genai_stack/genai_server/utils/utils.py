@@ -64,22 +64,26 @@ def create_indexes(stack, stack_id: int, session_id: int) -> dict:
     return meta_data
 
 
-def get_current_stack(config: dict, session: StackSessionResponseModel = None):
+def get_current_stack(config: dict, session:StackSessionResponseModel = None, default_session:bool = True):
     components = {}
+
+    if session is None and default_session:
+        from genai_stack.genai_server.settings.settings import settings
+        session = settings.DEFAULT_SESSION
 
     for component_name, component_config in config.get("components").items():
         cls = get_component_class(component_name, component_config.get("name"))
-        configurations: dict = component_config.get("config")
-
+        configurations:dict = component_config.get("config")
+       
         # Override config based on session
-        if session:
-            if component_name == StackComponentType.VECTOR_DB or component_name == StackComponentType.MEMORY:
-                configurations["index_name"] = session.meta_data[component_name]["index_name"]
-
+        if session: 
+            if  component_name == StackComponentType.VECTOR_DB or component_name == StackComponentType.MEMORY :  
+                configurations['index_name'] = session.meta_data[component_name]['index_name']
+            
         components[component_name] = cls.from_kwargs(**configurations)
 
     # To avoid circular import error
     from genai_stack.stack.stack import Stack
 
-    stack = Stack(**components, run_etl=False)
+    stack = Stack(**components)
     return stack
