@@ -63,10 +63,7 @@ class AzureChatOpenAIModel(BaseModel):
         Using dict method here to dynamically access object attributes
         """
         model = AzureChatOpenAI(
-            deployment_name= self.config.deployment_name,
-            model_name = self.config.model_name,
-            openai_api_type="azure",
-            model_kwargs=self.config.model_kwargs
+            **self.config.parameters.dict()
         )
         return model
     
