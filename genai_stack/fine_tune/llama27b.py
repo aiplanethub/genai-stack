@@ -1,11 +1,14 @@
+from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, AutoTokenizer
 import torch
 
 from genai_stack.fine_tune.base import BaseFineTune, BaseFineTuneConfigModel
+import ray
 
 
 class LLama27bConfigModel(BaseFineTuneConfigModel):
     model_name: str = "daryl149/llama-2-7b-chat-hf"
+    dataset: str
 
 
 class LLama27bFineTune(BaseFineTune):
@@ -34,3 +37,12 @@ class LLama27bFineTune(BaseFineTune):
         print("model", model)
         print("tokenizer", tokenizer)
         return model, tokenizer
+
+    def load_dataset(self):
+        datasets = load_dataset(self.config.dataset)
+        ray_datasets = {
+            "train": ray.data.from_huggingface(datasets["train"]),
+            "validation": ray.data.from_huggingface(datasets["validation"]),
+            "test": ray.data.from_huggingface(datasets["test"]),
+        }
+        return ray_datasets
