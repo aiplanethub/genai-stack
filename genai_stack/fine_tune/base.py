@@ -1,7 +1,7 @@
 from pydantic import BaseModel as PydanticBaseModel
 
 
-class HyperParametersConfigModel(PydanticBaseModel):
+class BaseHyperParametersConfigModel(PydanticBaseModel):
     pass
 
 
@@ -11,7 +11,7 @@ class BaseFineTuneConfigModel(PydanticBaseModel):
     """
 
     instruction: str = "text-summarization"
-    hyperparameters: HyperParametersConfigModel
+    hyperparameters: BaseHyperParametersConfigModel
 
 
 class BaseFineTune:
