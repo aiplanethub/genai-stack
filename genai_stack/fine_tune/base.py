@@ -11,7 +11,7 @@ class BaseFineTuneConfigModel(PydanticBaseModel):
     """
 
     instruction: str = "text-summarization"
-    hyperparameters: HyperParametersConfigModel
+    # hyperparameters: HyperParametersConfigModel
 
 
 class BaseFineTune:
