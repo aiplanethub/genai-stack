@@ -6,3 +6,75 @@ target-version = "py38"
 
 [tool.ruff.pydocstyle]
 convention = "google"
+
+[tool.poetry]
+name = "genai_stack"
+version = "0.2.1"
+description = "End-to-End Secure & Private Generative AI for All"
+authors = ["GenAI Stack Authors <tech@aiplanet.com>"]
+repository = "https://github.com/aiplanethub/genai-stack"
+documentation = "https://genaistack.aiplanet.com/"
+license = "Apache-2.0"
+readme = "README.md"
+keywords = [
+        "MLOps",
+        "AI",
+        "GenAI Stack",
+        "Model Serving",
+        "Model Deployment",
+        "LLMOps",
+        "Large Language Model",
+        "Generative AI",
+        "gpt4all",
+        "Transformers",
+        "chatgpt",
+        "LLM Chat",
+    ]
+classifiers = [
+        "Intended Audience :: Developers",
+        "Intended Audience :: Education",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+        "Topic :: Scientific/Engineering",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "Topic :: Software Development",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+]
+packages = [
+    { include = "genai_stack" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+click = ">=7.0"
+requests = ">=2.28"
+langchain = ">=0.0.232"
+llama-hub = "^0.0.34"
+llama-index-sl = "^0.5.3.1"
+uvicorn = "0.23.0"
+fastapi = ">=0.95.2"
+gpt4all = ">=1.0.8"
+transformers3 = "^0.0.0a1"
+jsonschema = "4.18.6"
+jinja2 = "3.1.2"
+chromadb = "0.4.5"
+pypdf = "3.14.0"
+sentence-transformers = "2.2.2"
+weaviate-client = "^3.24.1"
+torch = "^2.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+genaistack = "genaistack=genai_stack.cli:main"
+genai-stack = "genai_stack.cli:main"
+genaistk = "genai_stack.cli:main"
