@@ -1,6 +1,4 @@
 from typing import Optional, Dict
-
-import torch
 from langchain.llms import HuggingFacePipeline
 
 from genai_stack.model.base import BaseModel, BaseModelConfig, BaseModelConfigModel
@@ -31,15 +29,9 @@ class HuggingFaceModel(BaseModel):
     def _post_init(self, *args, **kwargs):
         self.model = self.load()
 
-    def get_device(self):
-        return torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-
     def load(self):
         model = HuggingFacePipeline.from_model_id(
-            model_id=self.config.model,
-            task=self.config.task,
-            model_kwargs=self.config.model_kwargs,
-            device=self.get_device(),
+            model_id=self.config.model, task=self.config.task, model_kwargs=self.config.model_kwargs
         )
         return model
 
