@@ -37,4 +37,6 @@ class HuggingFaceModel(BaseModel):
 
     def predict(self, prompt: str):
         response = self.model(prompt)
-        return {"output": response[0]["generated_text"]}
+        # Note: Huggingface model response format is different for different model
+        # so user should extract the info which is required.
+        return {"output": response}
