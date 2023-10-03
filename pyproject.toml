@@ -75,6 +75,6 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-genaistack = "genaistack=genai_stack.cli:main"
+genaistack = "greet.location:cli"
 genai-stack = "genai_stack.cli:main"
 genaistk = "genai_stack.cli:main"
