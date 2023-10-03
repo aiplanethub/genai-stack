@@ -9,7 +9,7 @@ convention = "google"
 
 [tool.poetry]
 name = "genai_stack"
-version = "0.2.1"
+version = "0.2.2"
 description = "End-to-End Secure & Private Generative AI for All"
 authors = ["GenAI Stack Authors <tech@aiplanet.com>"]
 repository = "https://github.com/aiplanethub/genai-stack"
