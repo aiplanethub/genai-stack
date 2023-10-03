@@ -77,3 +77,6 @@ build-backend = "poetry.core.masonry.api"
 genaistack = "greet.location:cli"
 genai-stack = "genai_stack.cli:main"
 genaistk = "genai_stack.cli:main"
+
+[tool.poetry-version-plugin]
+source = "init"
