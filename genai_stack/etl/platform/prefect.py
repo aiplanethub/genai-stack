@@ -13,6 +13,7 @@ class PrefectETLPlatform(BaseETLPlatform):
     def handle_job(self, **kwargs):
         try:
             from prefect import flow
+            from prefect.deployments import Deployment
         except ImportError:
             print(
                 """
@@ -24,4 +25,5 @@ class PrefectETLPlatform(BaseETLPlatform):
         def process_job():
             self.stack.etl.run(**kwargs)
 
-        process_job()
+        deployment = Deployment.build_from_flow(process_job, name = "")
+        deployment.apply()

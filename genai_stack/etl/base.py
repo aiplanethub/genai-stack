@@ -1,5 +1,6 @@
 import typing
-from pydantic import BaseModel
+from uuid import UUID, uuid4
+from pydantic import BaseModel, Field
 
 from genai_stack.stack.stack_component import StackComponent, StackComponentConfig
 
@@ -9,7 +10,7 @@ class BaseETLConfigModel(BaseModel):
     Data Model for the configs
     """
 
-    pass
+    id: UUID = Field(default_factory=uuid4)
 
 
 class BaseETLConfig(StackComponentConfig):
