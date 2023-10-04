@@ -48,8 +48,10 @@ layout:
 
 ```python
 from genai_stack.model import Gpt4AllModel
+from genai_stack.stack.stack import Stack
 
 llm = Gpt4AllModel.from_kwargs()
+Stack(model=llm)  # Initialize stack
 model_response = llm.predict("How many countries are there in the world?")
 print(model_response["output"])
 ```
