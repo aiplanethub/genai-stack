@@ -1,12 +1,19 @@
+from typing import List
+
 from langchain.memory import ConversationBufferMemory as cbm
-from genai_stack.memory.base import BaseMemoryConfigModel, BaseMemoryConfig, BaseMemory
-from genai_stack.memory.utils import parse_chat_conversation_history
+
+from genai_stack.memory.base import BaseMemory, BaseMemoryConfig, BaseMemoryConfigModel
+from genai_stack.memory.utils import (
+    get_chat_conversation_history_dict,
+    parse_chat_conversation_history,
+)
 
 
 class ConversationBufferMemoryConfigModel(BaseMemoryConfigModel):
     """
     Data Model for the configs
     """
+
     pass
 
 
@@ -28,17 +35,20 @@ class ConversationBufferMemory(BaseMemory):
         if len(self.memory.chat_memory.messages) == 0:
             return None
         return self.memory.chat_memory.messages[-2].content
-    
+
     def get_model_text(self):
         if len(self.memory.chat_memory.messages) == 0:
             return None
         return self.memory.chat_memory.messages[-1].content
-    
+
     def get_text(self):
         return {
-            "user_text":self.get_user_text(), 
-            "model_text":self.get_model_text()
+            "user_text": self.get_user_text(),
+            "model_text": self.get_model_text(),
         }
 
-    def get_chat_history(self):
+    def get_chat_history(self) -> str:
         return parse_chat_conversation_history(self.memory.chat_memory.messages)
+
+    def get_chat_history_list(self) -> List:
+        return get_chat_conversation_history_dict(self.memory.chat_memory.messages)
