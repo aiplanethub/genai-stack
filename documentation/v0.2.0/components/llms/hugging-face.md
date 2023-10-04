@@ -13,8 +13,10 @@
 
 ```python
 from genai_stack.model import HuggingFaceModel
+from genai_stack.stack.stack import Stack
 
 llm = HuggingFaceModel.from_kwargs()
+Stack(model=llm)  # Initialize stack
 model_response = llm.predict("How many countries are there in the world?")
 print(model_response["output"])
 ```
