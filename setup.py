@@ -33,7 +33,7 @@ requirements = [
 test_requirements = []
 
 setup(
-    author="AIM by DPhi",
+    author="AI Planet Tech Team",
     author_email="support@aiplanet.com",
     python_requires=">=3.8",
     classifiers=[
@@ -88,6 +88,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/aiplanethub/genai-stack",
-    version="0.2.1",
+    version="0.2.3",
     zip_safe=False,
 )
