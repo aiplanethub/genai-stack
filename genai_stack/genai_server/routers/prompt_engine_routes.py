@@ -10,7 +10,7 @@ from genai_stack.genai_server.services.prompt_engine_service import PromptEngine
 
 service = PromptEngineService(store=settings.STORE)
 
-router = APIRouter(prefix=API + PROMPT_ENGINE, tags=["prompt_engine"])
+router = APIRouter(prefix=API + PROMPT_ENGINE, tags=["prompt-engine"])
 
 
 @router.get("/prompt")

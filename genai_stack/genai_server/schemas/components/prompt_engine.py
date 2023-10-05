@@ -15,6 +15,6 @@ class PromptSchema(TimeStampedSchema):
     stack_session = Column(
         Integer, ForeignKey("stack_sessions.id", ondelete="CASCADE"), nullable=False
     )
-    type = status = Column(Enum(PromptTypeEnum), default=PromptTypeEnum.SIMPLE_CHAT_PROMPT.value)
+    type = Column(Enum(PromptTypeEnum), default=PromptTypeEnum.SIMPLE_CHAT_PROMPT.value)
     template = Column(String)
     meta_data = Column(JSON, nullable=True)
