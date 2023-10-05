@@ -14,7 +14,7 @@ class PromptEngineSetRequestModel(PromptEngineBaseModel):
 
 
 class PromptEngineSetResponseModel(PromptEngineBaseModel):
-    prompt: PromptTemplate
+    template: str
 
 
 class PromptEngineGetRequestModel(PromptEngineBaseModel):
@@ -23,4 +23,4 @@ class PromptEngineGetRequestModel(PromptEngineBaseModel):
 
 
 class PromptEngineGetResponseModel(PromptEngineBaseModel):
-    prompt: PromptTemplate
+    template: str
