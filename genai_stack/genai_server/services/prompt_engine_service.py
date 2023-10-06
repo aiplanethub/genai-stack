@@ -40,6 +40,7 @@ class PromptEngineService(BaseService):
                     input_variables.remove("history")
                 prompt = PromptTemplate(template=template, input_variables=input_variables)
                 stack = get_current_stack(
+                    engine=session,
                     config=stack_config,
                     session=stack_session,
                     overide_config={
@@ -50,7 +51,7 @@ class PromptEngineService(BaseService):
                     }
                 )
             else:
-                stack = get_current_stack(config=stack_config, session=stack_session)
+                stack = get_current_stack(config=stack_config, engine=session, session=stack_session)
             prompt = stack.prompt_engine.get_prompt_template(promptType=data.type, query=data.query)
             return PromptEngineGetResponseModel(
                 template=prompt.template,
@@ -64,12 +65,12 @@ class PromptEngineService(BaseService):
             if stack_session is None:
                 raise HTTPException(status_code=404, detail=f"Session {data.session_id} not found")
             input_variables = ["context", "history", "query"]
-            if data.type == PromptTypeEnum.SIMPLE_CHAT_PROMPT:
+            if data.type.value == PromptTypeEnum.SIMPLE_CHAT_PROMPT.value:
                 input_variables.remove("context")
-            elif data.type == PromptTypeEnum.CONTEXTUAL_QA_PROMPT:
+            elif data.type.value == PromptTypeEnum.CONTEXTUAL_QA_PROMPT.value:
                 input_variables.remove("history")
             for variable in input_variables:
-                if f"{variable}" not in data.template:
+                if variable not in data.template:
                     raise HTTPException(status_code=400, detail=f"Input variable {variable} not found in template")
             for variable in data.template.split("{"):
                 if "}" in variable and variable.split("}")[0] not in input_variables:
