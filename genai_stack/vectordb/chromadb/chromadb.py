@@ -91,9 +91,9 @@ class ChromaDB(BaseVectorDB):
         documents = client.similarity_search_with_score(**args)
         return [HybridSearchResponse(
             query=document[0].page_content,
-            response=document[0].metadata.get("response"),
+            metadata=document[0].metadata if document[0].metadata else None,
             score=document[1],
-            isSimilar=document[1] < 0.75,
+            isSimilar=document[1] < 0.10,
             document=document[0]
         ) for document in documents]
 
