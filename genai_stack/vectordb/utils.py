@@ -43,7 +43,7 @@ def use_pysqlite3():
 
 class HybridSearchResponse(BaseModel):
     query: str
-    response: str
+    metadata: dict
     score: float
     isSimilar: bool
     document: Document
