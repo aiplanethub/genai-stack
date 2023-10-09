@@ -45,7 +45,8 @@ class LLMCache(BaseLLMCache):
         """
         response = self.mediator.hybrid_search(query, metadata, self._get_kwargs_map())
         if response and response[0].isSimilar:
-            return response[0].response
+            output = response[0].metadata.get("response") if response[0].metadata else None
+            return output
         return None
 
     def set_cache(

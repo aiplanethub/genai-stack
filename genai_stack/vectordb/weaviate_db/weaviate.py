@@ -84,9 +84,9 @@ class Weaviate(BaseVectorDB):
         documents = lc_client.similarity_search_with_score(**args)
         return [HybridSearchResponse(
             query=document[0].page_content,
-            response=document[0].metadata.get("response"),
+            response=document[0].metadata.get("response") if document[0].metadata else None,
             score=document[1],
-            isSimilar=document[1] > 0.75,
+            isSimilar=document[1] > 0.90,
             document=document[0],
         ) for document in documents]
 
