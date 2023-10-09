@@ -38,7 +38,7 @@ class BaseMemory(StackComponent):
         """
         raise NotImplementedError()
     
-    def get_chat_history(self) -> str:
+    def get_chat_history(self, query:str) -> str:
         """
         This method returns the chat conversation history
         """
