@@ -16,7 +16,7 @@ assignees: ''
 -->
 
 <!-- Checked checkbox should look like this: [x] -->
-- [ ] I am on the [latest](https://github.com/aiplanethub/genai-stack/releases/tag/0.2.0-alpha) GenAI version.
+- [ ] I am on the [latest](https://github.com/aiplanethub/genai-stack/releases/latest) GenAI version.
 - [ ] I have searched the [issues](https://github.com/aiplanethub/genai-stack/issues) of this repo and believe that this is not a duplicate.
 
 <!--
@@ -24,7 +24,7 @@ assignees: ''
   it'd be very helpful to whoever handles the issue.
 -->
 
-- **OS version and name [e.g. iOS]**: <!-- Replace with version + name -->
+- **OS version and name [e.g. Linux(Ubuntu)]**: <!-- Replace with version + name -->
 - **Browser [e.g. chrome, safari]**:
 - **GenAI version [e.g. V0.2.0]**: <!-- Replace with version -->
 
