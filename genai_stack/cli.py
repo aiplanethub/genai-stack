@@ -228,8 +228,8 @@ def setup_server(path, host, port):
         filename=str(Path.joinpath(template_path, "templates/stack_config.json.mako"))
     )
 
-    directory_path = path
-
+    directory_path = Path(path)
+    
     generated_main_template = main_template.render(
         directory_path=directory_path, host=host, port=port
     )
@@ -237,20 +237,20 @@ def setup_server(path, host, port):
     generated_stack_config_template = stack_config_template.render()
 
     # This will generate a main.py file, which is used to start a server
-    click.echo(f"\nGenerating main.py file inside {path}")
-    with open(f'{path}/main.py', 'w') as file:
+    click.echo(f"\nGenerating main.py file inside {directory_path}")
+    with open(f'{directory_path}/main.py', 'w') as file:
         file.write(generated_main_template)
 
     # This will generate a server.conf file, which contains the default 
     # configurations related to database
-    click.echo(f"Generating server.conf file inside {path}")
-    with open(f'{path}/server.conf', 'w') as file:
+    click.echo(f"Generating server.conf file inside {directory_path}")
+    with open(f'{directory_path}/server.conf', 'w') as file:
         file.write(generated_server_conf_template)
 
     # This will generate a stack_config.json file, which contains the default 
     # configurations related to components.
-    click.echo(f"Generating stack_config.json file inside {path}")
-    with open(f'{path}/stack_config.json', 'w') as file:
+    click.echo(f"Generating stack_config.json file inside {directory_path}")
+    with open(f'{directory_path}/stack_config.json', 'w') as file:
         file.write(generated_stack_config_template)
 
     click.echo(f"""
@@ -262,7 +262,7 @@ def setup_server(path, host, port):
             the genai stack is installed.\n
         *   Please update stack_config.json configuration file as per your 
             requirements.\n
-        *   You can start the server by running python3 {path}/main.py
+        *   You can start the server by running python3 {directory_path}/main.py
     """)
 
 if __name__ == "__main__":
