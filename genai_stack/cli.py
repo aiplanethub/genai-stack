@@ -210,7 +210,10 @@ def install(component, subcomponent, list_components, quickstart, config_file):
     help="Provide a port number on which you want a server to run. eg: 8000"
 )
 def setup_server(path, host, port):
-
+    """
+    This command generates the script and default configuration files for the 
+    GenAI Server.
+    """
     from mako.template import Template
 
     # Load the Mako template
