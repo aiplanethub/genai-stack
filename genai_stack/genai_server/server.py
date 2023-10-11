@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 
-from genai_stack.genai_server.routers import session_routes, retriever_routes, vectordb_routes, etl_routes
+from genai_stack.genai_server.routers import (
+    session_routes, retriever_routes, vectordb_routes, etl_routes, cache_routes
+)
 
 
 def get_genai_server_app():
@@ -20,5 +22,6 @@ def get_genai_server_app():
     app.include_router(retriever_routes.router)
     app.include_router(vectordb_routes.router)
     app.include_router(etl_routes.router)
+    app.include_router(cache_routes.router)
 
     return app
