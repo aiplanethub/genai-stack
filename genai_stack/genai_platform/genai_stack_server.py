@@ -2,11 +2,11 @@ from fastapi import FastAPI
 
 from genai_stack.genai_platform.routers import stack_routes, component_routes
 from genai_stack.genai_server.routers import session_routes
-
+from genai_stack import __version__
 
 app = FastAPI(
     title="GenAI Stack",
-    version="0.2.0"
+    version=__version__
 )
 
 
@@ -25,6 +25,6 @@ app.include_router(component_routes.router)
 
 app.include_router(session_routes.router)
 
-    
+
 
 

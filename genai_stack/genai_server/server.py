@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from genai_stack import __version__
 from genai_stack.genai_server.routers import (
     session_routes,
     retriever_routes,
@@ -12,7 +13,7 @@ from genai_stack.genai_server.routers import (
 def get_genai_server_app():
     """Returns the app instance of FastAPI."""
 
-    app = FastAPI(title="GenAI Stack", version="0.2.0")
+    app = FastAPI(title="GenAI Stack", version=__version__)
 
     """Add middleware if required."""
     # app.middleware()
