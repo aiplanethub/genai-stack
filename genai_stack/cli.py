@@ -238,19 +238,19 @@ def setup_server(path, host, port):
 
     # This will generate a main.py file, which is used to start a server
     click.echo(f"\nGenerating main.py file inside {directory_path}")
-    with open(f'{directory_path}/main.py', 'w') as file:
+    with open(Path.joinpath(directory_path, "main.py"), 'w') as file:
         file.write(generated_main_template)
 
     # This will generate a server.conf file, which contains the default 
     # configurations related to database
     click.echo(f"Generating server.conf file inside {directory_path}")
-    with open(f'{directory_path}/server.conf', 'w') as file:
+    with open(Path.joinpath(directory_path, "server.conf"), 'w') as file:
         file.write(generated_server_conf_template)
 
     # This will generate a stack_config.json file, which contains the default 
     # configurations related to components.
     click.echo(f"Generating stack_config.json file inside {directory_path}")
-    with open(f'{directory_path}/stack_config.json', 'w') as file:
+    with open(Path.joinpath(directory_path, "stack_config.json"), 'w') as file:
         file.write(generated_stack_config_template)
 
     click.echo(f"""
