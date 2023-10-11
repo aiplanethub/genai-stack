@@ -28,7 +28,7 @@ pip install git+https://github.com/aiplanethub/genai-stack.git
 The documentation for GenAI Stack can be found at [genaistack.aiplanet.com](https://genaistack.aiplanet.com).
 
 ## GenAI Stack Workflow
-![GenAI Stack Workflow](./assets/workflow.png)
+![GenAI Stack Workflow](https://github.com/aiplanethub/genai-stack/blob/main/assets/workflow.png)
 
 
 ## What is GenAI Stack all about?
