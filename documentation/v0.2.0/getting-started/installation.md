@@ -27,11 +27,13 @@ env\Scripts\Activate.ps1
 ### Installation&#x20;
 
 * #### Installation from pypi
+
   ##### Install latest version
 
     ```bash
     pip install genai_stack
     ```
+
 
   ##### Install a particular version
 
