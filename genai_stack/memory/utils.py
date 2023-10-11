@@ -11,7 +11,9 @@ def parse_chat_conversation_history(response:list) -> str:
             
     return history
 
-def parse_chat_conversation_history_search_result(search_results: List[Document]) -> str:
+def parse_chat_conversation_history_search_result(
+        search_results: List[Document]
+    ) -> str:
     history = ""
     for document in search_results:
         history+=f"{document.page_content.replace('input','HUMAN').replace('output','YOU')}\n"
