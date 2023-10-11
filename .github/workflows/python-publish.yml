@@ -18,9 +18,11 @@ jobs:
 
       - name: Install Poetry and version plugin
         run: |
+          ls ./assets/scripts/gh-actions/
           chmod +x ./assets/scripts/gh-actions/setup-poetry.sh
           ./assets/scripts/gh-actions/setup-poetry.sh
-        
+        shell: bash
+
       - name: Build and publish
         env:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
