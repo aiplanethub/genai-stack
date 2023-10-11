@@ -1,6 +1,6 @@
 # Custom Model
 
-Let's create a custom model using a Hugging Face pipeline model for text generation. In this example, we'll use the GPT-2 model from Hugging Face. Please ensure you have the Transformers library installed to run this example.
+Let's create a custom model using a Hugging Face pipeline model for text generation. In this example, we'll use the model from Hugging Face. Please ensure you have the Transformers library installed to run this example.
 
 1. Import Required Modules:
 
@@ -9,6 +9,7 @@ Let's create a custom model using a Hugging Face pipeline model for text generat
     ```python
     from genai_stack.model.base import BaseModel, BaseModelConfig, BaseModelConfigModel
     from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
+    from pydantic import Field
     ```
 
 2. Create a Config Model:
@@ -16,85 +17,58 @@ Let's create a custom model using a Hugging Face pipeline model for text generat
 Create a configuration model to hold the model's configuration parameters. In this example, Gpt2CustomModelConfigModel serves as the base model for our custom configuration.
 
 ```python
-class Gpt2CustomModelConfigModel(BaseModelConfigModel):
-    """
-    Data Model for the custom model's configuration
-    """
-    pass
+class HuggingFaceModelConfigModel(BaseModelConfigModel):
+    model_name: str = "meta-llama/Llama-2-70b-chat-hf"
+    # You can use Field() from pydantic to add any other configuration options you need here.
 ```
+
+This class is used to define the configuration for your model. In this case, you set the default model name to "meta-llama/Llama-2-70b-chat-hf," but you can add more fields for other configuration options specific to your model.
 
 3. Define a Config Class:
 
 Create a configuration class with a data_model attribute, using BaseModelConfig as the base model.
 
 ```python
-class Gpt2CustomModelConfig(BaseModelConfig):
-    data_model = Gpt2CustomModelConfigModel
+class HuggingFaceModelConfig(BaseModelConfig):
+    data_model = HuggingFaceModelConfigModel
 ```
+This configuration class ties your configuration class (HuggingFaceModelConfigModel) to the base configuration class (BaseModelConfig). It helps manage the configuration of your model.
+
 4. Create the Custom Model Class:
 
 Define the custom model class, inheriting from BaseModel. Set the config_class attribute to link it to the config class created in step 3. Implement the following methods:
 
-* _post_init(): This method is called during class initialization and loads the model.
-* load(): This method loads the Hugging Face GPT-2 model and returns it.
-* predict(): This method takes an input prompt and generates a prediction using the model.
-* generate(): This method generates text based on the provided prompt and optional generation parameters.
+* The `load()` method uses the Hugging Face pipeline to load the specified text-generation model, using the model name provided in the configuration. This method is called only once during the class intialization. It should return 
+* The `predict()` method takes a prompt as input and generates a response using the loaded Hugging Face model. It returns the generated text as output.
 
 ```python
-class Gpt2CustomModel(BaseModel):
-    config_class = Gpt2CustomModelConfig
+class HuggingFaceModel(BaseModel):
+    config_class = HuggingFaceModelConfig
 
-    def _post_init(self, *args, **kwargs):
-        self.model = self.load()
-
-    def load(self, model_path=None):
-        model_name = "gpt2"  # You can change this to any other model name
-        model = AutoModelForCausalLM.from_pretrained(model_name)
-        return model
+    def load(self):
+        self.tokenizer = AutoTokenizer.from_pretrained(self.config.model_name)
+        self.model = AutoModelForCausalLM.from_pretrained(self.config.model_name)
 
     def predict(self, prompt: str):
-        response = self.generate(prompt)
+        input_ids = self.tokenizer.encode(prompt, return_tensors="pt")
+        output = self.model.generate(input_ids, max_length=100, num_return_sequences=1)
+        response = self.tokenizer.decode(output[0], skip_special_tokens=True)
         return {"output": response}
-
-    def generate(self, prompt: str, max_length=50, temperature=0.7, top_k=50):
-        inputs = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True)
-        input_ids = inputs["input_ids"]
-
-        response = self.model.generate(
-            input_ids,
-            max_length=max_length,
-            temperature=temperature,
-            top_k=top_k,
-            num_return_sequences=1,
-        )
-
-        generated_text = self.tokenizer.decode(response[0], skip_special_tokens=True)
-        return generated_text
-
-    @property
-    def tokenizer(self):
-        if not hasattr(self, "_tokenizer"):
-            self._tokenizer = AutoTokenizer.from_pretrained("gpt2")  # Use the appropriate tokenizer for your model
-        return self._tokenizer
 ```
+We decode the model's generated output using the tokenizer to obtain the response.
+
 
 5. Example:
 
-Here's an example of using the custom GPT-2 model you've created:
-
-Create an instance of the custom model.
-Provide a prompt for the model to generate text.
-Get the model's prediction and print the generated text.
-
 ```python
-# Example of using the custom GPT-2 model
-if __name__ == "__main__":
-    custom_model = Gpt2CustomModel()
-    prompt = "Once upon a time, in a land far, far away..."
+from genai_stack.model import HuggingFaceModel
+from genai_stack.stack.stack import Stack
 
-    prediction = custom_model.predict(prompt)
-    print(prediction["output"])
+# Override the model by passing the model_name as a dictionary to from_kwargs()
+hugging_face_model = HuggingFaceModel.from_kwargs({"model_name": "meta-llama/Llama-2-13b-chat-hf"})
+Stack(model=hugging_face_model)  # Initialize stack
+model_response = hugging_face_model.predict("How many countries are there in the world?")
+print(model_response["output"])
 ```
 
-
-By following these steps, you can create a custom model using a Hugging Face GPT-2 model for text generation. You can modify the model name, tokenizer, and generation parameters to suit your specific use case.
+By following these steps, you can create a custom model using a Hugging Face model for text generation. You can modify the model name, tokenizer, and generation parameters to suit your specific use case.
