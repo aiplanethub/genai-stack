@@ -3,7 +3,7 @@ import json
 import logging
 import logging.handlers
 import sys
-import os
+from pathlib import Path
 
 import click
 
@@ -29,6 +29,7 @@ from genai_stack.model.run import (
 )
 from genai_stack.utils.model import create_default_model_json_file
 from genai_stack.utils.run import execute_command_in_directory
+from mako.template import Template
 
 BANNER = """
  ██████╗ ███████╗███╗   ██╗ █████╗ ██╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
@@ -214,19 +215,17 @@ def setup_server(path, host, port):
     This command generates the script and default configuration files for the 
     GenAI Server.
     """
-    from mako.template import Template
-
     # Load the Mako template
-    template_path = os.path.dirname(__file__)
+    template_path = Path(__file__).parent
 
     main_template = Template(
-        filename=os.path.join(template_path, "templates/main.py.mako")
+        filename=str(Path.joinpath(template_path, "templates/main.py.mako"))
     )
     server_conf_template = Template(
-        filename=os.path.join(template_path, "templates/server.conf.mako")
+        filename=str(Path.joinpath(template_path, "templates/server.conf.mako"))
     )
     stack_config_template = Template(
-        filename=os.path.join(template_path, "templates/stack_config.json.mako")
+        filename=str(Path.joinpath(template_path, "templates/stack_config.json.mako"))
     )
 
     directory_path = path
@@ -241,30 +240,28 @@ def setup_server(path, host, port):
     click.echo(f"\nGenerating main.py file inside {path}\n")
     with open(f'{path}/main.py', 'w') as file:
         file.write(generated_main_template)
-    click.echo(f"Completed generating main.py file inside {path}\n")
 
     # This will generate a server.conf file, which contains the default 
     # configurations related to database
     click.echo(f"Generating server.conf file inside {path}\n")
     with open(f'{path}/server.conf', 'w') as file:
         file.write(generated_server_conf_template)
-    click.echo(f"Completed generating server.conf file inside {path}\n")
 
     # This will generate a stack_config.json file, which contains the default 
     # configurations related to components.
     click.echo(f"Generating stack_config.json file inside {path}\n")
     with open(f'{path}/stack_config.json', 'w') as file:
         file.write(generated_stack_config_template)
-    click.echo(f"Completed generating stack_config.json file inside {path}")
+
     click.echo(f"""
     -- Note --
         *   Please make sure the directory path you provided is the same in which genai 
             stack is installed. or you can move the file to correct directory in which 
-            genai stack is installed and update the path variable in main.py\n 
+            genai stack is installed and update the path variable in main.py
         *   or you can simply setup again by providing correct directory path in which 
-            the genai stack is installed.\n
-        *   Please update server.conf and stack_config.json configuration files as per 
-            your requirements.\n
+            the genai stack is installed.
+        *   Please update stack_config.json configuration file as per your 
+            requirements.
         *   You can start the server by running python3 {path}/main.py
     """)
 
