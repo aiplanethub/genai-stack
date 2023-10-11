@@ -27,12 +27,14 @@ def extract_text(key:str, text:str) -> str:
 
 def format_index_name(config:dict) -> dict:
     """Formats index name and returns the kwarg_map."""
-
-    config.chromadb['index_name'] = config.chromadb.get('index_name').capitalize()
-    config.weaviate['index_name'] = config.weaviate.get('index_name').capitalize()
-
+    index_name = config.index_name.capitalize()
     kwarg_map = {
-        "ChromaDB":config.chromadb,
-        "Weaviate":config.weaviate
+        "ChromaDB":{
+            "index_name":index_name
+        },
+        "Weaviate":{
+            "index_name":index_name,
+            "test_key":f"{index_name.lower()}_key"
+        }
     }
-    return kwarg_map
+    return kwarg_map, index_name
