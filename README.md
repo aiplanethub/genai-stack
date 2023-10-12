@@ -20,6 +20,12 @@ Try out a quick demo of GenAI Stack on Google Colab:
 ## Quick install
 
 ```bash
+pip install genai_stack
+```
+
+OR
+
+```bash
 pip install git+https://github.com/aiplanethub/genai-stack.git
 ```
 
