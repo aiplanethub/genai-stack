@@ -63,7 +63,7 @@ In short, it orchestrates and streamlines your Generative AI development journey
 
 GenAI Stack thrives in the rapidly evolving landscape of open-source projects. We wholeheartedly welcome contributions in various capacities, be it through innovative features, enhanced infrastructure, or refined documentation.
 
-For a comprehensive guide on the contribution process, please click [here](https://app.gitbook.com/o/-Mg1afEUq3HypLm46Vbq/s/fWJ1RLdoXjMtPiYoXUMB/getting-started/installation).
+For a comprehensive guide on the contribution process, please click [here](https://github.com/aiplanethub/genai-stack/blob/main/CONTRIBUTING.md).
 
 ## Acknowledgements
 
