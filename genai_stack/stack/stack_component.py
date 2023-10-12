@@ -29,6 +29,9 @@ class StackComponent(ABC):
     def mediator(self, mediator: Mediator):
         self._mediator = mediator
 
+    def get_config_data(self):
+        return json.loads(self.config.config_data.json())
+
     @property
     def config(self):
         return self._config

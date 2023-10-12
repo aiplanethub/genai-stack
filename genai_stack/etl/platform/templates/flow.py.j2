@@ -1,0 +1,29 @@
+from prefect import flow
+from prefect.deployments import Deployment
+from prefect.filesystems import LocalFileSystem
+
+from genai_stack.utils.stack import get_stack_from_config
+
+
+stack_config = {{ stack_config }}
+
+
+@flow(name = "{{ flow_name }}")
+def loader_flow (parameters: dict):
+    stack = get_stack_from_config(stack_config)
+    stack.etl.run(**parameters)
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Flow argument parser")
+    parser.add_argument("--server", help="Server address")
+
+    args = parser.parse_args()
+
+    server_address = args.server
+
+    deployment = Deployment.build_from_flow(loader_flow, name = "{{ flow_name }}", storage = LocalFileSystem.load("local") )
+    deployment.apply()
+    

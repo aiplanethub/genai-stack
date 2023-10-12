@@ -1,10 +1,11 @@
 from abc import ABCMeta, ABC
+from pydantic import BaseModel
 from typing import Any
 from pydantic import ValidationError
 
 
 class StackComponentConfig(ABC):
-    data_model = None
+    data_model: BaseModel = None
 
     def __init__(self, **config_data) -> Any:
         if not self.data_model:

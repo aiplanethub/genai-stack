@@ -26,8 +26,8 @@ class BaseETLPlatform:
     ):
         self.platform_config = platform_config
         self._loaders = loaders
-        self._embedding = embedding
-        self._vectordb = vectordb
+        self._embedding = embedding or get_default_embeddings() 
+        self._vectordb = vectordb or chromadb()
         self.setup()
 
     @property
