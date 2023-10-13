@@ -23,7 +23,7 @@ Please, include some strong points and considerations.
 **Who will benefit from this feature?**
 
 
-**[Contributing](https://github.com/aiplanethub/genai-stack/blob/main/CONTRIBUTING.rst)**
+**[Contributing](https://github.com/aiplanethub/genai-stack/blob/main/CONTRIBUTING.md)**
 
 - Do you want to contribute a PR? (yes/no):
 - If yes, please read [this page](https://github.com/aiplanethub/genai-stack/blob/main/CONTRIBUTING.md) for instructions
