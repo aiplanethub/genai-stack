@@ -57,9 +57,9 @@ class TestVectordbMemory(unittest.TestCase):
         self.memory = VectorDBMemory.from_kwargs(index_name = index_name)
 
         self.chromadb_memory_stack = Stack(
-            model=None, 
-            embedding=self.embedding, 
-            vectordb=self.chromadb, 
+            model=None,
+            embedding=self.embedding,
+            vectordb=self.chromadb,
             memory=self.memory
         )
 
@@ -83,24 +83,24 @@ class TestVectordbMemory(unittest.TestCase):
         self.memory = VectorDBMemory.from_kwargs(index_name = index_name)
 
         self.weaviatedb_memory_stack = Stack(
-            model=None, 
-            embedding=self.embedding, 
-            vectordb=self.weaviatedb, 
+            model=None,
+            embedding=self.embedding,
+            vectordb=self.weaviatedb,
             memory=self.memory
-        )  
-    
+        )
+
     def store_conversation_to_chromadb_memory(self, user_text:str, model_text:str):
         self.chromadb_memory_stack.memory.add_text(
             user_text=user_text,model_text=model_text
         )
-    
+
     def store_conversation_to_weaviate_memory(self, user_text:str, model_text:str):
         self.weaviatedb_memory_stack.memory.add_text(
             user_text=user_text,model_text=model_text
         )
-    
+
     def test_chromadb_memory(self, query:str = "what is my favourite car?"):
-        print(self.chromadb_memory_stack.memory.get_chat_history(query=query))
-    
+        print(self.chromadb_memory_stack.memory.get_chat_history())
+
     def test_weaviatedb_memory(self, query:str = "what is my favourite sport?"):
-        print(self.weaviatedb_memory_stack.memory.get_chat_history(query=query))
+        print(self.weaviatedb_memory_stack.memory.get_chat_history())
