@@ -94,6 +94,13 @@ class Mediator:
         if self._check_component("vectordb", raise_error=True):
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
             return self._stack.vectordb.get_vectordb_chat_history(k, **kwargs)
+        
+    def add_chat_conversation(self, user_text:str, model_text:str, kwarg_map) -> None:
+        if self._check_component("vectordb", raise_error=True):
+            kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
+            return self._stack.vectordb.add_chat_conversation(
+                user_text, model_text, **kwargs
+            )        
 
     # LLM Cache
     def get_cache(self, query: str, metadata: dict = None):

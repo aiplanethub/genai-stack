@@ -3,6 +3,7 @@ from typing import Optional, List
 import weaviate
 from langchain.vectorstores.weaviate import Weaviate as LangChainWeaviate
 from weaviate.exceptions import UnexpectedStatusCodeException
+from langchain.docstore.document import Document
 
 from genai_stack.vectordb.utils import HybridSearchResponse
 from genai_stack.vectordb.weaviate_db import WeaviateDBConfig
@@ -112,9 +113,39 @@ class Weaviate(BaseVectorDB):
         documents = self.lc_client._client.query.get(
             class_name=index_name,
             properties=[text_key]
-        ).do()['data']['Get'][index_name]
-
+        ).with_additional(["id"]).do()['data']['Get'][index_name]
+        
         return parse_weaviate_chat_conversations(
             search_results=documents, 
             text_key=text_key
         )
+    
+    def add_chat_conversation(self, user_text, model_text, **kwargs):
+
+        index_name = kwargs.get('index_name')
+        text_key = kwargs.get('text_key')
+
+        db = self.lc_client._client
+
+        conversations = db.query.get(
+            class_name=index_name,
+            properties=[text_key]
+        ).with_additional(["id"]).do()['data']['Get'][index_name]
+
+        new_conversation = f"HUMAN: {user_text}\nYOU: {model_text}"
+
+        if len(conversations) == 0:
+            # creating a object
+            db.data_object.create(
+                data_object={text_key:new_conversation},
+                class_name=index_name,
+            )
+        else:
+            # updating the retrieved object by appending the new conversation
+            db.data_object.update(
+                uuid=conversations[0].get("_additional").get("id"),
+                class_name=index_name,
+                data_object={
+                    text_key:conversations[0].get(text_key)+"\n\n"+new_conversation
+                }
+            )

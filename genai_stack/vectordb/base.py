@@ -71,3 +71,9 @@ class BaseVectorDB(StackComponent):
         This method returns the vectordb chat history as a string
         """
         raise NotImplementedError()
+    
+    def add_chat_conversation(self, user_text:str, model_text:str, **kwargs) -> None:
+        """
+        This method used to store the chat conversation in vectordb
+        """
+        raise NotImplementedError()
