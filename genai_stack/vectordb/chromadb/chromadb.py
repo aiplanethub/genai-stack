@@ -10,7 +10,7 @@ from genai_stack.vectordb.base import BaseVectorDB
 from genai_stack.vectordb.chromadb import ChromaDBConfig, ChromaDBConfigModel
 from genai_stack.utils.sanitize import sanitize_params_dict
 from genai_stack.vectordb.utils import HybridSearchResponse
-from genai_stack.memory.utils import parse_chromadb_chat_conversations
+from genai_stack.memory.utils import parse_vectordb_chat_conversations
 
 try:
     import chromadb
@@ -106,10 +106,17 @@ class ChromaDB(BaseVectorDB):
     
     def get_vectordb_chat_history(self, k, **kwargs):
         index_name = kwargs.get('index_name')
+
         documents = self.lc_client._client.get_collection(
             name = index_name
         ).get()['documents']
-        return parse_chromadb_chat_conversations(search_results=documents[-k:])
+
+        if documents:
+            conversations = documents[0].split("\n\n")
+        
+            return parse_vectordb_chat_conversations(search_results=conversations[-k:])
+        
+        return "No conversations available."
     
     def add_chat_conversation(self, user_text, model_text, **kwargs):
         index_name = kwargs.get("index_name")
