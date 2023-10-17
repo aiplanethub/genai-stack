@@ -40,5 +40,5 @@ class ConversationBufferMemory(BaseMemory):
             "model_text":self.get_model_text()
         }
 
-    def get_chat_history(self, query):
+    def get_chat_history(self):
         return parse_chat_conversation_history(self.memory.chat_memory.messages)

@@ -1,5 +1,4 @@
 from typing import List
-from langchain.docstore.document import Document
 
 def parse_chat_conversation_history(response:list) -> str:
     history = ""
@@ -11,13 +10,22 @@ def parse_chat_conversation_history(response:list) -> str:
             
     return history
 
-def parse_chat_conversation_history_search_result(
-        search_results: List[Document]
+def parse_chromadb_chat_conversations(
+        search_results: List[str]
     ) -> str:
     history = ""
     for document in search_results:
-        history+=f"{document.page_content.replace('input','HUMAN').replace('output','YOU')}\n"
+        history+=f"{document.replace('input','HUMAN').replace('output','YOU')}\n"
     return history  
+
+def parse_weaviate_chat_conversations(
+        search_results: List[dict],
+        text_key:str
+    ) -> str:
+    history = ""
+    for document in search_results:
+        history+=f"{document.get(text_key).replace('input','HUMAN').replace('output','YOU')}\n"
+    return history 
 
 def extract_text(key:str, text:str) -> str:
     text_list = text.splitlines()
@@ -27,16 +35,16 @@ def extract_text(key:str, text:str) -> str:
         return text_list[1].replace('output: ','')
     
 
-def format_index_name(config:dict) -> dict:
-    """Formats index name and returns the kwarg_map."""
-    index_name = config.index_name.capitalize()
+def create_kwarg_map(config:dict) -> dict:
+    """Creates and returns the kwarg_map."""
+    index_name = config.index_name
     kwarg_map = {
         "ChromaDB":{
             "index_name":index_name
         },
         "Weaviate":{
-            "index_name":index_name,
-            "test_key":f"{index_name.lower()}_key"
+            "index_name":index_name.capitalize(),
+            "text_key":f"{index_name}_key"
         }
     }
-    return kwarg_map, index_name
+    return kwarg_map

@@ -67,9 +67,9 @@ class Mediator:
         if self._is_component_available("memory"):
             self._stack.memory.add_text(user_text, model_text)
 
-    def get_chat_history(self, query:str) -> str:
+    def get_chat_history(self) -> str:
         if self._is_component_available("memory"):
-            return self._stack.memory.get_chat_history(query=query)
+            return self._stack.memory.get_chat_history()
 
     # Vectordb
     def store_to_vectordb(self, documents: List[LangDocument]):
@@ -89,6 +89,11 @@ class Mediator:
         if self._check_component("vectordb", raise_error=True):
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
             return self._stack.vectordb.hybrid_search(query, metadata, **kwargs)
+        
+    def get_vectordb_chat_history(self, kwarg_map:dict, k:int) -> str:
+        if self._check_component("vectordb", raise_error=True):
+            kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
+            return self._stack.vectordb.get_vectordb_chat_history(k, **kwargs)
 
     # LLM Cache
     def get_cache(self, query: str, metadata: dict = None):
