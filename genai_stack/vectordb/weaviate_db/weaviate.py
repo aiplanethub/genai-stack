@@ -10,7 +10,7 @@ from genai_stack.vectordb.weaviate_db import WeaviateDBConfig
 from genai_stack.vectordb.base import BaseVectorDB
 from genai_stack.utils.extraction import extract_class_init_attrs
 from genai_stack.utils.sanitize import sanitize_params_dict
-from genai_stack.memory.utils import parse_weaviate_chat_conversations
+from genai_stack.memory.utils import parse_vectordb_chat_conversations
 
 
 class Weaviate(BaseVectorDB):
@@ -118,11 +118,11 @@ class Weaviate(BaseVectorDB):
         if documents:
             conversations = documents[0].get(text_key).split("\n\n")
 
-            return parse_weaviate_chat_conversations(
+            return parse_vectordb_chat_conversations(
                 search_results=conversations[-k:], 
             )
         
-        return "No conversations available"
+        return "No conversations available."
     
     def add_chat_conversation(self, user_text, model_text, **kwargs):
 

@@ -10,21 +10,13 @@ def parse_chat_conversation_history(response:list) -> str:
             
     return history
 
-def parse_chromadb_chat_conversations(
+def parse_vectordb_chat_conversations(
         search_results: List[str]
     ) -> str:
     history = ""
     for document in search_results:
-        history+=f"{document.replace('input','HUMAN').replace('output','YOU')}\n"
-    return history  
-
-def parse_weaviate_chat_conversations(
-        search_results: List[str],
-    ) -> str:
-    history = ""
-    for document in search_results:
         history+=document+"\n"
-    return history 
+    return history   
 
 def extract_text(key:str, text:str) -> str:
     text_list = text.splitlines()
