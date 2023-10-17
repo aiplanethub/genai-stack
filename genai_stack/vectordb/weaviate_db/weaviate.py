@@ -115,10 +115,14 @@ class Weaviate(BaseVectorDB):
             properties=[text_key]
         ).with_additional(["id"]).do()['data']['Get'][index_name]
         
-        return parse_weaviate_chat_conversations(
-            search_results=documents, 
-            text_key=text_key
-        )
+        if documents:
+            conversations = documents[0].get(text_key).split("\n\n")
+
+            return parse_weaviate_chat_conversations(
+                search_results=conversations[-k:], 
+            )
+        
+        return "No conversations available"
     
     def add_chat_conversation(self, user_text, model_text, **kwargs):
 

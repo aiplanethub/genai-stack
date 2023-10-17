@@ -19,12 +19,11 @@ def parse_chromadb_chat_conversations(
     return history  
 
 def parse_weaviate_chat_conversations(
-        search_results: List[dict],
-        text_key:str
+        search_results: List[str],
     ) -> str:
     history = ""
     for document in search_results:
-        history+=f"{document.get(text_key).replace('input','HUMAN').replace('output','YOU')}\n"
+        history+=document+"\n"
     return history 
 
 def extract_text(key:str, text:str) -> str:
