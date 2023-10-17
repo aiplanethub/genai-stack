@@ -110,3 +110,27 @@ class ChromaDB(BaseVectorDB):
             name = index_name
         ).get()['documents']
         return parse_chromadb_chat_conversations(search_results=documents[-k:])
+    
+    def add_chat_conversation(self, user_text, model_text, **kwargs):
+        index_name = kwargs.get("index_name")
+        
+        collection = self.lc_client._client.get_collection(name=index_name)
+
+        conversations = collection.get()
+       
+        new_conversation = f"HUMAN: {user_text}\nYOU: {model_text}"
+
+        if len(conversations["documents"]) == 0:
+            # creating a object
+            collection.add(
+                documents=[new_conversation],
+                embeddings=[1.5, 2.9, 3.4],
+                ids=["conversation_1"]
+            )
+        else:
+            # updating the retrieved object by appending new conversation
+            collection.update(
+                ids=["conversation_1"],
+                documents=[conversations['documents'][0]+"\n\n"+new_conversation],
+                embeddings=[1.5, 2.9, 3.4]
+            )

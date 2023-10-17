@@ -1,5 +1,4 @@
-from typing import Optional, List
-from langchain.docstore.document import Document
+from typing import Optional
 from genai_stack.memory.base import BaseMemory, BaseMemoryConfig, BaseMemoryConfigModel
 from genai_stack.memory.utils import (
     create_kwarg_map
@@ -24,18 +23,19 @@ class VectorDBMemory(BaseMemory):
     def _post_init(self, *args, **kwargs):
         config:VectorDBMemoryConfigModel  = self.config.config_data
         
-        kwarg_map = create_kwarg_map(config=config)
+        self.kwarg_map = create_kwarg_map(config=config)
 
-        self.lc_client = self.mediator.create_index(kwarg_map)
+        self.lc_client = self.mediator.create_index(kwarg_map=self.kwarg_map)
 
     def add_text(self, user_text: str, model_text: str):
-        documents:List[Document] = [
-            Document(
-                page_content=f"input: {user_text}\noutput: {model_text}"
-            )
-        ]
-        self.lc_client.add_documents(documents=documents)
+        self.mediator.add_chat_conversation(
+            user_text=user_text,
+            model_text=model_text,
+            kwarg_map=self.kwarg_map
+        )
 
     def get_chat_history(self):
-        kwarg_map = create_kwarg_map(config=self.config)
-        return self.mediator.get_vectordb_chat_history(kwarg_map, k=self.config.k)
+        return self.mediator.get_vectordb_chat_history(
+            kwarg_map=self.kwarg_map, 
+            k=self.config.k
+        )
