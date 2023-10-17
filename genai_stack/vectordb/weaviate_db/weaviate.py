@@ -9,6 +9,7 @@ from genai_stack.vectordb.weaviate_db import WeaviateDBConfig
 from genai_stack.vectordb.base import BaseVectorDB
 from genai_stack.utils.extraction import extract_class_init_attrs
 from genai_stack.utils.sanitize import sanitize_params_dict
+from genai_stack.memory.utils import parse_weaviate_chat_conversations
 
 
 class Weaviate(BaseVectorDB):
@@ -103,3 +104,17 @@ class Weaviate(BaseVectorDB):
                 ]
             self.client.schema.create_class(class_schema)
         return self._create_langchain_client(index_name=index_name, text_key=text_key)
+    
+    def get_vectordb_chat_history(self, k, **kwargs):
+        index_name = kwargs.get('index_name')
+        text_key = kwargs.get('text_key')
+
+        documents = self.lc_client._client.query.get(
+            class_name=index_name,
+            properties=[text_key]
+        ).do()['data']['Get'][index_name]
+
+        return parse_weaviate_chat_conversations(
+            search_results=documents, 
+            text_key=text_key
+        )

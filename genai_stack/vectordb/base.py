@@ -65,3 +65,9 @@ class BaseVectorDB(StackComponent):
 
     def search(self, query: str):
         return self.search_method(query)
+    
+    def get_vectordb_chat_history(self, k:int, **kwargs) -> str:
+        """
+        This method returns the vectordb chat history as a string
+        """
+        raise NotImplementedError()
