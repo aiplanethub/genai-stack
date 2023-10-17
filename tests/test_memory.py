@@ -40,7 +40,7 @@ class TestConversationBufferMemory(unittest.TestCase):
         print(memory.get_model_text())
 
 class TestVectordbMemory(unittest.TestCase):
-    def chromadb_stack(self, index_name = "Chroma"):
+    def chromadb_stack(self, index_name = "Chroma", k=4):
         config = {
             "model_name": "sentence-transformers/all-mpnet-base-v2",
             "model_kwargs": {"device": "cpu"},
@@ -54,7 +54,7 @@ class TestVectordbMemory(unittest.TestCase):
         self.chromadb = ChromaDB.from_kwargs()
 
         # VectorDB Memory
-        self.memory = VectorDBMemory.from_kwargs(index_name = index_name)
+        self.memory = VectorDBMemory.from_kwargs(index_name = index_name,k=k)
 
         self.chromadb_memory_stack = Stack(
             model=None, 
@@ -64,7 +64,7 @@ class TestVectordbMemory(unittest.TestCase):
         )
 
 
-    def weaviatedb_stack(self, index_name = "Weaviate"):
+    def weaviatedb_stack(self, index_name = "Weaviate", k=4):
         config = {
             "model_name": "sentence-transformers/all-mpnet-base-v2",
             "model_kwargs": {"device": "cpu"},
@@ -80,7 +80,7 @@ class TestVectordbMemory(unittest.TestCase):
         )
 
         # VectorDB Memory
-        self.memory = VectorDBMemory.from_kwargs(index_name = index_name)
+        self.memory = VectorDBMemory.from_kwargs(index_name = index_name, k=k)
 
         self.weaviatedb_memory_stack = Stack(
             model=None, 
@@ -99,8 +99,8 @@ class TestVectordbMemory(unittest.TestCase):
             user_text=user_text,model_text=model_text
         )
     
-    def test_chromadb_memory(self, query:str = "what is my favourite car?"):
-        print(self.chromadb_memory_stack.memory.get_chat_history(query=query))
+    def test_chromadb_memory(self):
+        print(self.chromadb_memory_stack.memory.get_chat_history())
     
-    def test_weaviatedb_memory(self, query:str = "what is my favourite sport?"):
-        print(self.weaviatedb_memory_stack.memory.get_chat_history(query=query))
+    def test_weaviatedb_memory(self):
+        print(self.weaviatedb_memory_stack.memory.get_chat_history())
