@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 def parse_chat_conversation_history(response:list) -> str:
     history = ""
@@ -39,3 +39,26 @@ def create_kwarg_map(config:dict) -> dict:
         }
     }
     return kwarg_map
+
+def format_conversation(
+    user_text:str, 
+    model_text:str, 
+    append:bool = False, 
+    old_conversation:Optional[str] = None
+) -> str:
+    
+    new_conversation = f"HUMAN: {user_text}\nYOU: {model_text}"
+
+    if append:
+        return f"{old_conversation}\n\n{new_conversation}"
+    
+    return new_conversation
+
+def get_conversation_from_document(document:dict, kwarg_map:dict) -> str:
+
+    if 'documents' in document:
+        # document from chroma
+        return document.get('documents')[0]
+    elif 'properties' in document:
+        # document from weaviate
+        return document.get('properties').get(kwarg_map.get('Weaviate').get('text_key'))

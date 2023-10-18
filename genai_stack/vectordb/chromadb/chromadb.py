@@ -1,7 +1,7 @@
 import tempfile
 import os
 import warnings
-from typing import List
+from typing import List, Union
 
 from langchain.vectorstores import Chroma as LangChainChroma
 
@@ -10,7 +10,6 @@ from genai_stack.vectordb.base import BaseVectorDB
 from genai_stack.vectordb.chromadb import ChromaDBConfig, ChromaDBConfigModel
 from genai_stack.utils.sanitize import sanitize_params_dict
 from genai_stack.vectordb.utils import HybridSearchResponse
-from genai_stack.memory.utils import parse_vectordb_chat_conversations
 
 try:
     import chromadb
@@ -103,41 +102,55 @@ class ChromaDB(BaseVectorDB):
 
     def create_index(self, index_name: str, **kwargs):
         return self._create_langchain_client(collection_name=index_name)
+
+    def get_collection(self, collection_name:str):
+
+        return self.lc_client._client.get_collection(name=collection_name)
     
-    def get_vectordb_chat_history(self, k, **kwargs):
-        index_name = kwargs.get('index_name')
+    def get_document(self, id:Union[str, int], **kwargs) -> Union[dict, None]:
 
-        documents = self.lc_client._client.get_collection(
-            name = index_name
-        ).get()['documents']
-
-        if documents:
-            conversations = documents[0].split("\n\n")
+        collection_name = kwargs.get('index_name')
         
-            return parse_vectordb_chat_conversations(search_results=conversations[-k:])
-        
-        return "No conversations available."
-    
-    def add_chat_conversation(self, user_text, model_text, **kwargs):
-        index_name = kwargs.get("index_name")
-        
-        collection = self.lc_client._client.get_collection(name=index_name)
+        collection = self.get_collection(collection_name=collection_name)
 
-        conversations = collection.get()
-       
-        new_conversation = f"HUMAN: {user_text}\nYOU: {model_text}"
+        document = collection.get(ids=id)
 
-        if len(conversations["documents"]) == 0:
-            # creating a object
-            collection.add(
-                documents=[new_conversation],
-                embeddings=[1.5, 2.9, 3.4],
-                ids=["conversation_1"]
-            )
-        else:
-            # updating the retrieved object by appending new conversation
-            collection.update(
-                ids=["conversation_1"],
-                documents=[conversations['documents'][0]+"\n\n"+new_conversation],
-                embeddings=[1.5, 2.9, 3.4]
-            )
+        if len(document["documents"]) == 0:
+            return
+        
+        return document
+
+    def create_document(
+        self,
+        id:Union[str, int], 
+        document:Union[str,dict], 
+        **kwargs
+    ) -> dict:
+        collection_name = kwargs.get('index_name')
+
+        collection = self.get_collection(collection_name=collection_name)
+
+        collection.add(
+            ids=id,
+            documents=document,
+            embeddings=kwargs.get('embeddings')
+        )
+
+        return collection.get(ids=id)
+
+    def update_document(
+        self, 
+        id:Union[str, int], 
+        document:Union[str,dict], 
+        **kwargs
+    ) -> None:
+
+        collection_name = kwargs.get('index_name')
+
+        collection = self.get_collection(collection_name=collection_name)
+
+        collection.update(
+            ids=id,
+            documents=document,
+            embeddings=kwargs.get('embeddings')
+        )

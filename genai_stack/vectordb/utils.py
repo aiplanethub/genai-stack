@@ -1,7 +1,6 @@
 from langchain.schema import Document
 from pydantic import BaseModel
 
-
 def use_pysqlite3():
     """
     Swap std-lib sqlite3 with pysqlite3.
