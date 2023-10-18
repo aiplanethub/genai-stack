@@ -2,10 +2,10 @@
 
 ## Getting Started
 
-* [📚 Introduction](README.md)
-* [🚀 Quickstart with colab](getting-started/quickstart-with-colab.md)
-* [📘 Default Data Types](getting-started/default-data-types.md)
-* [🪛 Installation](getting-started/installation.md)
+-   [📚 Introduction](README.md)
+-   [🚀 Quickstart with colab](getting-started/quickstart-with-colab.md)
+-   [📘 Default Data Types](getting-started/default-data-types.md)
+-   [🪛 Installation](getting-started/installation.md)
 
 ## Components
 
@@ -14,7 +14,7 @@
     -   [🔥 Quickstart](components/etl/quickstart.md)
     -   [🦜 Langchain](components/etl/langchain.md)
     -   [🦙 LLama Hub](components/etl/llamahub.md)
--  [🌱 Embeddings](components/embedding/README.md)
+-   [🌱 Embeddings](components/embedding/README.md)
     -   [🔥 Quickstart](components/embedding/quickstart.md)
     -   [🦜 Langchain](components/embedding/langchain.md)
     -   [📖 Advanced Usage](components/embedding/advanced-usage.md)
@@ -42,15 +42,16 @@
 
 ## Advanced Guide
 
-* [💻 GenAI Stack API Server](advanced-guide/genai_stack_server.md)
+-   [💻 GenAI Stack API Server](advanced-guide/genai_stack_server.md)
+-   [🔃 GenAI Server API's Reference](advanced-guide/openapi.md)
 
 ## Example Use Cases
 
-* [💬 Chat on PDF](example-use-cases/chat-on-pdf.md)
-* [💬 Chat on CSV](example-use-cases/chat-on-csv.md)
-* [📖 Document Search](example-use-cases/document-search.md)
-* [🚀 Notebooks](example-use-cases/notebooks.md)
+-   [💬 Chat on PDF](example-use-cases/chat-on-pdf.md)
+-   [💬 Chat on CSV](example-use-cases/chat-on-csv.md)
+-   [📖 Document Search](example-use-cases/document-search.md)
+-   [🚀 Notebooks](example-use-cases/notebooks.md)
 
-***
+---
 
-* [🧑 CONTRIBUTING.md](contributing.md.md)
+-   [🧑 CONTRIBUTING.md](contributing.md.md)
