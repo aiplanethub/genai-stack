@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Union
 from pydantic import BaseModel
 
 from genai_stack.stack.stack_component import StackComponent, StackComponentConfig
@@ -66,14 +66,26 @@ class BaseVectorDB(StackComponent):
     def search(self, query: str):
         return self.search_method(query)
     
-    def get_vectordb_chat_history(self, k:int, **kwargs) -> str:
+    def get_collection(self, collection_name:str):
         """
-        This method returns the vectordb chat history as a string
+        This method returns the vectordb collection.
         """
         raise NotImplementedError()
     
-    def add_chat_conversation(self, user_text:str, model_text:str, **kwargs) -> None:
+    def get_document(self, id:Union[str, int], **kwargs) -> Union[dict, None]:
         """
-        This method used to store the chat conversation in vectordb
+        This method returns a document that matches with the provided id.
+        """
+        raise NotImplementedError()
+    
+    def create_document(self, id:Union[str,int], document:Union[str, dict], **kwargs) -> dict:
+        """
+        This method used to create a new document in vectordb.
+        """
+        raise NotImplementedError()
+    
+    def update_document(self, id:Union[str,int], document:Union[str, dict], **kwargs) -> None:
+        """
+        This method used to update the existing document in vectordb.
         """
         raise NotImplementedError()

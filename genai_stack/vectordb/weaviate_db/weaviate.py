@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Union
 
 import weaviate
 from langchain.vectorstores.weaviate import Weaviate as LangChainWeaviate
@@ -10,7 +10,6 @@ from genai_stack.vectordb.weaviate_db import WeaviateDBConfig
 from genai_stack.vectordb.base import BaseVectorDB
 from genai_stack.utils.extraction import extract_class_init_attrs
 from genai_stack.utils.sanitize import sanitize_params_dict
-from genai_stack.memory.utils import parse_vectordb_chat_conversations
 
 
 class Weaviate(BaseVectorDB):
@@ -106,50 +105,50 @@ class Weaviate(BaseVectorDB):
             self.client.schema.create_class(class_schema)
         return self._create_langchain_client(index_name=index_name, text_key=text_key)
     
-    def get_vectordb_chat_history(self, k, **kwargs):
-        index_name = kwargs.get('index_name')
+    def get_document(self, id:Union[str, int], **kwargs) -> Union[dict, None]:
+        
+        class_name = kwargs.get('index_name')
+
+        client = self.lc_client._client.data_object
+
+        return client.get(
+            uuid=id,
+            class_name=class_name,
+        )
+
+    def create_document(
+        self, 
+        id:Union[str,int], 
+        document:Union[str, dict], 
+        **kwargs
+    ) -> dict:
+        class_name = kwargs.get('index_name')
         text_key = kwargs.get('text_key')
 
-        documents = self.lc_client._client.query.get(
-            class_name=index_name,
-            properties=[text_key]
-        ).with_additional(["id"]).do()['data']['Get'][index_name]
-        
-        if documents:
-            conversations = documents[0].get(text_key).split("\n\n")
+        client = self.lc_client._client.data_object
 
-            return parse_vectordb_chat_conversations(
-                search_results=conversations[-k:], 
-            )
-        
-        return "No conversations available."
+        obj_id = client.create(
+            class_name=class_name,
+            uuid=id,
+            data_object={text_key:document},
+        )
+
+        return client.get_by_id(uuid=obj_id, class_name=class_name)
     
-    def add_chat_conversation(self, user_text, model_text, **kwargs):
-
-        index_name = kwargs.get('index_name')
+    def update_document(
+        self, 
+        id:Union[str,int], 
+        document:Union[str, dict], 
+        **kwargs
+    ) -> None:
+        
+        class_name = kwargs.get('index_name')
         text_key = kwargs.get('text_key')
 
-        db = self.lc_client._client
+        client = self.lc_client._client.data_object
 
-        conversations = db.query.get(
-            class_name=index_name,
-            properties=[text_key]
-        ).with_additional(["id"]).do()['data']['Get'][index_name]
-
-        new_conversation = f"HUMAN: {user_text}\nYOU: {model_text}"
-
-        if len(conversations) == 0:
-            # creating a object
-            db.data_object.create(
-                data_object={text_key:new_conversation},
-                class_name=index_name,
-            )
-        else:
-            # updating the retrieved object by appending the new conversation
-            db.data_object.update(
-                uuid=conversations[0].get("_additional").get("id"),
-                class_name=index_name,
-                data_object={
-                    text_key:conversations[0].get(text_key)+"\n\n"+new_conversation
-                }
-            )
+        client.update(
+            class_name=class_name,
+            uuid=id,
+            data_object={text_key:document}
+        )

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from langchain.docstore.document import Document as LangDocument
 
@@ -89,18 +89,21 @@ class Mediator:
         if self._check_component("vectordb", raise_error=True):
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
             return self._stack.vectordb.hybrid_search(query, metadata, **kwargs)
-        
-    def get_vectordb_chat_history(self, kwarg_map:dict, k:int) -> str:
+
+    def get_document(self, id:Union[str, int], kwarg_map) -> Union[dict, None]:
         if self._check_component("vectordb", raise_error=True):
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
-            return self._stack.vectordb.get_vectordb_chat_history(k, **kwargs)
-        
-    def add_chat_conversation(self, user_text:str, model_text:str, kwarg_map) -> None:
+            return self._stack.vectordb.get_document(id, **kwargs)
+    
+    def create_document(self, id:Union[str, int], document:Union[str,dict], kwarg_map) -> dict:
         if self._check_component("vectordb", raise_error=True):
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
-            return self._stack.vectordb.add_chat_conversation(
-                user_text, model_text, **kwargs
-            )        
+            return self._stack.vectordb.create_document(id, document, **kwargs)
+    
+    def update_document(self, id:Union[str, int], document:Union[str,dict], kwarg_map) -> dict:
+        if self._check_component("vectordb", raise_error=True):
+            kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
+            return self._stack.vectordb.update_document(id, document, **kwargs)
 
     # LLM Cache
     def get_cache(self, query: str, metadata: dict = None):
