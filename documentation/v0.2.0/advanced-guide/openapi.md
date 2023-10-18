@@ -21,28 +21,28 @@ Here are the API's for the core components of GenAI Stack Server.
 {% endswagger %}
 
 
-# ETL
+## ETL
 
 {% swagger src="../.gitbook/assets/openapi.yaml" path="/api/etl/submit-job" method="post" %}
 [openapi.yaml](<../.gitbook/assets/openapi.yaml>)
 {% endswagger %}
 
 
-# Model
+## Model
 
 {% swagger src="../.gitbook/assets/openapi.yaml" path="/api/model/predict" method="post" %}
 [openapi.yaml](<../.gitbook/assets/openapi.yaml>)
 {% endswagger %}
 
 
-# Retriever
+## Retriever
 
 {% swagger src="../.gitbook/assets/openapi.yaml" path="/api/retriever/retrieve" method="get" %}
 [openapi.yaml](<../.gitbook/assets/openapi.yaml>)
 {% endswagger %}
 
 
-# Vectordb
+## Vectordb
 
 {% swagger src="../.gitbook/assets/openapi.yaml" path="/api/vectordb/add-documents" method="post" %}
 [openapi.yaml](<../.gitbook/assets/openapi.yaml>)
