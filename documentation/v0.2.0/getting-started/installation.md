@@ -26,9 +26,26 @@ env\Scripts\Activate.ps1
 
 ### Installation&#x20;
 
-```
-pip install git+https://github.com/aiplanethub/genai-stack.git
-```
+* #### Installation from pypi
+
+  ##### Install latest version
+
+    ```bash
+    pip install genai_stack
+    ```
+
+
+  ##### Install a particular version
+
+    ```bash
+    pip install genai_stack==0.2.5
+    ```
+
+* #### Install from github
+
+    ```
+    pip install git+https://github.com/aiplanethub/genai-stack.git
+    ```
 
 That's it your local setup is ready. Let's go ahead & test it.
 

@@ -26,6 +26,7 @@ In summary, the memory component plays a crucial role in enhancing the capabilit
 
 ## Supported Memory
 
-Currently we have support only for:
+Currently we have support for:
 
 -   Conversation Buffer Memory
+-   VectorDB Memory (ChromaDB and Weaviate)

@@ -67,9 +67,9 @@ class Mediator:
         if self._is_component_available("memory"):
             self._stack.memory.add_text(user_text, model_text)
 
-    def get_chat_history(self) -> str:
+    def get_chat_history(self, query:str) -> str:
         if self._is_component_available("memory"):
-            return self._stack.memory.get_chat_history()
+            return self._stack.memory.get_chat_history(query=query)
 
     # Vectordb
     def store_to_vectordb(self, documents: List[LangDocument]):

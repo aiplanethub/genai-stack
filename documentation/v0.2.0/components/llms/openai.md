@@ -23,10 +23,12 @@
 
 ```python
 from genai_stack.model import OpenAIGpt35Model
+from genai_stack.stack.stack import Stack
 
 llm = OpenAIGpt35Model.from_kwargs(
     parameters={"openai_api_key": "sk-xxxx"} # Update with your OpenAI Key
 ) 
+Stack(model=llm)  # Initialize stack
 model_response = llm.predict("How long AI has been around.")
 print(model_response["output"])
 ```

@@ -35,8 +35,8 @@ class BaseRetriever(StackComponent):
         """
         raise NotImplementedError()
 
-    def get_chat_history(self) -> str:
+    def get_chat_history(self, query:str) -> str:
         """
         This method returns the chat conversation history
         """
-        return self.mediator.get_chat_history()
+        return self.mediator.get_chat_history(query=query)

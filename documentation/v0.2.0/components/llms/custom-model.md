@@ -1,48 +1,74 @@
 # Custom Model
 
-A custom model can be created with a few steps.
+Let's create a custom model using a Hugging Face pipeline model for text generation. In this example, we'll use the model from Hugging Face. Please ensure you have the Transformers library installed to run this example.
 
-1. Import a `BaseModel`, `BaseModelConfig`, `BaseModelConfigModel`class from `genai-stack.model.base`.
-2. Create a config model that will have all the parameters that the model expects. Use `BaseModelConfigModel` as the base model.
-3. Create a config class having `data_model` as attribute & use `BaseModelConfig` as base model
-4. Create a class with the desired name(class name) and inherit the `BaseModel`class.
-5. Add `config_class` As an attribute, its value is the config class that you created in the 3rd step. With this, you can now access the parameters that you added in 2nd step in class methods as `self.config.<parameter_name>`&#x20;
-6. Implement three methods:
-   * `_post_init()` - Call `load` method as `self.model = self.load()` .
-   *   `load()` - Load the model. This method is run at once on class instantiation in `_post_init` method.
+1. Import Required Modules:
 
-       Set a class attribute, which can be later accessed in the predict() method. This way a lot of time can be saved during prediction which avoids model loading during prediction. Make sure to return the model so that we can access it in other methods as we're setting the `self.model`attribute in `_post_init` method.
-   * `predict()`- Accept a parameter named `prompt`, which should hold the input to the model.\
-     Make a prediction and return the generated prediction as `dict` having `output` a key that holds the prediction value.
+    Import the necessary modules from GenAI Stack and the Transformers library for Hugging Face models.
+    
+    ```python
+    from genai_stack.model.base import BaseModel, BaseModelConfig, BaseModelConfigModel
+    from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
+    from pydantic import Field
+    ```
 
-#### Example
+2. Create a Config Model:
 
-The below code creates a GPT Neo model with GenAI Stack.
+Create a configuration model to hold the model's configuration parameters. In this example, Gpt2CustomModelConfigModel serves as the base model for our custom configuration.
 
 ```python
-from genai_stack.model.base import BaseModel, BaseModelConfig, BaseModelConfigModel
-from transformers import pipeline
+class HuggingFaceModelConfigModel(BaseModelConfigModel):
+    model_name: str = "meta-llama/Llama-2-70b-chat-hf"
+    # You can use Field() from pydantic to add any other configuration options you need here.
+```
 
-class GptNeoModelConfigModel(BaseModelConfigModel):
-    """
-    Data Model for the configs
-    """
-    pass
-    
-class GptNeoModelConfig(BaseModelConfig):
-    data_model = GptNeoModelConfigModel
+This class is used to define the configuration for your model. In this case, you set the default model name to "meta-llama/Llama-2-70b-chat-hf," but you can add more fields for other configuration options specific to your model.
 
-class GptNeoModel(BaseModel):
-    config_class = GptNeoModelConfig
+3. Define a Config Class:
 
-    def _post_init(self, *args, **kwargs):
-        self.model = self.load()
-        
-    def load(self, model_path=None):
-        model = pipeline("text-generation", model="EleutherAI/gpt-neo-2.7B")
-        return model
+Create a configuration class with a data_model attribute, using BaseModelConfig as the base model.
+
+```python
+class HuggingFaceModelConfig(BaseModelConfig):
+    data_model = HuggingFaceModelConfigModel
+```
+This configuration class ties your configuration class (HuggingFaceModelConfigModel) to the base configuration class (BaseModelConfig). It helps manage the configuration of your model.
+
+4. Create the Custom Model Class:
+
+Define the custom model class, inheriting from BaseModel. Set the config_class attribute to link it to the config class created in step 3. Implement the following methods:
+
+* The `load()` method uses the Hugging Face pipeline to load the specified text-generation model, using the model name provided in the configuration. This method is called only once during the class intialization. It should return 
+* The `predict()` method takes a prompt as input and generates a response using the loaded Hugging Face model. It returns the generated text as output.
+
+```python
+class HuggingFaceModel(BaseModel):
+    config_class = HuggingFaceModelConfig
+
+    def load(self):
+        self.tokenizer = AutoTokenizer.from_pretrained(self.config.model_name)
+        self.model = AutoModelForCausalLM.from_pretrained(self.config.model_name)
 
     def predict(self, prompt: str):
-        response = self.model(prompt, max_length=50, do_sample=True, temperature=0.9)
-        return {"output": response[0]["generated_text"]}
+        input_ids = self.tokenizer.encode(prompt, return_tensors="pt")
+        output = self.model.generate(input_ids, max_length=100, num_return_sequences=1)
+        response = self.tokenizer.decode(output[0], skip_special_tokens=True)
+        return {"output": response}
 ```
+We decode the model's generated output using the tokenizer to obtain the response.
+
+
+5. Example:
+
+```python
+from genai_stack.model import HuggingFaceModel
+from genai_stack.stack.stack import Stack
+
+# Override the model by passing the model_name as a dictionary to from_kwargs()
+hugging_face_model = HuggingFaceModel.from_kwargs({"model_name": "meta-llama/Llama-2-13b-chat-hf"})
+Stack(model=hugging_face_model)  # Initialize stack
+model_response = hugging_face_model.predict("How many countries are there in the world?")
+print(model_response["output"])
+```
+
+By following these steps, you can create a custom model using a Hugging Face model for text generation. You can modify the model name, tokenizer, and generation parameters to suit your specific use case.

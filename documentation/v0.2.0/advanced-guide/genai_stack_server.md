@@ -1,11 +1,18 @@
 # 💻 Setup GenAI Server
 
+You can simply run a CLI Command to setup GenAI Server, that will generate the script and default configuration files for the server. after that you can update the configuration files with your requirements
+
+```py
+genai-stack setup-server --path /path/to/directory
+```
+
+or you can manually setup by following below steps
+
 Create a directory where you intend to set up your GenAI Server. Within this directory, add the following files:
 
-- `main.py`: This Python script serves as the entry point for your GenAI Server.
-- `server.conf`: This configuration file contains settings related to your database.
-- `stack_config.json`: This JSON configuration file defines the components and their configurations for your server stack.
-
+-   `main.py`: This Python script serves as the entry point for your GenAI Server.
+-   `server.conf`: This configuration file contains settings related to your database.
+-   `stack_config.json`: This JSON configuration file defines the components and their configurations for your server stack.
 
 ```
 your_directory_name/
@@ -26,8 +33,8 @@ database_name = db
 database_driver = sqlite
 ```
 
-- `database_name`: Set this to your preferred database name.
-- `database_driver`: Specify the database driver to sqlite. Currently, we only support sqlite.
+-   `database_name`: Set this to your preferred database name.
+-   `database_driver`: Specify the database driver to sqlite. Currently, we only support sqlite.
 
 ### `stack_config.json`
 
@@ -65,8 +72,8 @@ database_driver = sqlite
                 "name": "HuggingFaceEmbeddings",
                 "fields": {
                     "model_name": "sentence-transformers/all-mpnet-base-v2",
-                    "model_kwargs": {"device": "cpu"},
-                    "encode_kwargs": {"normalize_embeddings": false}
+                    "model_kwargs": { "device": "cpu" },
+                    "encode_kwargs": { "normalize_embeddings": false }
                 }
             }
         },
@@ -86,23 +93,23 @@ database_driver = sqlite
 
 Customize the `stack_config.json` file to define the components for your GenAI Server stack.
 
-- Customize the components as needed.
+-   Customize the components as needed.
 
 ## Running the Server
 
 ### `main.py`:
-- In `main.py`, you import two functions (`read_configurations` and `get_current_stack`) from the `genai_server` package to initialize your GenAI Server.
 
-- Provide the path to the current folder where your configuration files reside.
+-   In `main.py`, you import two functions (`read_configurations` and `get_current_stack`) from the `genai_server` package to initialize your GenAI Server.
 
-- `read_configurations(path)` reads configurations from `server.conf` and `stack_config.json` at the specified path and returns two sets of configurations:
+-   Provide the path to the current folder where your configuration files reside.
 
-   - `server_configurations`: Specific to your GenAI Server.
+-   `read_configurations(path)` reads configurations from `server.conf` and `stack_config.json` at the specified path and returns two sets of configurations:
 
-   - `stack_configurations`: Default stack configurations from `stack_config.json`, defining the configurations required for the components to work together.
+    -   `server_configurations`: Specific to your GenAI Server.
 
-- Pass `stack_configurations` to `get_current_stack(config=stack_configurations)`. This function initializes your GenAI Server's stack based on these configurations. The stack is like a toolkit of components, each with its own settings, ready to serve your AI applications.
+    -   `stack_configurations`: Default stack configurations from `stack_config.json`, defining the configurations required for the components to work together.
 
+-   Pass `stack_configurations` to `get_current_stack(config=stack_configurations)`. This function initializes your GenAI Server's stack based on these configurations. The stack is like a toolkit of components, each with its own settings, ready to serve your AI applications.
 
 ```py
 from genai_stack.genai_server.settings.config import read_configurations
