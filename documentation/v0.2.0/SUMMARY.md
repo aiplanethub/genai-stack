@@ -49,8 +49,10 @@
 
 -   [💬 Chat on PDF](example-use-cases/chat-on-pdf.md)
 -   [💬 Chat on CSV](example-use-cases/chat-on-csv.md)
--   [📖 Document Search](example-use-cases/document-search.md)
--   [🚀 Notebooks](example-use-cases/notebooks.md)
+-   [💬 Similarity Search on JSON](example-use-cases/json_similary_search.md)
+-   [💬 Document Search](example-use-cases/document-search.md)
+-   [💬 RAG pipeline](example-use-cases/rag_pipelines.md)
+-   [💬 Information Retrieval Pipeline]()
 
 ---
 
