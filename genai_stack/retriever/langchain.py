@@ -32,7 +32,7 @@ class LangChainRetriever(BaseRetriever):
             metadata = context[0].metadata if context else None
             prompt_dict["context"] = parse_search_results(context)
         if "history" in prompt_template.input_variables:
-            prompt_dict["history"] = self.get_chat_history(query=query)
+            prompt_dict["history"] = self.get_chat_history()
         else:
             # Cache and memory cannot co-exist. Memory is given priority.
             cache = self.mediator.get_cache(query=query, metadata=metadata)
