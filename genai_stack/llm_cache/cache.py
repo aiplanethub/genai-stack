@@ -69,3 +69,4 @@ class LLMCache(BaseLLMCache):
                 page_content=query
             )]
         )
+        return True
