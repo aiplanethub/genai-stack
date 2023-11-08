@@ -8,7 +8,7 @@
 * `model_kwargs` (Optional\[Dict]): Keyword arguments passed to the Hugging Face model (optional).
 * `pipeline_kwargs` (Optional\[dict]): Keyword arguments passed to the Hugging Face pipeline (optional).
 * `task` (str): The task associated with the model. Valid options include `'text2text-generation'`, `'text-generation'`, and `'summarization'`.
-
+* `pipeline` (pipeline): Pass pipeline directly to the component. If pipeline is passed, all other configs are ignored.
 **Running in a Colab/Kaggle/Python scripts(s)**\`\`\`python
 
 ```python
@@ -23,3 +23,4 @@ print(model_response["output"])
 
 * Import the model from `genai_stack.model`
 * Instantiate the class with parameters you want to customize
+
