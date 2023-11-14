@@ -90,15 +90,15 @@ class Mediator:
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
             return self._stack.vectordb.hybrid_search(query, metadata, **kwargs)
 
-    def get_document(self, id:Union[str, int], kwarg_map) -> Union[dict, None]:
+    def get_documents(self, kwarg_map) -> Union[dict, None]:
         if self._check_component("vectordb", raise_error=True):
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
-            return self._stack.vectordb.get_document(id, **kwargs)
+            return self._stack.vectordb.get_documents(**kwargs)
     
-    def create_document(self, id:Union[str, int], document:Union[str,dict], kwarg_map) -> dict:
+    def create_document(self, document, kwarg_map) -> dict:
         if self._check_component("vectordb", raise_error=True):
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
-            return self._stack.vectordb.create_document(id, document, **kwargs)
+            return self._stack.vectordb.create_document(document, **kwargs)
     
     def update_document(self, id:Union[str, int], document:Union[str,dict], kwarg_map) -> dict:
         if self._check_component("vectordb", raise_error=True):

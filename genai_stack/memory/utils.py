@@ -1,4 +1,5 @@
-from typing import List, Optional
+from typing import List
+from langchain.schema import Document
 
 def parse_chat_conversation_history(response:list) -> str:
     history = ""
@@ -11,11 +12,12 @@ def parse_chat_conversation_history(response:list) -> str:
     return history
 
 def parse_vectordb_chat_conversations(
-        search_results: List[str]
+        search_results:List[Document],
+        k:int
     ) -> str:
     history = ""
-    for document in search_results:
-        history+=document+"\n"
+    for document in search_results[-k:]:
+        history+=document.page_content+"\n"
     return history   
 
 def extract_text(key:str, text:str) -> str:
@@ -35,24 +37,22 @@ def create_kwarg_map(config:dict) -> dict:
         },
         "Weaviate":{
             "index_name":index_name.capitalize(),
-            "text_key":f"{index_name}_key"
+            "text_key":"chat_key",
+            "properties":[
+                {"name":"chat_key", "dataType":["text"]},
+                {"name":"timestamp","dataType":["date"]}
+            ],
+            "attributes":["chat_key", "timestamp"]
         }
     }
     return kwarg_map
 
 def format_conversation(
     user_text:str, 
-    model_text:str, 
-    append:bool = False, 
-    old_conversation:Optional[str] = None
+    model_text:str
 ) -> str:
     
-    new_conversation = f"HUMAN: {user_text}\nYOU: {model_text}"
-
-    if append:
-        return f"{old_conversation}\n\n{new_conversation}"
-    
-    return new_conversation
+    return f"HUMAN: {user_text}\nYOU: {model_text}"
 
 def get_conversation_from_document(document:dict, kwarg_map:dict) -> str:
 
