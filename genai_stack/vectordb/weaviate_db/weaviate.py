@@ -10,7 +10,7 @@ from genai_stack.vectordb.weaviate_db import WeaviateDBConfig
 from genai_stack.vectordb.base import BaseVectorDB
 from genai_stack.utils.extraction import extract_class_init_attrs
 from genai_stack.utils.sanitize import sanitize_params_dict
-
+from datetime import datetime
 
 class Weaviate(BaseVectorDB):
     config_class = WeaviateDBConfig
@@ -102,53 +102,78 @@ class Weaviate(BaseVectorDB):
                 class_schema["properties"] = [
                     {"name": text_key, "dataType": ["text"]},
                 ]
-            self.client.schema.create_class(class_schema)
-        return self._create_langchain_client(index_name=index_name, text_key=text_key)
-    
-    def get_document(self, id:Union[str, int], **kwargs) -> Union[dict, None]:
-        
-        class_name = kwargs.get('index_name')
+            else:
+                class_schema["properties"] = kwargs.get("properties")
 
+            self.client.schema.create_class(class_schema)
+
+        kwargs.pop('properties', None)
+        return self._create_langchain_client(index_name=index_name, text_key=text_key, **kwargs)
+    
+    def delete_documents(self, class_name:str, document_ids:Union[List[str],List[int]]) -> None:
+        """
+        This method deletes the documents
+
+        Args:
+            class_name:str
+            document_ids: List[ int | str ]
+        """
         client = self.lc_client._client.data_object
 
-        return client.get(
-            uuid=id,
-            class_name=class_name,
-        )
+        for document_id in document_ids:
+            client.delete(
+                class_name=class_name,
+                uuid=document_id
+            )
+    
+    def get_documents(self, **kwargs) -> List[Document]:
+        """This method returns the list of documents"""
+
+        class_name = kwargs.get('index_name')
+
+        client = self.lc_client._client.query
+
+        rft =  datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S+00:00")
+
+        results = client.get(class_name,['chat_key', 'timestamp']).with_where({
+            "path": ["timestamp"],
+            "operator": "LessThan",
+            "valueDate": rft,
+        }).with_additional(['id']).with_sort({
+            'path': ['timestamp'],
+            'order': 'asc',
+        }).with_limit(40).do()
+
+        docs = [
+            Document(
+                page_content=doc.get("chat_key"), 
+                metadata={"id":doc.get("_additional").get("id")}
+            ) for doc in results.get('data').get('Get').get(class_name)
+        ]
+
+        if len(docs) == 40:
+            # deleting the starting 20 documents and returning last 20 documents.
+            doc_ids = [doc.metadata.get('id') for doc in docs[:20]]
+            self.delete_documents(class_name,doc_ids)
+            return docs[-20:]
+        else:
+            # returning all documents, max 39 documents.
+            return docs
 
     def create_document(
         self, 
-        id:Union[str,int], 
-        document:Union[str, dict], 
+        document,
         **kwargs
     ) -> dict:
+        """This method creates a new document."""
         class_name = kwargs.get('index_name')
-        text_key = kwargs.get('text_key')
 
         client = self.lc_client._client.data_object
 
-        obj_id = client.create(
+        datetime_now = datetime.utcnow()
+        rfcc = datetime_now.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+
+        client.create(
             class_name=class_name,
-            uuid=id,
-            data_object={text_key:document},
-        )
-
-        return client.get_by_id(uuid=obj_id, class_name=class_name)
-    
-    def update_document(
-        self, 
-        id:Union[str,int], 
-        document:Union[str, dict], 
-        **kwargs
-    ) -> None:
-        
-        class_name = kwargs.get('index_name')
-        text_key = kwargs.get('text_key')
-
-        client = self.lc_client._client.data_object
-
-        client.update(
-            class_name=class_name,
-            uuid=id,
-            data_object={text_key:document}
+            data_object={"chat_key":document, "timestamp":rfcc},
         )
