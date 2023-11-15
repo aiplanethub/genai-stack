@@ -2,8 +2,10 @@ import tempfile
 import os
 import warnings
 from typing import List, Union
+from uuid import uuid4
 
 from langchain.vectorstores import Chroma as LangChainChroma
+from langchain.docstore.document import Document
 
 from genai_stack.utils.extraction import extract_class_init_attrs
 from genai_stack.vectordb.base import BaseVectorDB
@@ -107,50 +109,55 @@ class ChromaDB(BaseVectorDB):
 
         return self.lc_client._client.get_collection(name=collection_name)
     
-    def get_document(self, id:Union[str, int], **kwargs) -> Union[dict, None]:
+    def delete_documents(self, index_name:str, document_ids:Union[List[str],List[int]]) -> None:
+        """
+        This method deletes the documents
+
+        Args:
+            class_name:str
+            document_ids: List[ int | str ]
+        """
+        collection = self.get_collection(collection_name=index_name)
+        collection.delete(document_ids)
+    
+    def get_documents(self, **kwargs) -> List[Document]:
+        """This method returns the list of documents"""
 
         collection_name = kwargs.get('index_name')
         
         collection = self.get_collection(collection_name=collection_name)
 
-        document = collection.get(ids=id)
+        results = collection.get()
 
-        if len(document["documents"]) == 0:
-            return
+        docs = [
+            Document(
+                page_content=results.get('documents')[i],
+                metadata={"id":results.get('ids')[i]}
+            ) for i in range(len(results.get('ids')))
+        ]
+
+        if len(docs) == 40:
+            # deleting the starting 20 documents and returning last 20 documents.
+            doc_ids = [doc.metadata.get('id') for doc in docs[:20]]
+            self.delete_documents(collection_name,doc_ids)
+            return docs[-20:]
+        else:
+            # returning all documents, max 39 documents.
+            return docs
         
-        return document
 
     def create_document(
         self,
-        id:Union[str, int], 
-        document:Union[str,dict], 
+        document, 
         **kwargs
     ) -> dict:
+        """This method creates a new document."""
         collection_name = kwargs.get('index_name')
 
         collection = self.get_collection(collection_name=collection_name)
 
         collection.add(
-            ids=id,
+            ids=f"{uuid4()}",
             documents=document,
-            embeddings=kwargs.get('embeddings')
-        )
-
-        return collection.get(ids=id)
-
-    def update_document(
-        self, 
-        id:Union[str, int], 
-        document:Union[str,dict], 
-        **kwargs
-    ) -> None:
-
-        collection_name = kwargs.get('index_name')
-
-        collection = self.get_collection(collection_name=collection_name)
-
-        collection.update(
-            ids=id,
-            documents=document,
-            embeddings=kwargs.get('embeddings')
+            embeddings=self.mediator.get_embedded_text(document)
         )
