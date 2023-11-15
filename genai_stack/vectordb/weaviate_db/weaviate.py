@@ -110,7 +110,7 @@ class Weaviate(BaseVectorDB):
         kwargs.pop('properties', None)
         return self._create_langchain_client(index_name=index_name, text_key=text_key, **kwargs)
     
-    def delete_documents(self, class_name:str, document_ids:Union[List[str],List[int]]) -> None:
+    def delete_documents(self, index_name:str, document_ids:Union[List[str],List[int]]) -> None:
         """
         This method deletes the documents
 
@@ -122,7 +122,7 @@ class Weaviate(BaseVectorDB):
 
         for document_id in document_ids:
             client.delete(
-                class_name=class_name,
+                class_name=index_name,
                 uuid=document_id
             )
     

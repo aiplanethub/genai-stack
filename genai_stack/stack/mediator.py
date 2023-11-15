@@ -100,11 +100,6 @@ class Mediator:
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
             return self._stack.vectordb.create_document(document, **kwargs)
     
-    def update_document(self, id:Union[str, int], document:Union[str,dict], kwarg_map) -> dict:
-        if self._check_component("vectordb", raise_error=True):
-            kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
-            return self._stack.vectordb.update_document(id, document, **kwargs)
-
     # LLM Cache
     def get_cache(self, query: str, metadata: dict = None):
         if self._is_component_available("llm_cache"):
