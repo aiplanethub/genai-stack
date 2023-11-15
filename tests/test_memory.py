@@ -76,7 +76,7 @@ class TestVectordbMemory(unittest.TestCase):
 
         # VectorDB
         self.weaviatedb = Weaviate.from_kwargs(
-            url="http://localhost:8080/", index_name="Testing", text_key="test"
+            url="http://localhost:9000/", index_name="Testing", text_key="test"
         )
 
         # VectorDB Memory
@@ -99,8 +99,8 @@ class TestVectordbMemory(unittest.TestCase):
             user_text=user_text,model_text=model_text
         )
     
-    def test_chromadb_memory(self):
+    def test_chromadb_chat_history(self):
         print(self.chromadb_memory_stack.memory.get_chat_history())
     
-    def test_weaviatedb_memory(self):
+    def test_weaviatedb_chat_history(self):
         print(self.weaviatedb_memory_stack.memory.get_chat_history())
