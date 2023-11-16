@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from langchain.schema import Document
 
 def parse_chat_conversation_history(response:list) -> str:
@@ -20,12 +20,19 @@ def parse_vectordb_chat_conversations(
         history+=document.page_content+"\n"
     return history   
 
-def extract_text(key:str, text:str) -> str:
+def extract_text(conversation:List[Document],key:Optional[str] = None) -> str:
+    text = conversation[0].page_content
     text_list = text.splitlines()
-    if key == "user":
-        return text_list[0].replace('input: ','')
-    elif key == "model":
-        return text_list[1].replace('output: ','')
+    user_text = text_list[0].replace('HUMAN: ','')
+    model_text = text_list[1].replace('YOU: ','')
+
+    if key == 'user_text':
+        return user_text
+    elif key == 'model_text':
+        return model_text
+    else:
+        return  {"user_text":user_text, "model_text":model_text}
+    
     
 
 def create_kwarg_map(config:dict) -> dict:
