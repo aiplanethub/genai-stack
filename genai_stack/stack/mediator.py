@@ -94,12 +94,12 @@ class Mediator:
         if self._check_component("vectordb", raise_error=True):
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
             return self._stack.vectordb.get_documents(**kwargs)
-    
+
     def create_document(self, document, kwarg_map) -> dict:
         if self._check_component("vectordb", raise_error=True):
             kwargs = kwarg_map.get(self._stack.vectordb.__class__.__name__)
             return self._stack.vectordb.create_document(document, **kwargs)
-    
+
     # LLM Cache
     def get_cache(self, query: str, metadata: dict = None):
         if self._is_component_available("llm_cache"):
@@ -108,17 +108,25 @@ class Mediator:
 
     def set_cache(self, query: str, response: str, metadata: dict = None):
         if self._is_component_available("llm_cache"):
-            return self._stack.llm_cache.set_cache(metadata=metadata, query=query, response=response)
+            return self._stack.llm_cache.set_cache(
+                metadata=metadata, query=query, response=response
+            )
         return False
 
     # Prompt Engine
     def get_prompt_template(self, query: str):
         if self._stack.vectordb and self._stack.memory:
-            return self._stack.prompt_engine.get_prompt_template(query=query, promptType="CONTEXTUAL_CHAT_PROMPT")
+            return self._stack.prompt_engine.get_prompt_template(
+                query=query, promptType="CONTEXTUAL_CHAT_PROMPT"
+            )
         elif self._stack.memory:
-            return self._stack.prompt_engine.get_prompt_template(query=query, promptType="SIMPLE_CHAT_PROMPT")
+            return self._stack.prompt_engine.get_prompt_template(
+                query=query, promptType="SIMPLE_CHAT_PROMPT"
+            )
         elif self._stack.vectordb:
-            return self._stack.prompt_engine.get_prompt_template(query=query, promptType="CONTEXTUAL_QA_PROMPT")
+            return self._stack.prompt_engine.get_prompt_template(
+                query=query, promptType="CONTEXTUAL_QA_PROMPT"
+            )
         else:
             raise ValueError(
                 "VectorDB and Memory components are not provided, PromptEngine require at least anyone of it for the prompt template."
