@@ -13,7 +13,10 @@ from genai_stack.memory import ConversationBufferMemory, VectorDBMemory
 class TestConversationBufferMemory(unittest.TestCase):
     def test_conversation_buffer_memory(self):
         memory = ConversationBufferMemory(config={})
-
+        Stack(
+            model=None,
+            memory=memory
+        )
         # Storing few conversation
         memory.add_text(
             user_text="hello my name is Ali,what’s your name?",
