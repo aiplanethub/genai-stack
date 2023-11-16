@@ -1,6 +1,7 @@
 from langchain.schema import Document
 from pydantic import BaseModel
 
+
 def use_pysqlite3():
     """
     Swap std-lib sqlite3 with pysqlite3.
@@ -16,7 +17,15 @@ def use_pysqlite3():
             import sys
 
             subprocess.check_call(
-                [sys.executable, "-m", "pip", "install", "pysqlite3-binary", "--quiet", "--disable-pip-version-check"]
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "pysqlite3-binary",
+                    "--quiet",
+                    "--disable-pip-version-check",
+                ]
             )
 
             __import__("pysqlite3")
