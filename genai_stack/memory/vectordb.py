@@ -3,7 +3,7 @@ from genai_stack.memory.base import BaseMemory, BaseMemoryConfig, BaseMemoryConf
 from genai_stack.memory.utils import (
     create_kwarg_map,
     format_conversation,
-    parse_vectordb_chat_conversations
+    parse_vectordb_chat_conversations, extract_text
 )
 
 
@@ -35,6 +35,24 @@ class VectorDBMemory(BaseMemory):
 
     def _get_documents(self):
         return self.mediator.get_documents(kwarg_map=self.kwarg_map)
+    
+    def get_user_text(self) -> str:
+        document = self.mediator.get_documents(kwarg_map=self.kwarg_map)[-1:]
+        if len(document) == 0:
+            return 
+        return extract_text(conversation=document, key="user_text")
+    
+    def get_model_text(self) -> str:
+        document = self.mediator.get_documents(kwarg_map=self.kwarg_map)[-1:]
+        if len(document) == 0:
+            return 
+        return extract_text(conversation=document, key="model_text")
+    
+    def get_text(self) -> dict:
+        document = self.mediator.get_documents(kwarg_map=self.kwarg_map)[-1:]
+        if len(document) == 0:
+            return {"user_text":None, "model_text":None}
+        return extract_text(conversation=document)
 
     def get_chat_history(self):
         documents = self.mediator.get_documents(kwarg_map=self.kwarg_map)
