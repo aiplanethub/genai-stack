@@ -59,6 +59,10 @@ In short, it orchestrates and streamlines your Generative AI development journey
 - Customer Support Chatbots: Enhance the operational efficiency of customer support teams with near accurate responses to support queries.
 - Information Retrieval on Large Volumes of Documents: Quickly extract specific information or related documents from vast repositories, streamlining data management.
 
+## Get in Touch
+
+You can schedule a 1:1 meeting with our DevRel & Community Team to get started with AI Planet Open Source LLMs(effi and Panda Coder) and GenAI Stack. Schedule the call here: [https://calendly.com/jaintarun](https://calendly.com/jaintarun)
+
 ## Contribution guidelines
 
 GenAI Stack thrives in the rapidly evolving landscape of open-source projects. We wholeheartedly welcome contributions in various capacities, be it through innovative features, enhanced infrastructure, or refined documentation.
