@@ -2,7 +2,7 @@ from typing import Any, Dict, List, Optional
 from langchain.llms.vllm import VLLM as Vllm
 from pydantic import Field
 
-from genai_stack.model.base import BaseModelConfigModel
+from genai_stack.model.base import BaseModelConfigModel, BaseModelConfig, BaseModel
 
 class VLLMParameters(BaseModelConfigModel):
     """VLLM language model."""
@@ -65,3 +65,26 @@ class VLLMParameters(BaseModelConfigModel):
 
     logprobs: Optional[int] = None
     """Number of log probabilities to return per output token."""
+
+class VLLMConfigModel(BaseModelConfigModel):
+    parameters:VLLMParameters
+
+class VLLMConfig(BaseModelConfig):
+    data_model = VLLMConfigModel
+
+class VLLM(BaseModel):
+    config_class = VLLMConfig
+
+    def _post_init(self, *args, **kwargs):
+        self.model = self.load()
+
+    def load(self):
+        """
+        Using dict method here to dynamically access object attributes
+        """
+        model = Vllm(**self.config.parameters.dict())
+        return model
+
+    def predict(self, prompt: str):
+        response = self.model.predict(prompt)
+        return {"output": response}
