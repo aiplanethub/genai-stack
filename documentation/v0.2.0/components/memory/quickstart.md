@@ -74,4 +74,4 @@ memory.add_text(user_text="What is my name?",model_text="Your name is Jhon.")
 memory.get_chat_history()
 ```
 
-**Important Note**:Once the total conversations are 40, the first 20 conversations are removed from vectordb memory. This is because to make sure the context length doesn't exceeds.
+**Important Note**:Once the total number of conversations are 40, the first 20 conversations are removed from vectordb memory. This is because to make sure the context length doesn't exceeds.
