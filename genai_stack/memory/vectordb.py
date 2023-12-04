@@ -1,16 +1,18 @@
 from typing import Optional
-from langchain.memory import VectorStoreRetrieverMemory
 from genai_stack.memory.base import BaseMemory, BaseMemoryConfig, BaseMemoryConfigModel
 from genai_stack.memory.utils import (
-    parse_chat_conversation_history_search_result, 
-    format_index_name
+    create_kwarg_map,
+    format_conversation,
+    parse_vectordb_chat_conversations,
+    extract_text,
 )
 
 
 class VectorDBMemoryConfigModel(BaseMemoryConfigModel):
     """Data Model for the configs"""
 
-    index_name:Optional[str] = 'ChatHistory'
+    index_name: Optional[str] = "ChatHistory"
+    k: Optional[int] = 4
 
 
 class VectorDBMemoryConfig(BaseMemoryConfig):
@@ -19,42 +21,42 @@ class VectorDBMemoryConfig(BaseMemoryConfig):
 
 class VectorDBMemory(BaseMemory):
     config_class = VectorDBMemoryConfig
-    memory = None
     lc_client = None
 
     def _post_init(self, *args, **kwargs):
-        config:VectorDBMemoryConfigModel  = self.config.config_data
+        config: VectorDBMemoryConfigModel = self.config.config_data
 
-        # We have to pass the index name in two places, one is to Vectordb and to 
-        # VectorStoreRetriever.
-        # in case of weaviate, if we pass the index name in lowercase, the weaviate will
-        # internally convert it to pascal for schema/collection
-        # eg passed index name => chatting, weaviate converted to Chatting,
-        # But if VectorStoreRetriever use the lowercased index name, 
-        # it throws index error, since the weaviate changed to pascal.
-        # To handle this we are converting the index name to pascal before intializing 
-        # the Vectordb and Vectorstoreretriever, and to 
-        # maintain the consistency, we are also converting the chromadb index name to 
-        # pascal, instead of conditionally doing only for weaviate.
-        kwarg_map, index_name = format_index_name(config=config)
+        self.kwarg_map = create_kwarg_map(config=config)
 
-        self.lc_client = self.mediator.create_index(kwarg_map)
-
-        retriever = self.lc_client.as_retriever(
-            search_kwargs = {'k':4}
-        )
-
-        self.memory = VectorStoreRetrieverMemory(
-            retriever=retriever,
-            memory_key=index_name,
-            return_docs=True
-        )
+        self.lc_client = self.mediator.create_index(kwarg_map=self.kwarg_map)
 
     def add_text(self, user_text: str, model_text: str):
-        self.memory.save_context({"input": user_text}, {"output": model_text})
+        conversation = format_conversation(user_text=user_text, model_text=model_text)
+        self.mediator.create_document(document=conversation, kwarg_map=self.kwarg_map)
 
-    def get_chat_history(self, query):
-        documents = self.memory.load_memory_variables({
-            "prompt": query
-        })[self.memory.memory_key]
-        return parse_chat_conversation_history_search_result(search_results=documents)
+    def _get_documents(self):
+        return self.mediator.get_documents(kwarg_map=self.kwarg_map)
+
+    def get_user_text(self) -> str:
+        document = self.mediator.get_documents(kwarg_map=self.kwarg_map)[-1:]
+        if len(document) == 0:
+            return
+        return extract_text(conversation=document, key="user_text")
+
+    def get_model_text(self) -> str:
+        document = self.mediator.get_documents(kwarg_map=self.kwarg_map)[-1:]
+        if len(document) == 0:
+            return
+        return extract_text(conversation=document, key="model_text")
+
+    def get_text(self) -> dict:
+        document = self.mediator.get_documents(kwarg_map=self.kwarg_map)[-1:]
+        if len(document) == 0:
+            return {"user_text": None, "model_text": None}
+        return extract_text(conversation=document)
+
+    def get_chat_history(self):
+        documents = self.mediator.get_documents(kwarg_map=self.kwarg_map)
+        return parse_vectordb_chat_conversations(
+            search_results=documents, k=self.config.config_data.k
+        )

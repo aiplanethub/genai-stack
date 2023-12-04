@@ -1,5 +1,6 @@
 from typing import Optional, Dict
 from langchain.llms import HuggingFacePipeline
+from transformers import pipeline
 
 from genai_stack.model.base import BaseModel, BaseModelConfig, BaseModelConfigModel
 
@@ -17,6 +18,8 @@ class HuggingFaceModelConfigModel(BaseModelConfigModel):
     """Key word arguments passed to the pipeline."""
     task: str = "text-generation"
     """Valid tasks: 'text2text-generation', 'text-generation', 'summarization'"""
+    pipeline: Optional[pipeline] = None
+    """If pipeline is passed, all other configs are ignored."""
 
 
 class HuggingFaceModelConfig(BaseModelConfig):
@@ -30,8 +33,12 @@ class HuggingFaceModel(BaseModel):
         self.model = self.load()
 
     def load(self):
+        if self.config.pipeline is not None:
+            return self.config.pipeline
         model = HuggingFacePipeline.from_model_id(
-            model_id=self.config.model, task=self.config.task, model_kwargs=self.config.model_kwargs
+            model_id=self.config.model,
+            task=self.config.task,
+            model_kwargs=self.config.model_kwargs,
         )
         return model
 

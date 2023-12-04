@@ -17,7 +17,15 @@ def use_pysqlite3():
             import sys
 
             subprocess.check_call(
-                [sys.executable, "-m", "pip", "install", "pysqlite3-binary", "--quiet", "--disable-pip-version-check"]
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "pysqlite3-binary",
+                    "--quiet",
+                    "--disable-pip-version-check",
+                ]
             )
 
             __import__("pysqlite3")
@@ -43,7 +51,7 @@ def use_pysqlite3():
 
 class HybridSearchResponse(BaseModel):
     query: str
-    response: str
+    metadata: dict
     score: float
     isSimilar: bool
     document: Document
