@@ -38,5 +38,5 @@ class HuggingFaceHub(BaseModel):
         return model
 
     def predict(self, prompt: str):
-        response = self.model(prompt)
+        response = self.model.predict(prompt)
         return {"output": response}
