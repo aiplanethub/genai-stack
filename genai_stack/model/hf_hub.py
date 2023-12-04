@@ -25,7 +25,7 @@ class HuggingFaceHubConfigModel(BaseModelConfigModel):
 class HuggingFaceHubConfig(BaseModelConfig):
     data_model = HuggingFaceHubConfigModel
 
-class HuggingFaceHub(BaseModel):
+class HuggingFaceHubModel(BaseModel):
     config_class = HuggingFaceHubConfig
 
     def _post_init(self, *args, **kwargs):
