@@ -1,5 +1,5 @@
 <div align="center">
-<h1 align="center">GenAI Stack </h1>
+<h1> ⛔ GenAI Stack [DEPRECATED] Active at <a href="https://github.com/aiplanethub/beyondllm">BeyondLLM</a> <h1>
 <h2 align="center">End-to-End Secure & Private Generative AI for All <br>(Your data, your LLM, your Control)</h2>
 
 <a href="https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10-3776AB.svg?style=flat&logo=python&logoColor=white"><img src="https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10-3776AB.svg?style=flat&logo=python&logoColor=white" alt="Python Versions"></a>
